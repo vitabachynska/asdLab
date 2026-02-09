@@ -30,7 +30,7 @@ public class Student extends Person {
     public void setCourse(int course) {
         if(course>=1 && course<=4)
             this.course = course;
-        else throw new IllegalArgumentException("Кур має бути в межах від 1 до 4");
+        else throw new IllegalArgumentException("Курс має бути в межах від 1 до 4");
     }
 
     public int getGroup() {return group;}
@@ -70,7 +70,7 @@ public class Student extends Person {
     }
     public enum StudentStatus {
         STUDYING("Навчається"),
-        ACADEMIC_LEAVE("Академвідпустка"),
+        ACADEMIC_LEAVE("В академ відпустці"),
         EXPELLED("Відрахований");
 
         private final String label;
@@ -83,4 +83,14 @@ public class Student extends Person {
             return label;
         }
     }
+
+
+    @Override
+    public String toString() {
+        return super.toString() + "/n" + ", ID студента : " + getStudentCardId() + ", курс " + getCourse() +
+                ", група " + getGroup() + ", рік вступу " + getAdmissionYear() + ", форма навчання " +
+                getTuitionForm() + ", статус студента : " + getStatus();
+    }
+
+
 }

@@ -41,4 +41,10 @@ public class Person {
 
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
+
+
+    public String toString() {
+        return "ID : " + getId() + ", " + getFirstName() + getLastName() + getMiddleName() +
+                ", " + getBirthDate() + ", email : " + getEmail() + ", тел. :" + getPhone();
+    }
 }

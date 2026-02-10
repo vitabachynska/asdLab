@@ -104,10 +104,12 @@ public class Student extends Person {
 
     @Override
     public String toString() {
-        return super.toString() + "/n" + ", ID студента : " + getStudentCardId() + ", курс " + getCourse() +
-                ", група " + getGroup() + ", рік вступу " + getAdmissionYear() + ", форма навчання " +
+        return super.toString() + "/n" + ", ID студента : " + getStudentCardId() +"ПІБ : " + getFirstName()
+                + " " +getLastName()+ " "+ getMiddleName()+", курс " + getCourse() +", група " + getGroup()
+                + ", рік вступу " + getAdmissionYear() + ", форма навчання :" +
                 getTuitionForm().getLabel() + ", статус студента : " + getStatus().getLabel();
     }
+    // тут чи де пвдправити щоб при показі студентів ПІБ було розділено пробілом
 
 
 }

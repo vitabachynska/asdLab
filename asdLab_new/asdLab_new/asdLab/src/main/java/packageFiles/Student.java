@@ -30,7 +30,7 @@ public class Student extends Person {
     public void setCourse(int course) {
         if(course>=1 && course<=4)
             this.course = course;
-        else throw new IllegalArgumentException("Кур має бути в межах від 1 до 4");
+        else throw new IllegalArgumentException("Курс має бути в межах від 1 до 4");
     }
 
     public int getGroup() {return group;}
@@ -55,8 +55,8 @@ public class Student extends Person {
     public void setStatus(StudentStatus status) {this.status = status;}
 
     public enum TuitionForm {
-        BUDGET("Бюджет"),
-        CONTRACT("Контракт");
+        BUDGET("бюджет"),
+        CONTRACT("контракт");
 
         private final String label;
 
@@ -67,11 +67,20 @@ public class Student extends Person {
         public String getLabel() {
             return label;
         }
+
+        public static TuitionForm fromString(String text) {
+            for (TuitionForm form : TuitionForm.values()) {
+                if (form.label.equalsIgnoreCase(text.trim()))
+                    return form;
+            }
+            throw new IllegalArgumentException("Введіть правильно форму навчання");
+        }
     }
+
     public enum StudentStatus {
-        STUDYING("Навчається"),
-        ACADEMIC_LEAVE("Академвідпустка"),
-        EXPELLED("Відрахований");
+        STUDYING("навчається"),
+        ACADEMIC_LEAVE("в академ відпустці"),
+        EXPELLED("відрахований");
 
         private final String label;
 
@@ -82,5 +91,27 @@ public class Student extends Person {
         public String getLabel() {
             return label;
         }
+
+        public static StudentStatus fromString(String text) {
+            for (StudentStatus status : StudentStatus.values()) {
+                if (status.label.equalsIgnoreCase(text.trim()))
+                    return status;
+            }
+            throw new IllegalArgumentException("Введіть правильно статус навчання");
+        }
     }
+
+
+    @Override
+    public String toString() {
+        return "ID студента : " + getStudentCardId() +",\nПІБ : " + getFirstName()
+                + " " +getLastName()+ " "+ getMiddleName()+
+                ",\nДата народження : " + getBirthDate() + ",\nemail : " + getEmail() + ", тел. : " + getPhone()+",\nКурс " + getCourse() +", група " + getGroup()
+                + ", рік вступу " + getAdmissionYear() + ",\nФорма навчання : " +
+                getTuitionForm().getLabel() +" , ідентифікатор студента : " + getStudentCardId()
+                + ", статус студента : " + getStatus().getLabel() + ".\n------------------------";
+    }
+
+
+
 }

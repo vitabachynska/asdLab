@@ -47,6 +47,17 @@ public class Faculty {
         }
         return null;
     }
+    public void addDepartment(Department department){
+        if(department != null)
+            departments.add(department);
+    }
+    public  List<Department> getDepartments(){
+        return departments;
+    }
+
+    //public boolean removeFacultyByName(String name) {
+    //    return faculties.removeIf(f -> f.getName().equalsIgnoreCase(name));
+    //}
 
 
     @Override

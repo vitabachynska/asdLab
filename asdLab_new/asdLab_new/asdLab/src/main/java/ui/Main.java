@@ -136,8 +136,9 @@ public class Main {
                             String contacts = textIsNotNull();
 
                             Teacher dean = null;
+                            //boolean laterAdd=false;
 
-                            while (dean == null) {
+                            /*while (dean == null) {
                                 System.out.println("Введіть ПІБ викладача, який буде деканом: ");
 
                                 System.out.println("Введіть ім'я викладача : ");
@@ -154,11 +155,11 @@ public class Main {
                                     System.out.println("Викладача з таким прізвищем не знайдено! Спробуйте ще раз.");
 
                                     while (true) {
-                                        System.out.println("Бажаєте вийти у головене меню? 1-так, 0-ні");
+                                        System.out.println("Бажаєте вийти у головене меню? 2-продовжити створення, 1-так, 0-ні");
                                         String input = scanner.nextLine();
                                         try {
                                             choice = Integer.parseInt(input);
-                                            if (choice == 1||choice == 0)
+                                            if (choice <= 2||choice >= 0)
                                                 break;
                                             else
                                                 System.out.println("Введіть коректне значення");
@@ -169,14 +170,19 @@ public class Main {
                                     }
                                     if(choice == 1)
                                         break;
+                                    if(choice == 2){
+                                        laterAdd=true;
+                                        break;
+                                    }
+
                                 }
                             }
-                            if(dean == null)
+                            if(dean == null && laterAdd==true)
                                 System.out.println("Помилка створення факультету. Спершу створіть декана");
-                            else {
+                            else {*/
                                 service.addFaculty(code, name, shortName, dean, contacts);
                                 System.out.println("ФАКУЛЬТЕТ БУЛО ДОДАНО");
-                            }
+                            //}
                         }
                         case 3 -> {
                             System.out.println("ВИДАЛЕННЯ ФАКУЛЬТЕТУ");
@@ -263,6 +269,7 @@ public class Main {
                             }
 
                             Teacher head = null;
+                            /*
                             while (head == null) {
                                 System.out.println("Введіть ім'я викладача, який буде завідувачем кафедри : ");
                                 String firstName = textIsNotNull();
@@ -278,11 +285,11 @@ public class Main {
                                 if (head == null) {
                                     System.out.println("Помилка створення кафедри. Спершу створіть завідувача кафедри");
                                 }
-                                else {
+                                else {*/
                                     service.addDepartment(code, name, faculty, head, location);
                                     System.out.println("КАФЕДРУ БУЛО ДОДАНО");
-                                }
-                            }
+                                //}
+                           // }
                         }
                         case 3 -> {
                             System.out.println("Введіть назву кафедри : ");

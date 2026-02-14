@@ -13,7 +13,7 @@ public class Service {
     private final List<Department> departments = new ArrayList<>();
     private final List<Student> students = new ArrayList<>();
     private final List<Teacher> teachers = new ArrayList<>();
-    private List<Faculty> faculties = new ArrayList<>();
+    //private List<Faculty> faculties = new ArrayList<>();
 
     public Optional<Student> studentFindById(String id) {
         return students.stream().filter(s -> s.getId().equals(id)).findFirst();
@@ -67,12 +67,30 @@ public class Service {
     }
 
     public void addFaculty(String code, String name, String shortName, Teacher dean, String contacts) {
-        faculties.add(new Faculty(code, name, shortName, dean, contacts));
+        if(university != null){
+            Faculty newFaculty = new Faculty(code, name, shortName, dean, contacts);
+            university.addFaculty(newFaculty);
+        }
+        else{
+            System.out.println("Помилка. Спочатку створіть універстиет");
+        }
+
     }
 
     public void addDepartment(String code, String name, Faculty faculty,  Teacher head, String location) {
-        departments.add(new Department(code, name, faculty, head, location));
+        //Faculty faculty = university.findFacultyByName(name);
+        if(faculty != null){
+            Department newDepartment = new Department(code, name, faculty, null, location);
+            faculty.addDepartment(newDepartment);
+        }
+        else{
+            System.out.println("Помилка. Спочатку створіть факультет");
+        }
+
     }
+    //public void addDepartment(String code, String name, Faculty faculty,  Teacher head, String location) {
+    //    departments.add(new Department(code, name, faculty, head, location));
+    //}
 
 
     public void addStudent(String id, String firstName, String lastName, String middleName,
@@ -92,7 +110,9 @@ public class Service {
         return teachers;
     }
     public List<Faculty> getAllFaculties() {
-        return faculties;
+        if (university == null)
+            return new ArrayList<>();
+        return university.getFaculties();
     }
     public List<Department> getAllDepartments() {
         return departments;
@@ -180,10 +200,10 @@ public class Service {
         return false;
     }
 
-    public void deleteUni() {
-    faculties.clear();
-    university = null;
-    }
+    //public void deleteUni() {
+    //faculties.clear();
+    //university = null;
+    //}
 
     public void searchingByPIB(String firstName, String lastName, String middleName){
         Optional<Student> optionalStudent = studentFindByPIB(firstName, lastName, middleName);

@@ -30,8 +30,12 @@ public class University {
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
 
-    public void addFaculty(String code, String name, String shortName, Teacher dean, String contacts){
-        faculties.add(new Faculty(code, name, shortName, dean, contacts ));
+    public void addFaculty(Faculty faculty){
+        if(faculty != null)
+            faculties.add(faculty);
+    }
+    public  List<Faculty> getFaculties(){
+        return faculties;
     }
 
     public Faculty findFacultyByName(String facultyName) {

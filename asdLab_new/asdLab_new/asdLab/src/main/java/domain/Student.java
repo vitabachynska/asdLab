@@ -1,4 +1,4 @@
-package packageFiles;
+package domain;
 
 import java.time.LocalDate;
 
@@ -8,12 +8,14 @@ public class Student extends Person {
     private int group;
     private int admissionYear;
     private TuitionForm tuitionForm; // Використовуємо enum
-    private StudentStatus status;    // Використовуємо enum
-
+    private StudentStatus status;// Використовуємо enum
+    private Department department;
+    private Faculty faculty;
     public Student(String id, String firstName, String lastName, String middleName,
                    LocalDate birthDate, String email, String phone,
                    String studentCardId, int course, int group,
-                   int admissionYear, TuitionForm tuitionForm, StudentStatus status) {
+                   int admissionYear, TuitionForm tuitionForm, StudentStatus status,  Faculty faculty, Department department
+                  ) {
         super(id, firstName, lastName, middleName, birthDate, email, phone);
         this.studentCardId = studentCardId;
         this.course = course;
@@ -21,6 +23,8 @@ public class Student extends Person {
         this.admissionYear = admissionYear;
         this.tuitionForm = tuitionForm;
         this.status = status;
+        this.faculty = faculty;
+        this.department = department;
     }
 
     public String getStudentCardId() {return studentCardId;}
@@ -53,6 +57,12 @@ public class Student extends Person {
 
     public StudentStatus getStatus() {return status;}
     public void setStatus(StudentStatus status) {this.status = status;}
+
+    public Department getDepartment(){return department;}
+    public void setDepartment(Department department){this.department = department; }
+
+    public Faculty getFaculty(){return faculty;}
+    public void setFaculty(Faculty faculty){this.faculty = faculty;}
 
     public enum TuitionForm {
         BUDGET("бюджет"),
@@ -104,7 +114,7 @@ public class Student extends Person {
 
     @Override
     public String toString() {
-        return "ID студента : " + getStudentCardId() +",\nПІБ : " + getFirstName()
+        return "ID студента : " + getId() +",\nПІБ : " + getFirstName()
                 + " " +getLastName()+ " "+ getMiddleName()+
                 ",\nДата народження : " + getBirthDate() + ",\nemail : " + getEmail() + ", тел. : " + getPhone()+",\nКурс " + getCourse() +", група " + getGroup()
                 + ", рік вступу " + getAdmissionYear() + ",\nФорма навчання : " +

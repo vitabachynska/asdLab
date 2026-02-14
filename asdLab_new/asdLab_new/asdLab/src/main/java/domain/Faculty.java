@@ -1,4 +1,7 @@
-package packageFiles;
+package domain;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Faculty {
     private String code;
@@ -6,6 +9,8 @@ public class Faculty {
     private String shortName;
     private Teacher dean;
     private String contacts;
+
+    private List<Department> departments = new ArrayList<>();
 
     public Faculty(String code, String name, String shortName, Teacher dean, String contacts) {
         this.code = code;
@@ -29,6 +34,20 @@ public class Faculty {
 
     public String getContacts() { return contacts; }
     public void setContacts(String contacts) { this.contacts = contacts; }
+
+    public void addDepartment(String code, String name, Faculty faculty, Teacher head, String location){
+        departments.add(new Department(code, name, faculty, head, location));
+    }
+
+    public Department findDepartmentByName(String deptName) {
+        for (Department dept : departments) {
+            if (dept.getName().equalsIgnoreCase(deptName)) {
+                return dept;
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public String toString (){

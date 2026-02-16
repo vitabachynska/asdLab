@@ -133,7 +133,7 @@ public class Teacher extends Person{
     @Override
     public String toString (){
         return "ID викладача : " + getId() +",\nПІБ : " + getFirstName()
-                + " " +getLastName()+ " "+ getMiddleName()+
+                + " " +getLastName()+ " "+ getMiddleName()+ ", Факультет : " + getFaculty().getName() + ", Кафедра : "+getDepartment().getName() +
                 ",\nДата народження : " + getBirthDate() + ",\nemail : " + getEmail() + ", тел. : " + getPhone()+",\nПосада "
                 + getPosition().getLabel() +", науковий ступінь " + getDegree().getLabel()
                 + ", вчене звання " + getAcademicTitle().getLabel() + ",\nДата прийняття на роботу : " +

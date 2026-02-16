@@ -115,7 +115,7 @@ public class Student extends Person {
     @Override
     public String toString() {
         return "ID студента : " + getId() +",\nПІБ : " + getFirstName()
-                + " " +getLastName()+ " "+ getMiddleName()+
+                + " " +getLastName()+ " "+ getMiddleName()+ ", Факультет : " + getFaculty().getName() + ", Кафедра : "+getDepartment().getName() +
                 ",\nДата народження : " + getBirthDate() + ",\nemail : " + getEmail() + ", тел. : " + getPhone()+",\nКурс " + getCourse() +", група " + getGroup()
                 + ", рік вступу " + getAdmissionYear() + ",\nФорма навчання : " +
                 getTuitionForm().getLabel() +" , ідентифікатор студента : " + getStudentCardId()

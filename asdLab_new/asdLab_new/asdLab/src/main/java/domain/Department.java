@@ -70,11 +70,17 @@ public class Department {
         }
    }
 
+    public void addStudent(Student student){
+        if(students != null){
+            students.add(student);
+        }
+    }
+
     public void removeStudent(Student student) {
         this.students.remove(student);
     }
     public void removeTeacher(Teacher teacher) {
-        this.students.remove(teacher);
+        this.teachers.remove(teacher);
     }
 
 

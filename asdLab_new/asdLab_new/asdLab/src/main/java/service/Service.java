@@ -173,7 +173,21 @@ public class Service {
         if (f != null) {
             Department d = f.findDepartmentByName(department);
             if (d != null) {
-                d.addTeacher(teacher); // Зберігаємо в об'єкті кафедри
+                d.addTeacher(teacher);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean addStudent(String faculty, String department, Student student) {
+        if (university == null) return false;
+
+        Faculty f = university.findFacultyByName(faculty);
+        if (f != null) {
+            Department d = f.findDepartmentByName(department);
+            if (d != null) {
+                d.addStudent(student);
                 return true;
             }
         }
@@ -193,16 +207,85 @@ public class Service {
         return false;
     }
 
-    public List<Teacher> getAllTeachers() {
-        List<Teacher> all = new ArrayList<>();
-        if (university == null) return all;
+    public Optional<Student> findStudentById(String id) {
+        if (university == null) return Optional.empty();
+        for (Faculty f : university.getFaculties()) {
+            for (Department d : f.getDepartments()) {
+                Optional<Student> student = d.getStudents().stream()
+                        .filter(s -> s.getId().equals(id)).findFirst();
+                if (student.isPresent()) return student;
+            }
+        }
+        return Optional.empty();
+    }
+
+    public boolean deleteStudent(String id) {
+        Optional<Student> studentOpt = findStudentById(id);
+        if (studentOpt.isPresent()) {
+            Student s = studentOpt.get();
+            s.getDepartment().removeStudent(s);
+            return true;
+        }
+        return false;
+    }
+
+    public List<Student> getStudentsByDepartment(String facultyName, String deptName) {
+        if (university == null) return new ArrayList<>();
+
+        Faculty f = university.findFacultyByName(facultyName);
+        if (f != null) {
+            Optional<Department> d = f.departmentFindByName(deptName);
+            if (d.isPresent()) {
+                return d.get().getStudents();
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    public Optional<Teacher> findTeacherById(String id) {
+        if (university == null) return Optional.empty();
+        for (Faculty f : university.getFaculties()) {
+            for (Department d : f.getDepartments()) {
+                Optional<Teacher> teacher = d.getTeachers().stream()
+                        .filter(t -> t.getId().equals(id)).findFirst();
+                if (teacher.isPresent()) return teacher;
+            }
+        }
+        return Optional.empty();
+    }
+
+    public boolean deleteTeacher(String id) {
+        Optional<Teacher> teacherOpt = findTeacherById(id);
+        if (teacherOpt.isPresent()) {
+            Teacher t = teacherOpt.get();
+            t.getDepartment().removeTeacher(t);
+            return true;
+        }
+        return false;
+    }
+
+    public List<Student> getAllStudents() {
+        List<Student> allStudents = new ArrayList<>();
+        if (university == null) return allStudents;
 
         for (Faculty f : university.getFaculties()) {
             for (Department d : f.getDepartments()) {
-                all.addAll(d.getTeachers());
+                allStudents.addAll(d.getStudents());
             }
         }
-        return all;
+        return allStudents;
+    }
+
+    public List<Teacher> getAllTeachers() {
+        List<Teacher> allTeachers = new ArrayList<>();
+        if (university == null) return allTeachers;
+
+        for (Faculty f : university.getFaculties()) {
+            for (Department d : f.getDepartments()) {
+                allTeachers.addAll(d.getTeachers());
+            }
+        }
+        return allTeachers;
     }
     //public void addDepartment(String code, String name, Faculty faculty,  Teacher head, String location) {
     //    departments.add(new Department(code, name, faculty, head, location));

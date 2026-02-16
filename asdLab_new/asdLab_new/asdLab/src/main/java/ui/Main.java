@@ -26,7 +26,7 @@ public class Main {
                 String input = scanner.nextLine();
                 try {
                     choice = Integer.parseInt(input);
-                    if (choice >= 0 && choice <= 4)
+                    if (choice >= 0 && choice <= 5)
                         break;
                     else
                         System.out.println("ПОМИЛКА. Введіть число зі списку : ");
@@ -400,35 +400,58 @@ public class Main {
                             else System.out.println("Помилка");
                         }
                         case 5 -> {
-                            /*Faculty faculty = university.findFacultyByName(name);
-
-                            while (faculty == null) {
-                                System.out.println("Введіть назву факультету : ");
-                                String input = scanner.nextLine();
-
-                                try {
-                                    faculty = university.findFacultyByName(input);
-                                } catch (IllegalArgumentException e) {
-                                    System.out.println("Факультет не знайдено. Введіть коректне значення ");
-                                }
+                            University currentUni = service.getUniversity();
+                            if (currentUni == null) {
+                                System.out.println("Спочатку створіть університет ");
+                                break;
                             }
-                            Department department = faculty.findDepartmentByName(name);
-                            while ( department== null) {
-                                System.out.println("Введіть назву кафедри : ");
-                                String input = scanner.nextLine();
+// треба додати можливіть вийти з циклу якщо нема факультета/кафедри
+                            Faculty faculty = null;
+                            while (faculty == null) {
+                                System.out.print("Введіть назву факультету: ");
+                                String facultyInput = scanner.nextLine();
+                                faculty = currentUni.findFacultyByName(facultyInput);
+                                if (faculty == null) System.out.println("Факультет не знайдено");
+                            }
 
-                                try {
-                                    department = faculty.findDepartmentByName(input);
-                                } catch (IllegalArgumentException e) {
-                                    System.out.println("Кафедру не знайдено. Введіть коректне значення ");
-                                }
-                            }*/
+                            Department department = null;
+                            while (department == null) {
+                                System.out.print("Введіть назву кафедри: ");
+                                String deptInput = scanner.nextLine();
+                                department = faculty.departmentFindByName(deptInput).orElse(null);
+                                if (department == null) System.out.println("Кафедру не знайдено на цьому факультеті!");
+                            }
 
-                            System.out.println("Введіть факультет : ");
-                            String faculty = textIsNotNull();
 
-                            System.out.println("Введіть кафедру : ");
-                            String department = textIsNotNull();
+                            //Faculty faculty = null;
+
+                            //while (faculty == null) {
+                            //    System.out.println("Введіть назву факультету : ");
+                            //    String input = scanner.nextLine();
+
+                            //    try {
+                            //        faculty = service.findFacultyByName(input);
+                            //    } catch (IllegalArgumentException e) {
+                            //        System.out.println("Факультет не знайдено. Введіть коректне значення ");
+                            //    }
+                            //}
+                            //Department department = null;
+                           // while ( department== null) {
+                            //    System.out.println("Введіть назву кафедри : ");
+                             //   String input = scanner.nextLine();
+//
+                               //  try {
+                              //      department = faculty.findDepartmentByName(input);
+                              //  } catch (IllegalArgumentException e) {
+                               //     System.out.println("Кафедру не знайдено. Введіть коректне значення ");
+                               // }
+                           // }
+
+                            //System.out.println("Введіть факультет : ");
+                            //String faculty = textIsNotNull();
+
+                            //System.out.println("Введіть кафедру : ");
+                            //String department = textIsNotNull();
 
                             System.out.println("Введіть ID особи : ");
                             String id = textIsNotNull();
@@ -528,12 +551,34 @@ public class Main {
 
                             Teacher teacher = new Teacher(id, name, lastName, middleName, birthDate,
                                     email, phone, position, degree, academicTitle, hireData, workload, faculty, department);
-                            if(service.addTeacher(faculty, department, teacher))
+                            if(service.addTeacher(faculty.getName(), department.getName(), teacher))
                                 System.out.println("ВИКЛАДАЧА БУЛО ДОДАНО");
                             else System.out.println("Не знайдено факультет або кафедру");
 
                         }
                         case 6 -> {
+                            University currentUni = service.getUniversity();
+                            if (currentUni == null) {
+                                System.out.println("Спочатку створіть університет ");
+                                break;
+                            }
+// треба додати можливіть вийти з циклу якщо нема факультета/кафедри
+                            Faculty faculty = null;
+                            while (faculty == null) {
+                                System.out.print("Введіть назву факультету: ");
+                                String facultyInput = scanner.nextLine();
+                                faculty = currentUni.findFacultyByName(facultyInput);
+                                if (faculty == null) System.out.println("Факультет не знайдено");
+                            }
+
+                            Department department = null;
+                            while (department == null) {
+                                System.out.print("Введіть назву кафедри: ");
+                                String deptInput = scanner.nextLine();
+                                department = faculty.departmentFindByName(deptInput).orElse(null);
+                                if (department == null) System.out.println("Кафедру не знайдено на цьому факультеті!");
+                            }
+
                             System.out.println("Введіть ID студента : ");
                             String id = textIsNotNull();
 
@@ -633,39 +678,24 @@ public class Main {
                             }
 
 
-                            Faculty faculty = university.findFacultyByName(name);
-
-                            while (faculty == null) {
-                                System.out.println("Введіть назву факуьтету : ");
-                                String input = scanner.nextLine();
-
-                                try {
-                                    faculty = university.findFacultyByName(input);
-                                } catch (IllegalArgumentException e) {
-                                    System.out.println("Факультет не знайдено. Введіть коректне значення ");
-                                }
-                            }
-                            Department department = faculty.findDepartmentByName(name);
-                            while ( department== null) {
-                                System.out.println("Введіть назву кафедри : ");
-                                String input = scanner.nextLine();
-
-                                try {
-                                    department = faculty.findDepartmentByName(input);
-                                } catch (IllegalArgumentException e) {
-                                    System.out.println("Кафедру не знайдено. Введіть коректне значення ");
-                                }
-                            }
-
                             //service.addStudent(id, name, lastName, middleName, birthDate, email, phone,
                             ///        studentCardId, course, group, admissionYear, tuitionForm, studentStatus, faculty,department);
 
-                            System.out.println("СТУДЕНТА БУЛО ДОДАНО");
+                            Student student = new Student(id, name, lastName, middleName, birthDate, email, phone,
+                                            studentCardId, course, group, admissionYear, tuitionForm, studentStatus, faculty, department);
+                            if(service.addStudent(faculty.getName(), department.getName(), student))
+                                System.out.println("СТУДЕНТА БУЛО ДОДАНО");
+                            else System.out.println("Не знайдено факультет або кафедру");
+                            //System.out.println("СТУДЕНТА БУЛО ДОДАНО");
                         }
                         case 7 -> {
                             System.out.println("ВИДАЛЕННЯ ВИКЛАДАЧА З КАФЕДРИ");
                             System.out.println("Введіть ID викладача : ");
                             String id = textIsNotNull();
+
+                            if (service.deleteTeacher(id))
+                                System.out.println("Викладача видалено");
+                            else System.out.println("Викладача не знайдено");
 
                             //if (service.deleteTeacherFromDepartment(id)) {
                             //    System.out.println("Викладача видалено.");
@@ -677,6 +707,11 @@ public class Main {
                             System.out.println("ВИДАЛЕННЯ СТУДЕНТА З КАФЕДРИ");
                             System.out.println("Введіть ID студента : ");
                             String id = textIsNotNull();
+
+                            if (service.deleteStudent(id))
+                                System.out.println("Студента видалено");
+                            else System.out.println("Помилка: Студента не знайдено");
+
 
                             //if (service.deleteStudentFromDepartment(id)) {
                             //    System.out.println("Студента видалено.");
@@ -709,14 +744,22 @@ public class Main {
                         System.out.println("==ПОВЕРНЕННЯ ДО МЕНЮ==");
                         introduction();}
                     switch (choice1){
-                        //case 1 -> {
+                        case 1 -> {
+                            List<Teacher> teachers = service.getAllTeachers();
+                            if (teachers.isEmpty())
+                                System.out.println("Жодного викладача поки не зареєстровано :(");
+                            else {
+                                System.out.println("\\n--------ВИКЛАДАЧІ--------\\n------------------------");
+                                teachers.forEach(System.out::println);
+                            }
+
                         //    if (service.getAllTeachers().isEmpty()) {
                         //        System.out.println("Жодного викладача поки не зареєстровано :(");
                           ///  } else {
                              //   System.out.println("\n--------ВИКЛАДАЧІ--------\n------------------------");
                                // service.getAllTeachers().forEach(System.out::println);
                        //     }
-                        //}
+                        }
 
                         case 2 -> {
                             System.out.println("Введіть ID викладача, дані якого хочете змінити : ");
@@ -843,6 +886,13 @@ public class Main {
                         introduction();}
                     switch (choice1){
                         case 1 -> {
+                            List<Student> students = service.getAllStudents();
+                            if (students.isEmpty())
+                                System.out.println("Жодного студента поки не зареєстровано :(");
+                            else {
+                                System.out.println("\\n--------СТУДЕНТИ--------\\n------------------------");
+                                students.forEach(System.out::println);
+                            }
                             //System.out.println("\n--ВИВІД СПИСКУ--");
                             //if (service.getAllStudents().isEmpty()) {
                             //    System.out.println("Жодного студенту поки не зареєстровано :(");

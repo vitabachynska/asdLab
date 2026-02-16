@@ -2,6 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Faculty {
     private String code;
@@ -11,6 +12,9 @@ public class Faculty {
     private String contacts;
 
     private List<Department> departments = new ArrayList<>();
+    public List<Department> getDepartment() {
+        return departments;
+    }
 
     public Faculty(String code, String name, String shortName, Teacher dean, String contacts) {
         this.code = code;
@@ -53,6 +57,24 @@ public class Faculty {
     }
     public  List<Department> getDepartments(){
         return departments;
+    }
+    public Optional<Department> departmentFindByName(String name) {
+        return departments.stream().filter(d -> d.getName().equalsIgnoreCase(name)).findFirst();
+    }
+
+    public boolean deleteDepartment(String name){
+        Optional<Department> optionalDepartment = departmentFindByName(name);
+        if(optionalDepartment.isPresent()){
+            Department t = optionalDepartment.get();
+            departments.remove(t);
+            return true;
+        }
+        return false;
+    }
+
+    public Optional<Department> departmentByName(String code, String name) {
+        return departments.stream().filter(d -> d.getName().equals(name)&&
+                d.getCode().equals(code)).findFirst();
     }
 
     //public boolean removeFacultyByName(String name) {

@@ -38,6 +38,12 @@ public class Department {
     public void setLocation(String location) { this.location = location; }
 
 
+    public List<Student> getStudents(){
+        return students;
+    }
+    public List<Teacher> getTeachers(){
+        return teachers;
+    }
     public void addStudentDep(String id, String firstName, String lastName, String middleName,
                            LocalDate birthDate, String email, String phone,
                            String studentCardId, int course, int group,
@@ -49,15 +55,20 @@ public class Department {
 
     }
 
-    public void addTeacher(String id, String firstName, String lastName, String middleName,
-                           LocalDate birthDate, String email, String phone,
-                           Teacher.TeachersPosition position, Teacher.TeachersDegree degree, Teacher.TeachersAcademicTitle academicTitle,
-                           LocalDate hireDate, double workload, Faculty faculty, Department department)  {
+    //public void addTeacher(String id, String firstName, String lastName, String middleName,
+    //                       LocalDate birthDate, String email, String phone,
+    //                       Teacher.TeachersPosition position, Teacher.TeachersDegree degree, Teacher.TeachersAcademicTitle academicTitle,
+    //                       LocalDate hireDate, double workload, Faculty faculty, Department department)  {
+//
+     //    teachers.add(new Teacher(id, firstName, lastName, middleName, birthDate,
+     //           email, phone, position, degree, academicTitle, hireDate, workload, faculty, department));
 
-        teachers.add(new Teacher(id, firstName, lastName, middleName, birthDate,
-                email, phone, position, degree, academicTitle, hireDate, workload, faculty, department));
-
-    }
+   //}
+   public void addTeacher(Teacher teacher){
+        if(teacher != null){
+            teachers.add(teacher);
+        }
+   }
 
     public void removeStudent(Student student) {
         this.students.remove(student);
@@ -67,4 +78,12 @@ public class Department {
     }
 
 
+    @Override
+    public String toString (){
+        String headName = (head != null)
+                ? head.getLastName() + " " + head.getFirstName() + " " + head.getMiddleName() + " "
+                : "не призначено";
+        return "Код : " + getCode() +",\nПовна назва : " +getName()+"\nЛокація "+ getLocation()
+                + "\nФакультет : " +getFaculty().getName()+ "\nЗавідувач : "+ headName +"\n------------------------";
+    }
 }

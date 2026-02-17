@@ -10,18 +10,18 @@ import java.util.Optional;
 
 public class Service {
     private University university;
+    private Faculty faculty;
+    private Department department;
     //private final List<Department> departments = new ArrayList<>();
     //private final List<Student> students = new ArrayList<>();
-    //private final List<Teacher> teachers = new ArrayList<>();
+    private final List<Teacher> teachers = new ArrayList<>();
     //private List<Faculty> faculties = new ArrayList<>();
 
-    /*public Optional<Student> studentFindById(String id) {
-        return students.stream().filter(s -> s.getId().equals(id)).findFirst();
-    }
+
     public Optional<Teacher> teacherFindById(String id) {
         return teachers.stream().filter(t -> t.getId().equals(id)).findFirst();
     }
-
+/*
     public Optional<Student> studentFindByPIB(String firstName, String lastName, String middleName) {
         return students.stream().filter(s -> s.getFirstName().equalsIgnoreCase(firstName)&&s.getLastName().equalsIgnoreCase(lastName)
                 &&s.getMiddleName().equalsIgnoreCase(middleName)).findFirst();
@@ -30,11 +30,12 @@ public class Service {
     //public Optional<Department> departmentFindByName(String name) {
     //    return departments.stream().filter(d -> d.getName().equalsIgnoreCase(name)).findFirst();
     //}
-
+*/
     public Optional<Teacher> teacherFindByPIB(String firstName, String lastName, String middleName) {
         return teachers.stream().filter(t -> t.getFirstName().equalsIgnoreCase(firstName)&&t.getLastName().equalsIgnoreCase(lastName)
                 &&t.getMiddleName().equalsIgnoreCase(middleName)).findFirst();
     }
+
     public Teacher deanFindByPIB(String firstName, String lastName, String middleName) {
         return teachers.stream()
                 .filter(t -> t.getFirstName().equalsIgnoreCase(firstName)
@@ -47,7 +48,7 @@ public class Service {
                 .filter(t -> t.getFirstName().equalsIgnoreCase(firstName)
                         && t.getLastName().equalsIgnoreCase(lastName)
                         && t.getMiddleName().equalsIgnoreCase(middleName)).findFirst().orElse(null);}
-
+/*
     public List<Student> findByCourse(int course) {
         return students.stream().filter(s -> s.getCourse() == course).toList();
     }
@@ -64,6 +65,13 @@ public class Service {
     }
     public University getUniversity(){
         return university;
+    }
+
+    public Faculty getFaculty(){
+        return faculty;
+    }
+    public Department getDepartment(){
+        return department;
     }
 
     public void addFaculty(String code, String name, String shortName, Teacher dean, String contacts) {
@@ -318,29 +326,8 @@ public class Service {
     //}
 
 
-    public boolean updateStudent(String id, String newFirstName, String newLastName, String newMiddleName,
-                                 String newEmail, String newPhone,
-                                 int newCourse, int newGroup,
-                                 Student.TuitionForm newTuitionForm, Student.StudentStatus newStatus) {
-        Optional<Student> optionalStudent = studentFindById(id);
-        if (optionalStudent.isPresent()) {
-            Student s = optionalStudent.get();
-            s.setFirstName(newFirstName);
-            s.setLastName(newLastName);
-            s.setMiddleName(newMiddleName);
-            s.setEmail(newEmail);
-            s.setPhone(newPhone);
-            s.setCourse(newCourse);
-            s.setGroup(newGroup);
-            s.setTuitionForm(newTuitionForm);
-            s.setStatus(newStatus);
-            //  s.setFaculty(newFaculty);
-          //  s.setDepartment(newDepartment);
-            return true;
-        }
-        return false;
-    }
 
+*/
     public boolean updateTeacher(String id, String newFirstName, String newLastName, String newMiddleName,
                                  String newEmail, String newPhone,
                                  Teacher.TeachersPosition position, Teacher.TeachersDegree degree,
@@ -365,7 +352,7 @@ public class Service {
         return false;
     }
 
-
+/*
 
 
 
@@ -413,7 +400,7 @@ public class Service {
             System.out.println("Студент не знайдений =(");
         }
     }
-
+*/
     public void searchingTeacherByPIB(String firstName, String lastName, String middleName){
         Optional<Teacher> optionalTeacher = teacherFindByPIB(firstName, lastName, middleName);
         if(optionalTeacher.isPresent()){
@@ -423,7 +410,7 @@ public class Service {
             System.out.println("Викладач не знайдений =(");
         }
     }
-
+    /*
     public void searchingByCourse(int course){
         List<Student> optionalStudent = findByCourse(course);
         if (optionalStudent.isEmpty()) {

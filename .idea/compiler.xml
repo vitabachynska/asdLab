@@ -9,6 +9,7 @@
         <module name="asdLab (1)" />
         <module name="asdLab (2)" />
         <module name="asdLab" />
+        <module name="asdLab (3)" />
       </profile>
     </annotationProcessing>
   </component>

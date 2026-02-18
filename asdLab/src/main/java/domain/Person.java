@@ -1,8 +1,8 @@
-package packageFiles;
+package domain;
 
 import java.time.LocalDate;
 
-public class Person {
+public abstract class Person {
     private String id;
     private String firstName;
     private String middleName;
@@ -11,7 +11,7 @@ public class Person {
     private String email;
     private String phone;
 
-    public Person(String id, String firstName, String lastName, String middleName,
+    protected Person(String id, String firstName, String lastName, String middleName,
                   LocalDate birthDate, String email, String phone) {
         this.id = id;
         this.firstName = firstName;
@@ -41,4 +41,10 @@ public class Person {
 
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
+
+
+    public String toString() {
+        return "ID : " + getId() + ", " + getFirstName() + getLastName() + getMiddleName() +
+                ", " + getBirthDate() + ", email : " + getEmail() + ", тел. :" + getPhone();
+    }
 }

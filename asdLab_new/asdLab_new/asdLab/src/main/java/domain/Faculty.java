@@ -16,6 +16,8 @@ public class Faculty {
         return departments;
     }
 
+
+
     public Faculty(String code, String name, String shortName, Teacher dean, String contacts) {
         this.code = code;
         this.name = name;
@@ -61,7 +63,11 @@ public class Faculty {
     public Optional<Department> departmentFindByName(String name) {
         return departments.stream().filter(d -> d.getName().equalsIgnoreCase(name)).findFirst();
     }
-
+    public boolean departmentExists(){
+        if(departments == null || departments.isEmpty()){
+            return false;
+        }return true;
+    }
     public boolean deleteDepartment(String name){
         Optional<Department> optionalDepartment = departmentFindByName(name);
         if(optionalDepartment.isPresent()){

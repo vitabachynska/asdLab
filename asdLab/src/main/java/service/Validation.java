@@ -2,6 +2,7 @@ package service;
 
 import domain.*;
 import repository.InmemoryStudents;
+import repository.InmemoryTeachers;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -11,6 +12,7 @@ import java.util.Scanner;
 public class Validation {
     Service service = new Service();
     InmemoryStudents inmemoryStudents = new InmemoryStudents();
+    InmemoryTeachers inmemoryTeachers = new InmemoryTeachers();
     Scanner scanner = new Scanner(System.in);
 
     public void workWithUni(){//=========================================================================================================================================
@@ -227,7 +229,7 @@ public class Validation {
                     System.out.println("Введіть по батькові викладача : ");
                     String middleName = textIsNotNull();
 
-                    newDean = service.deanFindByPIB(firstName, lastName, middleName);
+                    newDean = inmemoryTeachers.deanFindByPIB(firstName, lastName, middleName);
                     if (newDean == null) {
                         System.out.println("Помилка. Такого викладача не знайдено");}
                     else {
@@ -436,7 +438,7 @@ public class Validation {
                                 System.out.println("Введіть по батькові викладача, який буде завідувачем кафедри : ");
                                 String middleName = textIsNotNull();
 
-                                newHead =  service.headFindByPIB(firstName, lastName, middleName);
+                                newHead =  inmemoryTeachers.headFindByPIB(firstName, lastName, middleName);
 
                                 if (newHead == null) {
                                     System.out.println("Помилка. Такого викладача не знайдено");
@@ -622,7 +624,6 @@ public class Validation {
                     break;
                 }
 
-// треба додати можливіть вийти з циклу якщо нема факультета/кафедри
                 Faculty faculty = null;
                 while (faculty == null) {
                     System.out.print("Введіть назву факультету: ");
@@ -832,11 +833,11 @@ public class Validation {
                     break;
                 }
                 System.out.println("\n--------ВИВІД СПИСКУ ВИКЛАДАЧІВ--------");
-                List<Teacher> teachers = service.getAllTeachers();
+                List<Teacher> teachers = inmemoryTeachers.getAllTeachers();
                 if (teachers.isEmpty())
                     System.out.println("Жодного викладача поки не зареєстровано :(");
                 else {
-                    System.out.println("\\n--------ВИКЛАДАЧІ--------\\n------------------------");
+                    System.out.println("\n--------ВИКЛАДАЧІ--------\n------------------------");
                     teachers.forEach(System.out::println);
                 }
 
@@ -935,7 +936,8 @@ public class Validation {
                 }
 
 
-               if(service.updateTeacher(id, name, lastName, middleName,
+
+                if(inmemoryTeachers.updateTeacher(id, name, lastName, middleName,
                       email, phone, position, degree, academicTitle, workload)){
                    System.out.println("ДАНІ ВИКЛАДАЧА БУЛО ЗМІНЕНО");
                }else {
@@ -970,7 +972,7 @@ public class Validation {
                 System.out.println("Введіть по батькові викладача : ");
                 String middleName = textIsNotNull();
 
-                service.searchingTeacherByPIB(firstName, lastName, middleName);
+                inmemoryTeachers.searchingTeacherByPIB(firstName, lastName, middleName);
             }
 
         }
@@ -1017,7 +1019,7 @@ public class Validation {
                     break;
                 }
                 System.out.println("\n--------ВИВІД СПИСКУ СТУДЕНТІВ--------");
-                List<Student> students = service.getRepo().getAllStudents();
+                List<Student> students = inmemoryStudents.getAllStudents();
                 if (students.isEmpty())
                     System.out.println("Жодного студента поки не зареєстровано :(");
                 else {

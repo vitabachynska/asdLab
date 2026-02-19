@@ -22,12 +22,10 @@ public class Service {
     public InmemoryStudents getRepo() { return this.studentRepository; }
 
     private InmemoryTeachers teacherRepository = new InmemoryTeachers();
-    public InmemoryTeachers getRepo2() { return this.teacherRepository; }
+    //public InmemoryTeachers getRepo2() { return this.teacherRepository; }
 
 
-    public Optional<Teacher> teacherFindById(String id) {
-        return teachers.stream().filter(t -> t.getId().equals(id)).findFirst();
-    }
+
 /*
     public Optional<Student> studentFindByPIB(String firstName, String lastName, String middleName) {
         return students.stream().filter(s -> s.getFirstName().equalsIgnoreCase(firstName)&&s.getLastName().equalsIgnoreCase(lastName)
@@ -38,23 +36,7 @@ public class Service {
     //    return departments.stream().filter(d -> d.getName().equalsIgnoreCase(name)).findFirst();
     //}
 */
-    public Optional<Teacher> teacherFindByPIB(String firstName, String lastName, String middleName) {
-        return teachers.stream().filter(t -> t.getFirstName().equalsIgnoreCase(firstName)&&t.getLastName().equalsIgnoreCase(lastName)
-                &&t.getMiddleName().equalsIgnoreCase(middleName)).findFirst();
-    }
 
-    public Teacher deanFindByPIB(String firstName, String lastName, String middleName) {
-        return teachers.stream()
-                .filter(t -> t.getFirstName().equalsIgnoreCase(firstName)
-                        && t.getLastName().equalsIgnoreCase(lastName)
-                        && t.getMiddleName().equalsIgnoreCase(middleName)).findFirst().orElse(null);
-    }
-
-    public Teacher headFindByPIB(String firstName, String lastName, String middleName) {
-        return teachers.stream()
-                .filter(t -> t.getFirstName().equalsIgnoreCase(firstName)
-                        && t.getLastName().equalsIgnoreCase(lastName)
-                        && t.getMiddleName().equalsIgnoreCase(middleName)).findFirst().orElse(null);}
 /*
     public List<Student> findByCourse(int course) {
         return students.stream().filter(s -> s.getCourse() == course).toList();
@@ -180,6 +162,27 @@ public class Service {
         return allDepts;
     }
 
+    public Optional<Teacher> teacherFindById(String id) {
+        return teachers.stream().filter(t -> t.getId().equals(id)).findFirst();
+    }
+    public Optional<Teacher> teacherFindByPIB(String firstName, String lastName, String middleName) {
+        return teachers.stream().filter(t -> t.getFirstName().equalsIgnoreCase(firstName)&&t.getLastName().equalsIgnoreCase(lastName)
+                &&t.getMiddleName().equalsIgnoreCase(middleName)).findFirst();
+    }
+
+    public Teacher deanFindByPIB(String firstName, String lastName, String middleName) {
+        return teachers.stream()
+                .filter(t -> t.getFirstName().equalsIgnoreCase(firstName)
+                        && t.getLastName().equalsIgnoreCase(lastName)
+                        && t.getMiddleName().equalsIgnoreCase(middleName)).findFirst().orElse(null);
+    }
+
+    public Teacher headFindByPIB(String firstName, String lastName, String middleName) {
+        return teachers.stream()
+                .filter(t -> t.getFirstName().equalsIgnoreCase(firstName)
+                        && t.getLastName().equalsIgnoreCase(lastName)
+                        && t.getMiddleName().equalsIgnoreCase(middleName)).findFirst().orElse(null);}
+
 
     public boolean addTeacher(String faculty, String department, Teacher teacher) {
         if (university == null) return false;
@@ -190,6 +193,7 @@ public class Service {
             if (d != null) {
                 d.addTeacher(teacher);
                 teacherRepository.teachers.add(teacher);
+                //System.out.println(teachers.size());
                 return true;
             }
         }
@@ -224,7 +228,7 @@ public class Service {
         return false;
     }
 
-    public Optional<Student> findStudentById(String id) {
+    private Optional<Student> findStudentById(String id) {
         if (university == null) return Optional.empty();
         for (Faculty f : university.getFaculties()) {
             for (Department d : f.getDepartments()) {
@@ -247,7 +251,7 @@ public class Service {
         return false;
     }
 
-    public List<Student> getStudentsByDepartment(String facultyName, String deptName) {
+    /*public List<Student> getStudentsByDepartment(String facultyName, String deptName) {
         if (university == null) return new ArrayList<>();
 
         Faculty f = university.findFacultyByName(facultyName);
@@ -258,9 +262,9 @@ public class Service {
             }
         }
         return new ArrayList<>();
-    }
+    }*/
 
-    public Optional<Teacher> findTeacherById(String id) {
+    private Optional<Teacher> findTeacherById(String id) {
         if (university == null) return Optional.empty();
         for (Faculty f : university.getFaculties()) {
             for (Department d : f.getDepartments()) {
@@ -277,12 +281,13 @@ public class Service {
         if (teacherOpt.isPresent()) {
             Teacher t = teacherOpt.get();
             t.getDepartment().removeTeacher(t);
+            teacherRepository.teachers.remove(t);
             return true;
         }
         return false;
     }
 
-    public List<Student> getAllStudents() {
+    /*public List<Student> getAllStudents() {
         List<Student> allStudents = new ArrayList<>();
         if (university == null) return allStudents;
 
@@ -292,9 +297,9 @@ public class Service {
             }
         }
         return allStudents;
-    }
+    }*/
 
-    public List<Teacher> getAllTeachers() {
+    /*public List<Teacher> getAllTeachers() {
         List<Teacher> allTeachers = new ArrayList<>();
         if (university == null) return allTeachers;
 
@@ -304,7 +309,7 @@ public class Service {
             }
         }
         return allTeachers;
-    }
+    }*/
     //public void addDepartment(String code, String name, Faculty faculty,  Teacher head, String location) {
     //    departments.add(new Department(code, name, faculty, head, location));
     //}
@@ -338,7 +343,7 @@ public class Service {
 
 
 */
-    public boolean updateTeacher(String id, String newFirstName, String newLastName, String newMiddleName,
+    /*public boolean updateTeacher(String id, String newFirstName, String newLastName, String newMiddleName,
                                  String newEmail, String newPhone,
                                  Teacher.TeachersPosition position, Teacher.TeachersDegree degree,
                                  Teacher.TeachersAcademicTitle academicTitle, double workload
@@ -360,7 +365,7 @@ public class Service {
             return true;
         }
         return false;
-    }
+    }*/
 
 /*
 
@@ -410,7 +415,7 @@ public class Service {
             System.out.println("Студент не знайдений =(");
         }
     }
-*/
+*//*
     public void searchingTeacherByPIB(String firstName, String lastName, String middleName){
         Optional<Teacher> optionalTeacher = teacherFindByPIB(firstName, lastName, middleName);
         if(optionalTeacher.isPresent()){
@@ -418,7 +423,7 @@ public class Service {
             System.out.println(t);
         }else
             System.out.println("Викладач не знайдений =(");
-    }
+    }*/
 
 
     /*

@@ -8,10 +8,21 @@ import java.util.List;
 import java.util.Optional;
 
 public class InmemoryTeachers {
-    public final List<Teacher> teachers = new ArrayList<>();
+    public static final List<Teacher> teachers = new ArrayList<>();
 
     public Optional<Teacher> teacherFindById(String id) {
         return teachers.stream().filter(t -> t.getId().equals(id)).findFirst();
+    }
+
+    public Optional<Teacher> teacherFindByPIB(String firstName, String lastName, String middleName) {
+        return teachers.stream().filter(t -> t.getFirstName().equalsIgnoreCase(firstName)&&t.getLastName().equalsIgnoreCase(lastName)
+                &&t.getMiddleName().equalsIgnoreCase(middleName)).findFirst();
+    }
+
+
+
+    public List<Teacher> getAllTeachers() {
+        return teachers;
     }
     public boolean updateTeacher(String id, String newFirstName, String newLastName, String newMiddleName,
                                  String newEmail, String newPhone,
@@ -36,11 +47,9 @@ public class InmemoryTeachers {
         }
         return false;
     }
-    public Optional<Teacher> teacherFindByPIB(String firstName, String lastName, String middleName) {
-        return teachers.stream().filter(t -> t.getFirstName().equalsIgnoreCase(firstName)&&t.getLastName().equalsIgnoreCase(lastName)
-                &&t.getMiddleName().equalsIgnoreCase(middleName)).findFirst();
-    }
+
     public void searchingTeacherByPIB(String firstName, String lastName, String middleName){
+        //System.out.println(teachers.size());
         Optional<Teacher> optionalTeacher = teacherFindByPIB(firstName, lastName, middleName);
         if(optionalTeacher.isPresent()){
             Teacher t = optionalTeacher.get();
@@ -48,4 +57,17 @@ public class InmemoryTeachers {
         }else
             System.out.println("Викладач не знайдений =(");
     }
+
+    public Teacher deanFindByPIB(String firstName, String lastName, String middleName) {
+        return teachers.stream()
+                .filter(t -> t.getFirstName().equalsIgnoreCase(firstName)
+                        && t.getLastName().equalsIgnoreCase(lastName)
+                        && t.getMiddleName().equalsIgnoreCase(middleName)).findFirst().orElse(null);
+    }
+
+    public Teacher headFindByPIB(String firstName, String lastName, String middleName) {
+        return teachers.stream()
+                .filter(t -> t.getFirstName().equalsIgnoreCase(firstName)
+                        && t.getLastName().equalsIgnoreCase(lastName)
+                        && t.getMiddleName().equalsIgnoreCase(middleName)).findFirst().orElse(null);}
 }

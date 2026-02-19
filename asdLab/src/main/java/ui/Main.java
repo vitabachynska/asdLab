@@ -62,11 +62,6 @@ public class Main {
 
                    validation.workWithStudents();
                 }
-
-
-
-
-
             }
 
             while (true) {

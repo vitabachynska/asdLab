@@ -137,7 +137,7 @@ public class Teacher extends Person{
                 ",\nДата народження : " + getBirthDate() + ",\nemail : " + getEmail() + ", тел. : " + getPhone()+",\nПосада "
                 + getPosition().getLabel() +", науковий ступінь " + getDegree().getLabel()
                 + ", вчене звання " + getAcademicTitle().getLabel() + ",\nДата прийняття на роботу : " +
-                getHireDate() + ", навантаження : " + getWorkload() + "годин на рік.\n------------------------";
+                getHireDate() + ", навантаження : " + getWorkload() + " годин на рік.\n------------------------";
     }
 }
 

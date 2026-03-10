@@ -303,9 +303,8 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
 
@@ -324,9 +323,8 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
 
@@ -376,9 +374,8 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
                 System.out.println("\n--------ВИДАЛЕННЯ КАФЕДРИ--------");
@@ -403,9 +400,8 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
 
@@ -459,9 +455,8 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
 // треба додати можливіть вийти з циклу якщо нема факультета/кафедри
@@ -622,9 +617,8 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
 
@@ -760,11 +754,11 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
+
                 System.out.println("\n--------ВИДАЛЕННЯ ВИКЛАДАЧА--------");
                 System.out.println("Введіть ID викладача : ");
                 String id = textIsNotNull();
@@ -781,9 +775,8 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
                 System.out.println("\n--------ВИДАЛЕННЯ СТУДЕНТА--------");
@@ -829,14 +822,13 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
-                Department currentDep = service.getDepartment();
-                if (currentDep == null) {
-                    System.out.println("Спочатку створіть кафедру ");
+                Faculty myFaculty = currentUni.getFaculties().get(0);
+                if (myFaculty.departmentExists() == false){
+                    System.out.println("Спочатку створіть кафедру");
                     break;
                 }
                 System.out.println("\n--------ВИВІД СПИСКУ ВИКЛАДАЧІВ--------");
@@ -863,14 +855,13 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
-                Department currentDep = service.getDepartment();
-                if (currentDep == null) {
-                    System.out.println("Спочатку створіть кафедру ");
+                Faculty myFaculty = currentUni.getFaculties().get(0);
+                if (myFaculty.departmentExists() == false){
+                    System.out.println("Спочатку створіть кафедру");
                     break;
                 }
                 System.out.println("\n--------ЗМІНЮЄМО ДАНІ ВИКЛАДАЧА--------");
@@ -960,14 +951,13 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
-                Department currentDep = service.getDepartment();
-                if (currentDep == null) {
-                    System.out.println("Спочатку створіть кафедру ");
+                Faculty myFaculty = currentUni.getFaculties().get(0);
+                if (myFaculty.departmentExists() == false){
+                    System.out.println("Спочатку створіть кафедру");
                     break;
                 }
                 System.out.println("\n--------ПОШУК ВИКЛАДАЧА ЗА ПІБ--------");
@@ -1017,14 +1007,13 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
-                Department currentDep = service.getDepartment();
-                if (currentDep == null) {
-                    System.out.println("Спочатку створіть кафедру ");
+                Faculty myFaculty = currentUni.getFaculties().get(0);
+                if (myFaculty.departmentExists() == false){
+                    System.out.println("Спочатку створіть кафедру");
                     break;
                 }
                 System.out.println("\n--------ВИВІД СПИСКУ СТУДЕНТІВ--------");
@@ -1050,14 +1039,13 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
-                Department currentDep = service.getDepartment();
-                if (currentDep == null) {
-                    System.out.println("Спочатку створіть кафедру ");
+                Faculty myFaculty = currentUni.getFaculties().get(0);
+                if (myFaculty.departmentExists() == false){
+                    System.out.println("Спочатку створіть кафедру");
                     break;
                 }
                 System.out.println("\n--------ЗМІНЮЄМО ДАНІ СТУДЕНТА--------");
@@ -1145,14 +1133,13 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
-                Department currentDep = service.getDepartment();
-                if (currentDep == null) {
-                    System.out.println("Спочатку створіть кафедру ");
+                Faculty myFaculty = currentUni.getFaculties().get(0);
+                if (myFaculty.departmentExists() == false){
+                    System.out.println("Спочатку створіть кафедру");
                     break;
                 }
                 System.out.println("\n--------ПОШУК СТУДЕНТА ЗА ПІБ--------");
@@ -1173,14 +1160,13 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
-                Department currentDep = service.getDepartment();
-                if (currentDep == null) {
-                    System.out.println("Спочатку створіть кафедру ");
+                Faculty myFaculty = currentUni.getFaculties().get(0);
+                if (myFaculty.departmentExists() == false){
+                    System.out.println("Спочатку створіть кафедру");
                     break;
                 }
                 System.out.println("\n--------ПОШУК СТУДЕНТА ЗА КУРСОМ--------");
@@ -1205,14 +1191,13 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
-                Department currentDep = service.getDepartment();
-                if (currentDep == null) {
-                    System.out.println("Спочатку створіть кафедру ");
+                Faculty myFaculty = currentUni.getFaculties().get(0);
+                if (myFaculty.departmentExists() == false){
+                    System.out.println("Спочатку створіть кафедру");
                     break;
                 }
                 System.out.println("\n--------ПОШУК СТУДЕНТА ЗА ГРУПОЮ--------");
@@ -1237,16 +1222,16 @@ public class Validation {
                     System.out.println("Спочатку створіть університет ");
                     break;
                 }
-                Faculty currentFac = service.getFaculty();
-                if (currentFac == null) {
-                    System.out.println("Спочатку створіть факультет ");
+                if (currentUni.facultiesExists() == false){
+                    System.out.println("Спочатку створіть факультет");
                     break;
                 }
-                Department currentDep = service.getDepartment();
-                if (currentDep == null) {
-                    System.out.println("Спочатку створіть кафедру ");
+                Faculty myFaculty = currentUni.getFaculties().get(0);
+                if (myFaculty.departmentExists() == false){
+                    System.out.println("Спочатку створіть кафедру");
                     break;
                 }
+
                 System.out.println("\n--------СОРТУВАННЯ СТУДЕНТІВ ЗА ГРУПАМИ--------");
                 inmemoryStudents.sortingCourse();
             }
@@ -1269,27 +1254,23 @@ public class Validation {
         return text;
     }
 
+
+
     public void introduction() {
         System.out.println("\n\n======================\nВАС ВІТАЄ СИСТЕМА 'DigiUni'!\n======================"+
                 "\nнижче представлене МЕНЮ, в якому можна створити універсистет, додавати спеціальності, "+
                 "студентів та викладачів.\nІєрархія побудована наступним чином :\n\n"+
-                "УНІВЕРСИТЕТ -> ФАКУЛЬТЕТИ -> КАФЕДРИ -> ВИКЛАДАЧІ -> СТУДЕНТИ"+
+                "УНІВЕРСИТЕТ -> ФАКУЛЬТЕТИ -> КАФЕДРИ -> ВИКЛАДАЧІ і СТУДЕНТИ"+
                 "\n\n");
         System.out.println("======================\nМЕНЮ\n======================");
-        System.out.println("1. робота з УНІВЕРСИТЕТОМ ======================\n  - створити університет\n  - показати університет\n");
-        System.out.println("2. робота з ФАКУЛЬТЕТОМ ======================\n  - показати факультети\n  - створити факультет\n"+
-                "  - видалити факультет\n  - змінити інформацію про факультет\n  - додати викладача\n  - додати студента\n  - видалити викладача"+
-                "\n  - видалити студента\n");
-        System.out.println("3. робота з КАФЕДРОЮ ======================\n  - показати кафедри\n  - створити кафедру\n  - видалити кафедру\n"+
-                "  - змінити інформацію про кафедру\n  - додати викладача на кафедру\n  - додати студента на кафедру\n  - видалити викладача "+
-                "з кафедри\n  - видалити студента з кафедри\n");
-        System.out.println("4. робота з ВИКЛАДАЧАМИ ======================\n  - показати викладачів\n  - змінити інформацію про викладача\n"+
-                "  - пошук викладача за піб\n");
-        System.out.println("5. робота зі СТУДЕНТАМИ ======================\n  - показати студентів\n  - змінити інформацію про"+
-                "студента\n  - пошук студента за ПІБ\n  - пошук студента за курсом\n  - пошук студента за групою\n  "+
-                "- відсортувати студентів за курсом\n");
+        System.out.println("1. робота з УНІВЕРСИТЕТОМ ======================\n");
+        System.out.println("2. робота з ФАКУЛЬТЕТОМ ======================\n");
+        System.out.println("3. робота з КАФЕДРОЮ ======================\n");
+        System.out.println("4. робота з ВИКЛАДАЧАМИ ======================\n");
+        System.out.println("5. робота зі СТУДЕНТАМИ ======================\n");
         System.out.println("0. вийти з програми");
     }
+
 
 
 }

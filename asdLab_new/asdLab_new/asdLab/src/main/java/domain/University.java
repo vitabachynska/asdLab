@@ -38,6 +38,13 @@ public class University {
         return faculties;
     }
 
+    public boolean facultiesExists(){
+        if(faculties == null || faculties.isEmpty()){
+           return false;
+        }return true;
+    }
+
+
     public Faculty findFacultyByName(String facultyName) {
         for (Faculty faculty : faculties) {
             if (faculty.getName().equalsIgnoreCase(facultyName)) {

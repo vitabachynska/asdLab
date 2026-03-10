@@ -1,12 +1,97 @@
-package packageFiles;
+package ui;
+
+import domain.*;
+import service.Service;
+import service.Validation;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    private static University university;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ServiceCRUD service = new ServiceCRUD();
+        Service service = new Service();
+        Validation validation = new Validation();
+
+        while (true) {
+          validation.introduction();
+            int choice;
+
+            while (true) {
+                System.out.print("==== ОБЕРІТЬ ПУНКТ ====");
+                System.out.println("====* натисність відповідну клавішу *====");
+                String input = scanner.nextLine();
+                try {
+                    choice = Integer.parseInt(input);
+                    if (choice >= 0 && choice <= 5)
+                        break;
+                    else
+                        System.out.println("ПОМИЛКА. Введіть число зі списку : ");
+
+                } catch (NumberFormatException e) {
+                    System.out.println("Введіть коректне значення");
+                }
+            }
+            if (choice == 0) {
+                System.out.println("==ВИХІД З ПРОГРАМИ==");
+                break;
+            }
+
+            switch (choice) {
+                case 1 -> {
+                validation.workWithUni();
+                }
+                case 2 -> {
+
+                  validation.workWithFaculty();
+                }
+                case 3 -> {
+
+
+                   validation.workWithDepartment();
+                }
+                case 4 -> {
+
+
+                   validation.workWithTeachers();
+                }
+                case 5 -> {
+
+                   validation.workWithStudents();
+                }
+
+
+
+
+
+            }
+
+            while (true) {
+                System.out.println("- - - - - - - - - - - -\nБажаєте повернутися до меню? 1 - так, 0 - ні : ");
+                String input = scanner.nextLine();
+                try {
+                    choice = Integer.parseInt(input);
+                    if (choice == 1||choice == 0)
+                        break;
+                    else
+                        System.out.println("Введіть коректне значення");
+
+                } catch (NumberFormatException e) {
+                    System.out.println("Введіть коректне значення");
+                }
+            }
+            if (choice == 0) {
+                System.out.println("--ВИХІД З ПРОГРАМИ--");
+                break;
+            }
+
+
+
+        }
+        /*
 
         while (true) {
             System.out.println("Вас вітає онлайн проєкт 'DIGIUNI'!");
@@ -730,7 +815,7 @@ public class Main {
                 System.out.println("--ВИХІД З ПРОГРАМИ--");
                 break;
             }
-        }
+       */
     }
     private static String textIsNotNull(){
         String text;
@@ -743,5 +828,10 @@ public class Main {
         }
         return text;
     }
-}
+
+
+
+
+
+    }
 

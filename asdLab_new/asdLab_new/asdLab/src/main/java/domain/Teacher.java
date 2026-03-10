@@ -1,4 +1,4 @@
-package packageFiles;
+package domain;
 
 import java.time.LocalDate;
 public class Teacher extends Person{
@@ -7,17 +7,21 @@ public class Teacher extends Person{
     private TeachersAcademicTitle academicTitle; //enum
     private LocalDate hireDate;
     private double workload;
+    private Department department;
+    private Faculty faculty;
 
     public Teacher(String id, String firstName, String lastName, String middleName,
                    LocalDate birthDate, String email, String phone,
                    TeachersPosition position, TeachersDegree degree, TeachersAcademicTitle academicTitle,
-                   LocalDate hireDate, double workload) {
+                   LocalDate hireDate, double workload, Faculty faculty, Department department) {
         super(id, firstName, lastName, middleName, birthDate, email, phone);
         this.position = position;
         this.degree = degree;
         this.academicTitle = academicTitle;
         this.hireDate = hireDate;
         this.workload = workload;
+        this.faculty = faculty;
+        this.department = department;
     }
 
     public TeachersPosition getPosition() { return position; }
@@ -39,6 +43,11 @@ public class Teacher extends Person{
     public double getWorkload() { return workload; }
     public void setWorkload(double workload) { this.workload = workload; }
 
+    public Department getDepartment(){return department;}
+    public void setDepartment(Department department){this.department = department; }
+
+    public Faculty getFaculty(){return faculty;}
+    public void setFaculty(Faculty faculty){this.faculty = faculty;}
 
 
 
@@ -124,7 +133,7 @@ public class Teacher extends Person{
     @Override
     public String toString (){
         return "ID викладача : " + getId() +",\nПІБ : " + getFirstName()
-                + " " +getLastName()+ " "+ getMiddleName()+
+                + " " +getLastName()+ " "+ getMiddleName()+ ", Факультет : " + getFaculty().getName() + ", Кафедра : "+getDepartment().getName() +
                 ",\nДата народження : " + getBirthDate() + ",\nemail : " + getEmail() + ", тел. : " + getPhone()+",\nПосада "
                 + getPosition().getLabel() +", науковий ступінь " + getDegree().getLabel()
                 + ", вчене звання " + getAcademicTitle().getLabel() + ",\nДата прийняття на роботу : " +

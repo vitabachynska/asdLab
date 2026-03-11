@@ -9,47 +9,17 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class Service {
     private University university;
-    private Faculty faculty;
-    private Department department;
-    //private final List<Department> departments = new ArrayList<>();
-    //private final List<Student> students = new ArrayList<>();
-    private final List<Teacher> teachers = new ArrayList<>();
-    //private List<Faculty> faculties = new ArrayList<>();
+    //private final List<Teacher> teachers = new ArrayList<>();
     private InmemoryStudents studentRepository = new InmemoryStudents();
-    public InmemoryStudents getRepo() { return this.studentRepository; }
-
     private InmemoryTeachers teacherRepository = new InmemoryTeachers();
-    //public InmemoryTeachers getRepo2() { return this.teacherRepository; }
-
-
-
-/*
-    public Optional<Student> studentFindByPIB(String firstName, String lastName, String middleName) {
-        return students.stream().filter(s -> s.getFirstName().equalsIgnoreCase(firstName)&&s.getLastName().equalsIgnoreCase(lastName)
-                &&s.getMiddleName().equalsIgnoreCase(middleName)).findFirst();
-    }
-
-    //public Optional<Department> departmentFindByName(String name) {
-    //    return departments.stream().filter(d -> d.getName().equalsIgnoreCase(name)).findFirst();
-    //}
-*/
-
-/*
-    public List<Student> findByCourse(int course) {
-        return students.stream().filter(s -> s.getCourse() == course).toList();
-    }
-    public List<Student> findByGroup(int group) {
-        return students.stream().filter(s -> s.getGroup() == group).toList();
-    }
-    public List<Student> sortByCourse(List<Student> students) {
-        return students.stream().sorted(Comparator.comparingInt(Student::getCourse)).toList();
-    }*/
+    //private boolean hasRights;
 
     public boolean addUniversity(String fullName, String shortName, String city, String address){
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)&& !Validation.hasRights) {
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -61,15 +31,15 @@ public class Service {
         return university;
     }
 
-    public Faculty getFaculty(){
-        return faculty;
-    }
-    public Department getDepartment(){
-        return department;
-    }
+    //public Faculty getFaculty(){
+    //    return faculty;
+    //}
+    // Department getDepartment(){
+//return department;
+   // }
 
     public boolean addFaculty(String code, String name, String shortName, Teacher dean, String contacts) {
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)&& !Validation.hasRights) {
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -156,7 +126,7 @@ public class Service {
 
     }
     public boolean addDepartment(String facultyName, String code, String name,  Teacher head, String location){
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER) && !Validation.hasRights) {
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -194,7 +164,7 @@ public class Service {
         return allDepts;
     }
 
-    public Optional<Teacher> teacherFindById(String id) {
+    /*public Optional<Teacher> teacherFindById(String id) {
         return teachers.stream().filter(t -> t.getId().equals(id)).findFirst();
     }
     public Optional<Teacher> teacherFindByPIB(String firstName, String lastName, String middleName) {
@@ -214,10 +184,10 @@ public class Service {
                 .filter(t -> t.getFirstName().equalsIgnoreCase(firstName)
                         && t.getLastName().equalsIgnoreCase(lastName)
                         && t.getMiddleName().equalsIgnoreCase(middleName)).findFirst().orElse(null);}
-
+*/
 
     public boolean addTeacher(String faculty, String department, Teacher teacher) {
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)&& !Validation.hasRights) {
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -237,7 +207,8 @@ public class Service {
     }
 
     public boolean addStudent(String faculty, String department, Student student) {
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)&& !Validation.hasRights) {
+            System.out.println(Authorization.hasRole(Authorization.RoleForm.MANAGER));
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -320,6 +291,11 @@ public class Service {
             return true;
         }
         return false;
+    }
+    public <T> List<T> findAny(List<T> list, Predicate<T> condition) {
+        return list.stream()
+                .filter(condition)
+                .toList();
     }
 
 }

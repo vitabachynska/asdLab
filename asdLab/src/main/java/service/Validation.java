@@ -14,6 +14,51 @@ public class Validation {
     InmemoryStudents inmemoryStudents = new InmemoryStudents();
     InmemoryTeachers inmemoryTeachers = new InmemoryTeachers();
     Scanner scanner = new Scanner(System.in);
+    public static boolean hasRights;
+
+    public void initData() {
+        hasRights = true;
+
+        University university = new University("Національний університет «Києво-Могилянська академія»", "НаУКМА", "Київ", "1");
+        service.addUniversity(university.getFullName(), university.getShortName(), university.getCity(), university.getAddress());
+        Faculty fics = new Faculty("123","Факультет інформатики", "ФІ", null, "123");
+        service.addFaculty(fics.getCode(), fics.getName(), fics.getShortName(), fics.getDean(), fics.getContacts());
+
+        Department ipz = new Department("1234","Інженерія програмного забезпечення", fics, null, "Корпус 10");
+        service.addDepartment(fics.getName(), ipz.getCode(), ipz.getName(), ipz.getHead(), ipz.getLocation());
+
+
+        Teacher teacher1 = new Teacher("1","Олександр", "Коваль", "Миколайович",
+                LocalDate.of(2000, 12, 12), "@", "0970787866",
+                Teacher.TeachersPosition.PROFESSOR, Teacher.TeachersDegree.NONE,
+                Teacher.TeachersAcademicTitle.NONE,  LocalDate.of(2000, 12, 12),
+                12, fics, ipz);
+        Teacher teacher2 = new Teacher("2","Марія", "Козачук", "Ігорівна",
+                LocalDate.of(2000, 12, 12), "@", "0970787866",
+                Teacher.TeachersPosition.PROFESSOR, Teacher.TeachersDegree.NONE,
+                Teacher.TeachersAcademicTitle.NONE,  LocalDate.of(2000, 12, 12),
+                12, fics, ipz);
+        service.addTeacher(teacher1.getFaculty().getName(), teacher1.getDepartment().getName(), teacher1);
+        service.addTeacher(teacher2.getFaculty().getName(), teacher2.getDepartment().getName(), teacher2);
+
+
+        Student s1 = new Student("2","Віталіна", "Бачинська", "Олександрівна",
+                LocalDate.of(2000, 12, 12), "@", "06381923423",
+                "222", 1, 2, 2025, Student.TuitionForm.BUDGET,
+                Student.StudentStatus.STUDYING, fics, ipz);
+        Student s2 = new Student("3","Анна", "Петренко", "Олексіївна",
+                LocalDate.of(2000, 12, 12), "@", "06381923423",
+                "223", 3, 5, 2021, Student.TuitionForm.BUDGET,
+                Student.StudentStatus.STUDYING, fics, ipz);
+
+        service.addStudent(s1.getFaculty().getName(), s1.getDepartment().getName(), s1);
+        service.addStudent(s2.getFaculty().getName(), s2.getDepartment().getName(), s2);
+
+        hasRights = false;
+
+        System.out.println("Тестові дані успішно завантажено");
+
+    }
 
     public void workWithUni(){//=========================================================================================================================================
         System.out.println("======================РОБОТА З УНІВЕРСИТЕТОМ======================");
@@ -1201,7 +1246,6 @@ public class Validation {
 
                 System.out.println("Введіть по батькові студента : ");
                 String middleName = textIsNotNull();
-
                 inmemoryStudents.searchingByPIB(firstName, lastName, middleName);
             }
             case 4 -> {
@@ -1227,9 +1271,28 @@ public class Validation {
                         course = Integer.parseInt(scanner.nextLine());
 
                         if (course >= 1 && course <= 4) {
-                             inmemoryStudents.searchingByCourse(course);
+                            final int finalValue = course;
+                            List<Student> studentsByGroup = service.findAny(InmemoryStudents.students, s -> s.getGroup() == finalValue);
+                            //List<Student> studentsByGroup = inmemoryStudents.getAllStudents();
+                            if (studentsByGroup.isEmpty())
+                                System.out.println("Жодного студента з таким курсом поки не зареєстровано :(");
+                            else {
+                                //System.out.println("\n--------СТУДЕНТИ--------\n------------------------");
+                                studentsByGroup.forEach(System.out::println);
+                            }
+                             //inmemoryStudents.searchingByCourse(course);
                             break;
                         } else System.out.println("Введіть коректний курс (1-4)");
+
+                        List<Student> students = inmemoryStudents.getAllStudents();
+                        if (students.isEmpty())
+                            System.out.println("Жодного студента поки не зареєстровано :(");
+                        else {
+                            System.out.println("\n--------СТУДЕНТИ--------\n------------------------");
+                            students.forEach(System.out::println);
+                        }
+
+
                     } catch (NumberFormatException e) {
                         System.out.println("Введіть число");
                     }
@@ -1258,7 +1321,9 @@ public class Validation {
                         group = Integer.parseInt(scanner.nextLine());
 
                         if (group >= 1 && group <= 6) {
-                            inmemoryStudents.searchingByGroup(group);
+                            final int finalValue = group;
+                            List<Student> studentsByGroup = service.findAny(InmemoryStudents.students, s -> s.getGroup() == finalValue);
+                            //inmemoryStudents.searchingByGroup(group);
                             break;
                         } else System.out.println("Введіть коректну групу (1-6)");
                     } catch (NumberFormatException e) {
@@ -1352,7 +1417,6 @@ public class Validation {
         System.out.println("5. робота зі СТУДЕНТАМИ ======================\n");
         System.out.println("0. вийти з програми");
     }
-
 
 
 }

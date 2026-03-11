@@ -1,6 +1,7 @@
 package ui;
 
 import domain.*;
+import service.Authorization;
 import service.Service;
 import service.Validation;
 
@@ -9,14 +10,18 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
+import static service.Authorization.RoleForm.MANAGER;
+
 public class Main {
     private static University university;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         //Service service = new Service();
         Validation validation = new Validation();
+        validation.initData();
         while (true) {
             validation.introduction();
+            //password = 1234
             while (true) {
                 validation.menu();
                 int choice;

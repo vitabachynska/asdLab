@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 
 public class InmemoryStudents {
@@ -22,13 +23,13 @@ public class InmemoryStudents {
                 &&s.getMiddleName().equalsIgnoreCase(middleName)).findFirst();
     }
 
-    public List<Student> findByCourse(int course) {
-        return students.stream().filter(s -> s.getCourse() == course).toList();
-    }
+    //public List<Student> findByCourse(int course) {
+    //    return students.stream().filter(s -> s.getCourse() == course).toList();
+    //}
 
-    public List<Student> findByGroup(int group) {
-        return students.stream().filter(s -> s.getGroup() == group).toList();
-    }
+    //public List<Student> findByGroup(int group) {
+    //    return students.stream().filter(s -> s.getGroup() == group).toList();
+    //}
 
     public List<Student> sortByCourse(List<Student> students) {
         return students.stream().sorted(Comparator.comparingInt(Student::getCourse)).toList();
@@ -93,7 +94,7 @@ public class InmemoryStudents {
         }
     }
 
-    public void searchingByCourse(int course){
+    /*public void searchingByCourse(int course){
         List<Student> optionalStudent = findByCourse(course);
         if (optionalStudent.isEmpty()) {
             System.out.println("Студенти не знайдені =(");
@@ -113,7 +114,7 @@ public class InmemoryStudents {
                 System.out.println(s);
             }
         }
-    }
+    }*/
 
     public void sortingCourse (){
         List<Student> optionalStudent = sortByCourse(students);
@@ -125,5 +126,6 @@ public class InmemoryStudents {
             }
         }
     }
+
 
 }

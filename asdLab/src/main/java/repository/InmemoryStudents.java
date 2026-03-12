@@ -13,7 +13,6 @@ import java.util.function.Predicate;
 
 public class InmemoryStudents {
     public static final List<Student> students = new ArrayList<>();
-
     public Optional<Student> studentFindById(String id) {
         return students.stream().filter(s -> s.getId().equals(id)).findFirst();
     }

@@ -266,7 +266,7 @@ public class Service {
         return false;
     }
 
-    private Optional<Teacher> findTeacherById(String id) {
+    public Optional<Teacher> findTeacherById(String id) {
         if (university == null) return Optional.empty();
         for (Faculty f : university.getFaculties()) {
             for (Department d : f.getDepartments()) {

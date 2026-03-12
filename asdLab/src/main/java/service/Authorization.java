@@ -48,7 +48,7 @@ public class Authorization {
             System.out.println("Ви успішно увійшли як Менеджер");
             return true;
         }
-        System.out.println("Неправильний пароль!");
+        System.out.println("Неправильний пароль! Вхід автоматично за користувача");
         return false;
     }
 }

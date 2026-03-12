@@ -1272,7 +1272,7 @@ public class Validation {
 
                         if (course >= 1 && course <= 4) {
                             final int finalValue = course;
-                            List<Student> studentsByCourse = service.findAny(InmemoryStudents.students, s -> s.getCourse() == finalValue);
+                            List<Student> studentsByCourse = service.findAny(InmemoryStudents.getAllStudents(), s -> s.getCourse() == finalValue);
                             //List<Student> studentsByGroup = inmemoryStudents.getAllStudents();
                             if (studentsByCourse.isEmpty())
                                 System.out.println("Жодного студента з таким курсом поки не зареєстровано :(");
@@ -1322,7 +1322,8 @@ public class Validation {
 
                         if (group >= 1 && group <= 6) {
                             final int finalValue = group;
-                            List<Student> studentsByGroup = service.findAny(InmemoryStudents.students, s -> s.getGroup() == finalValue);
+
+                            List<Student> studentsByGroup = service.findAny(InmemoryStudents.getAllStudents(), s -> s.getGroup() == finalValue);
                             //inmemoryStudents.searchingByGroup(group);
                             if (studentsByGroup.isEmpty())
                                 System.out.println("Жодного студента з таким курсом поки не зареєстровано :(");

@@ -47,7 +47,7 @@ public class InmemoryStudents {
 
     }
 
-    public List<Student> getAllStudents() {
+    public static List<Student> getAllStudents() {
 
         return students;
     }

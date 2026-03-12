@@ -1272,13 +1272,13 @@ public class Validation {
 
                         if (course >= 1 && course <= 4) {
                             final int finalValue = course;
-                            List<Student> studentsByGroup = service.findAny(InmemoryStudents.students, s -> s.getGroup() == finalValue);
+                            List<Student> studentsByCourse = service.findAny(InmemoryStudents.getAllStudents(), s -> s.getCourse() == finalValue);
                             //List<Student> studentsByGroup = inmemoryStudents.getAllStudents();
-                            if (studentsByGroup.isEmpty())
+                            if (studentsByCourse.isEmpty())
                                 System.out.println("Жодного студента з таким курсом поки не зареєстровано :(");
                             else {
                                 //System.out.println("\n--------СТУДЕНТИ--------\n------------------------");
-                                studentsByGroup.forEach(System.out::println);
+                                studentsByCourse.forEach(System.out::println);
                             }
                              //inmemoryStudents.searchingByCourse(course);
                             break;
@@ -1322,8 +1322,15 @@ public class Validation {
 
                         if (group >= 1 && group <= 6) {
                             final int finalValue = group;
-                            List<Student> studentsByGroup = service.findAny(InmemoryStudents.students, s -> s.getGroup() == finalValue);
+
+                            List<Student> studentsByGroup = service.findAny(InmemoryStudents.getAllStudents(), s -> s.getGroup() == finalValue);
                             //inmemoryStudents.searchingByGroup(group);
+                            if (studentsByGroup.isEmpty())
+                                System.out.println("Жодного студента з таким курсом поки не зареєстровано :(");
+                            else {
+                                //System.out.println("\n--------СТУДЕНТИ--------\n------------------------");
+                                studentsByGroup.forEach(System.out::println);
+                            }
                             break;
                         } else System.out.println("Введіть коректну групу (1-6)");
                     } catch (NumberFormatException e) {

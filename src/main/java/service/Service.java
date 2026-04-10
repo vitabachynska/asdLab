@@ -16,6 +16,27 @@ public class Service {
     private InmemoryTeachers teacherRepository = new InmemoryTeachers();
     //private boolean hasRights;
 
+
+
+    private final FileHandler fileHandler = new FileHandler();
+
+    public void syncWithFile() {
+        System.out.println("Синхронізація з файлом ...");
+        UniversityData dataToSave = new UniversityData(University.faculties);
+        fileHandler.saveAllData(dataToSave);
+    }
+
+    public void startup() {
+        UniversityData loadedData = fileHandler.loadAllData();
+        if (loadedData != null) {
+            University.faculties = new ArrayList<>(loadedData.faculties());
+
+        }
+    }
+
+
+
+
     public boolean addUniversity(String fullName, String shortName, String city, String address){
         if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)&& !Validation.hasRights) {
             System.out.println("Помилка: Потрібні права менеджена");

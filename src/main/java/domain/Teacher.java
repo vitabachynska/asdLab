@@ -1,5 +1,7 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDate;
 public final class Teacher extends Person{
     private TeachersPosition position; //enum
@@ -7,9 +9,13 @@ public final class Teacher extends Person{
     private TeachersAcademicTitle academicTitle; //enum
     private LocalDate hireDate;
     private double workload;
+    @JsonIgnore
     private Department department;
+    @JsonIgnore
     private Faculty faculty;
 
+    public Teacher() {
+    }
     public Teacher(String id, String firstName, String lastName, String middleName,
                    LocalDate birthDate, String email, String phone,
                    TeachersPosition position, TeachersDegree degree, TeachersAcademicTitle academicTitle,

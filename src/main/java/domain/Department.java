@@ -1,5 +1,7 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.List;
 public class Department {
     private String code;
     private String name;
+    @JsonIgnore
     private Faculty faculty;
     private Teacher head;
     private String location;
@@ -14,6 +17,8 @@ public class Department {
     private List<Teacher> teachers = new ArrayList<>();
     private List<Student> students = new ArrayList<>();
 
+    public Department() {
+    }
     public Department(String code, String name, Faculty faculty, Teacher head, String location) {
         this.code = code;
         this.name = name;

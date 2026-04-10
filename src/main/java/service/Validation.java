@@ -225,6 +225,7 @@ public class Validation {
                                 System.out.println("Помилка створення факультету. Спершу створіть декана");
                             else {*/
                 service.addFaculty(code, name, shortName, dean, contacts);
+                service.syncWithFile();
                 System.out.println("ФАКУЛЬТЕТ БУЛО ДОДАНО");
 
             }
@@ -243,6 +244,7 @@ public class Validation {
                 String facultyName = scanner.nextLine();
 
                 if (service.deleteFaculty(facultyName)) {
+                    service.syncWithFile();
                     System.out.println("Факультет видалено");
                 } else {
                     System.out.println("Факультет з такою назвою не знайдено");
@@ -296,6 +298,7 @@ public class Validation {
                     else {
                         boolean success = service.updateFaculty(name, newCode, newName, newShortName, newDean, newContacts);
                         if(success){
+                            service.syncWithFile();
                             System.out.println("ФАКУЛЬТЕТ БУЛО ЗМІНЕНО");}
                         else {System.out.println("Помилка");
                             break;}
@@ -428,9 +431,10 @@ public class Validation {
                                 }
                                 else {*/
                 boolean success = service.addDepartment(facultyName, code, name, head, location);
-                if(success)
+                if(success) {
+                    service.syncWithFile();
                     System.out.println("КАФЕДРУ БУЛО ДОДАНО");
-                else System.out.println("Факультет не було знайдено");
+                }else System.out.println("Факультет не було знайдено");
 
                 //}
                 // }
@@ -460,6 +464,7 @@ public class Validation {
 
 
                 if (service.deleteDepartment(facultyName, deptName)){
+                    service.syncWithFile();
                     System.out.println("Кафедру видалено");}
                 else{
                     System.out.println("Кафедру з такою назвою або факультетом не знайдено ");}
@@ -519,6 +524,7 @@ public class Validation {
                                 else {
                 boolean success = service.updateDepartment(facultyName, name, newCode, newName, newHead, newLocation);
                 if(success){
+                    service.syncWithFile();
                     System.out.println("КАФЕДРУ БУЛО ЗМІНЕНО");}
                 else {System.out.println("Помилка");
                 break;}
@@ -684,8 +690,9 @@ public class Validation {
 
                 Teacher teacher = new Teacher(id, name, lastName, middleName, birthDate,
                         email, phone, position, degree, academicTitle, hireData, workload, faculty, department);
-                if(service.addTeacher(faculty.getName(), department.getName(), teacher))
+                if(service.addTeacher(faculty.getName(), department.getName(), teacher)){
                     System.out.println("ВИКЛАДАЧА БУЛО ДОДАНО");
+                service.syncWithFile();}
                 else System.out.println("Не знайдено факультет або кафедру");
 
             }
@@ -825,8 +832,9 @@ public class Validation {
 
                 Student student = new Student(id, name, lastName, middleName, birthDate, email, phone,
                         studentCardId, course, group, admissionYear, tuitionForm, studentStatus, faculty, department);
-                if(service.addStudent(faculty.getName(), department.getName(), student))
-                    System.out.println("СТУДЕНТА БУЛО ДОДАНО");
+                if(service.addStudent(faculty.getName(), department.getName(), student)){
+                    service.syncWithFile();
+                    System.out.println("СТУДЕНТА БУЛО ДОДАНО");}
                 else System.out.println("Не знайдено факультет або кафедру");
 
             }
@@ -849,8 +857,9 @@ public class Validation {
                 System.out.println("Введіть ID викладача : ");
                 String id = textIsNotNull();
 
-                if (service.deleteTeacher(id))
-                    System.out.println("Викладача видалено");
+                if (service.deleteTeacher(id)){
+                    service.syncWithFile();
+                    System.out.println("Викладача видалено");}
                 else System.out.println("Викладача не знайдено");
 
             }
@@ -869,8 +878,9 @@ public class Validation {
                 System.out.println("Введіть ID студента : ");
                 String id = textIsNotNull();
 
-                if (service.deleteStudent(id))
-                    System.out.println("Студента видалено");
+                if (service.deleteStudent(id)){
+                    service.syncWithFile();
+                    System.out.println("Студента видалено");}
                 else System.out.println("Помилка: Студента не знайдено");
 
             }
@@ -1028,6 +1038,7 @@ public class Validation {
 
                 if(inmemoryTeachers.updateTeacher(id, name, lastName, middleName,
                       email, phone, position, degree, academicTitle, workload)){
+                    service.syncWithFile();
                    System.out.println("ДАНІ ВИКЛАДАЧА БУЛО ЗМІНЕНО");
                }else {
                    System.out.println("Викладача не знайдено");
@@ -1222,6 +1233,7 @@ public class Validation {
 
                 if (inmemoryStudents.updateStudent(id, newName, newLastName, newMiddleName, newEmail, newPhone,
                         newCourse, newGroup, newTuitionForm, newStatus)) {
+                    service.syncWithFile();
                    System.out.println("ДАНІ СТУДЕНТА ЗМІНЕНО.");
                 } else {
                    System.out.println("Такого студента не знайдено =(");
@@ -1428,6 +1440,7 @@ public class Validation {
         System.out.println("3. робота з КАФЕДРОЮ ======================\n");
         System.out.println("4. робота з ВИКЛАДАЧАМИ ======================\n");
         System.out.println("5. робота зі СТУДЕНТАМИ ======================\n");
+        System.out.println("6. завантажити дані ======================\n");
         System.out.println("0. вийти з програми");
     }
 

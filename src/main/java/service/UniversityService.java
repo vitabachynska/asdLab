@@ -32,6 +32,7 @@ public void workWithUniversity() {
         String address = UtilityValidation.askInput("Введіть адресу: ");
 
         this.service.addUniversity(fullName, shortName, city, address);
+        service.syncWithFile();
         System.out.println("УНІВЕРСИТЕТ БУЛО ДОДАНО");
     }
 

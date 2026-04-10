@@ -9,7 +9,7 @@ public class University {
     private String city;
     private String address;
 
-    private List<Faculty> faculties = new ArrayList<>();
+    public static List<Faculty> faculties = new ArrayList<>();
 
     public University(String fullName, String shortName, String city, String address) {
         this.fullName = fullName;

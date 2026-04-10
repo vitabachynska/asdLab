@@ -12,11 +12,9 @@ public class Faculty {
     private String contacts;
 
     private List<Department> departments = new ArrayList<>();
-    public List<Department> getDepartment() {
-        return departments;
+
+    public Faculty() {
     }
-
-
 
     public Faculty(String code, String name, String shortName, Teacher dean, String contacts) {
         this.code = code;

@@ -22,7 +22,7 @@ public void workWithUniversity() {
 
     private void createUniversity() {
         if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-            System.out.println("Помилка: Потрібні права менеджера");
+            System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них");
             return;
         }
         System.out.println("\n--------СТВОРЕННЯ УНІВЕРСИТЕТУ--------");
@@ -32,6 +32,7 @@ public void workWithUniversity() {
         String address = UtilityValidation.askInput("Введіть адресу: ");
 
         this.service.addUniversity(fullName, shortName, city, address);
+        service.syncWithFile();
         System.out.println("УНІВЕРСИТЕТ БУЛО ДОДАНО");
     }
 

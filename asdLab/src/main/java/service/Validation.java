@@ -84,8 +84,8 @@ public class Validation {
 //
 //        switch (choice1){
 //            case 1 -> {
-//                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-//                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
+//                if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+//                    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
 //                    break;
 //                }
 //                System.out.println("\n--------СТВОРЕННЯ УНІВЕРСИТЕТУ--------");
@@ -156,8 +156,8 @@ public class Validation {
                 System.out.println("\n--------ФАКУЛЬТЕТИ--------\n------------------------");
             }
             case 2 -> {/// ///???????щодо декану/////
-                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
+                if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
                     break;
                 }
                 University currentUni = service.getUniversity();
@@ -225,12 +225,13 @@ public class Validation {
                                 System.out.println("Помилка створення факультету. Спершу створіть декана");
                             else {*/
                 service.addFaculty(code, name, shortName, dean, contacts);
+                service.syncWithFile();
                 System.out.println("ФАКУЛЬТЕТ БУЛО ДОДАНО");
 
             }
             case 3 -> {
-                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
+                if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
                     break;
                 }
                 University currentUni = service.getUniversity();
@@ -243,6 +244,7 @@ public class Validation {
                 String facultyName = scanner.nextLine();
 
                 if (service.deleteFaculty(facultyName)) {
+                    service.syncWithFile();
                     System.out.println("Факультет видалено");
                 } else {
                     System.out.println("Факультет з такою назвою не знайдено");
@@ -250,8 +252,8 @@ public class Validation {
 
             }
             case 4 -> {
-                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
+                if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
                     break;
                 }
                 University currentUni = service.getUniversity();
@@ -296,6 +298,7 @@ public class Validation {
                     else {
                         boolean success = service.updateFaculty(name, newCode, newName, newShortName, newDean, newContacts);
                         if(success){
+                            service.syncWithFile();
                             System.out.println("ФАКУЛЬТЕТ БУЛО ЗМІНЕНО");}
                         else {System.out.println("Помилка");
                             break;}
@@ -381,8 +384,8 @@ public class Validation {
                 }
             }
             case 2 -> {
-                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
+                if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
                     return;
                 }
                 University currentUni = service.getUniversity();
@@ -428,16 +431,17 @@ public class Validation {
                                 }
                                 else {*/
                 boolean success = service.addDepartment(facultyName, code, name, head, location);
-                if(success)
+                if(success) {
+                    service.syncWithFile();
                     System.out.println("КАФЕДРУ БУЛО ДОДАНО");
-                else System.out.println("Факультет не було знайдено");
+                }else System.out.println("Факультет не було знайдено");
 
                 //}
                 // }
             }
             case 3 -> {
-                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
+                if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
                     return;
                 }
                 University currentUni = service.getUniversity();
@@ -460,14 +464,15 @@ public class Validation {
 
 
                 if (service.deleteDepartment(facultyName, deptName)){
+                    service.syncWithFile();
                     System.out.println("Кафедру видалено");}
                 else{
                     System.out.println("Кафедру з такою назвою або факультетом не знайдено ");}
 
             }
             case 4 -> {
-                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
+                if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
                     return;
                 }
                 University currentUni = service.getUniversity();
@@ -519,13 +524,14 @@ public class Validation {
                                 else {
                 boolean success = service.updateDepartment(facultyName, name, newCode, newName, newHead, newLocation);
                 if(success){
+                    service.syncWithFile();
                     System.out.println("КАФЕДРУ БУЛО ЗМІНЕНО");}
                 else {System.out.println("Помилка");
                 break;}
             }}}
             case 5 -> {
-                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
+                if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
                     return;
                 }
                 System.out.println("\n--------ДОДАЄМО ВИКЛАДАЧА--------");
@@ -684,14 +690,15 @@ public class Validation {
 
                 Teacher teacher = new Teacher(id, name, lastName, middleName, birthDate,
                         email, phone, position, degree, academicTitle, hireData, workload, faculty, department);
-                if(service.addTeacher(faculty.getName(), department.getName(), teacher))
+                if(service.addTeacher(faculty.getName(), department.getName(), teacher)){
                     System.out.println("ВИКЛАДАЧА БУЛО ДОДАНО");
+                service.syncWithFile();}
                 else System.out.println("Не знайдено факультет або кафедру");
 
             }
             case 6 -> {
-                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
+                if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
                     return;
                 }
                 System.out.println("\n--------ДОДАЄМО СТУДЕНТА--------");
@@ -825,14 +832,15 @@ public class Validation {
 
                 Student student = new Student(id, name, lastName, middleName, birthDate, email, phone,
                         studentCardId, course, group, admissionYear, tuitionForm, studentStatus, faculty, department);
-                if(service.addStudent(faculty.getName(), department.getName(), student))
-                    System.out.println("СТУДЕНТА БУЛО ДОДАНО");
+                if(service.addStudent(faculty.getName(), department.getName(), student)){
+                    service.syncWithFile();
+                    System.out.println("СТУДЕНТА БУЛО ДОДАНО");}
                 else System.out.println("Не знайдено факультет або кафедру");
 
             }
             case 7 -> {
-                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
+                if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
                     return;
                 }
                 University currentUni = service.getUniversity();
@@ -849,8 +857,9 @@ public class Validation {
                 System.out.println("Введіть ID викладача : ");
                 String id = textIsNotNull();
 
-                if (service.deleteTeacher(id))
-                    System.out.println("Викладача видалено");
+                if (service.deleteTeacher(id)){
+                    service.syncWithFile();
+                    System.out.println("Викладача видалено");}
                 else System.out.println("Викладача не знайдено");
 
             }
@@ -869,8 +878,9 @@ public class Validation {
                 System.out.println("Введіть ID студента : ");
                 String id = textIsNotNull();
 
-                if (service.deleteStudent(id))
-                    System.out.println("Студента видалено");
+                if (service.deleteStudent(id)){
+                    service.syncWithFile();
+                    System.out.println("Студента видалено");}
                 else System.out.println("Помилка: Студента не знайдено");
 
             }
@@ -935,8 +945,8 @@ public class Validation {
             }
 
             case 2 -> {
-                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
+                if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
                     return;
                 }
 
@@ -1028,6 +1038,7 @@ public class Validation {
 
                 if(inmemoryTeachers.updateTeacher(id, name, lastName, middleName,
                       email, phone, position, degree, academicTitle, workload)){
+                    service.syncWithFile();
                    System.out.println("ДАНІ ВИКЛАДАЧА БУЛО ЗМІНЕНО");
                }else {
                    System.out.println("Викладача не знайдено");
@@ -1131,8 +1142,8 @@ public class Validation {
             }
 
             case 2 -> {
-                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
+                if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
                     return;
                 }
                 University currentUni = service.getUniversity();
@@ -1222,6 +1233,7 @@ public class Validation {
 
                 if (inmemoryStudents.updateStudent(id, newName, newLastName, newMiddleName, newEmail, newPhone,
                         newCourse, newGroup, newTuitionForm, newStatus)) {
+                    service.syncWithFile();
                    System.out.println("ДАНІ СТУДЕНТА ЗМІНЕНО.");
                 } else {
                    System.out.println("Такого студента не знайдено =(");
@@ -1366,7 +1378,6 @@ public class Validation {
         }
     }
 
-
     public void adminControlPanel() {
         if (!Authorization.can(RoleForm.ADMIN)) {
             System.out.println("!!! Доступ заборонено. Потрібні права Адміністратора !!!");
@@ -1388,6 +1399,7 @@ public class Validation {
             System.out.println("Доступ відновлено.");
         }
     }
+
 
 
     private String textIsNotNull(){
@@ -1420,6 +1432,7 @@ public class Validation {
             }
         }
         RoleForm selectedRole = RoleForm.fromString(input);
+
         System.out.print("Введіть пароль: ");
         String password = scanner.nextLine();
         if (selectedRole == RoleForm.ADMINISTRATOR) {
@@ -1443,7 +1456,6 @@ public class Validation {
         }
 
     }
-
     public void menu(){
         System.out.println("\n\n======================\nВАС ВІТАЄ СИСТЕМА 'DigiUni'!\n======================"+
             "\nнижче представлене МЕНЮ, в якому можна створити універсистет, додавати спеціальності, "+
@@ -1457,7 +1469,8 @@ public class Validation {
         System.out.println("3. робота з КАФЕДРОЮ ======================\n");
         System.out.println("4. робота з ВИКЛАДАЧАМИ ======================\n");
         System.out.println("5. робота зі СТУДЕНТАМИ ======================\n");
-        System.out.println("6. робота з ДОСТУПОМ ======================\n");
+        System.out.println("6. завантажити дані ======================\n");
+        System.out.println("7. робота з ДОСТУПОМ ======================\n");
         System.out.println("0. вийти з програми");
     }
 

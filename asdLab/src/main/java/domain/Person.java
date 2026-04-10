@@ -21,6 +21,10 @@ public sealed abstract class Person permits Student, Teacher {
         this.email = email;
         this.phone = phone;
     }
+
+    protected Person() {
+    }
+
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 

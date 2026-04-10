@@ -33,7 +33,7 @@ public class FacultyService{
                 }
 
     private void deleteFacultyAction() {
-        if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights)  return;
+        if (!checkManagerRights()) return;
         if(!UtilityValidation.isUniversityExist()) return;
         System.out.println("\n--------ВИДАЛЕННЯ ФАКУЛЬТЕТУ--------");
         String facultyName = UtilityValidation.askInput("Введіть назву факультету для видалення : ");
@@ -97,8 +97,8 @@ private void updateFacultyAction() {
 // --- ДОПОМІЖНІ "ЧИСТІ" МЕТОДИ ---
 
 private boolean checkManagerRights() {
-    if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights)  return true;
-    System.out.println("Помилка: Потрібні права менеджера");
+    if (Authorization.can(RoleForm.MANAGER)) return true;
+    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них");
     return false;
 }
 

@@ -1,7 +1,7 @@
 package ui;
 
 import domain.*;
-import service.RoleForm;
+import service.Service;
 import service.UniversityService;
 import service.Validation;
 
@@ -11,10 +11,12 @@ public class Main {
     private static University university;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        //Service service = new Service();
+        Service service = new Service();
         Validation validation = new Validation();
         UniversityService universityService = new UniversityService();
         validation.initData();
+        service.startup();
+
         while (true) {
             validation.introduction();
             //meneger password = 1234

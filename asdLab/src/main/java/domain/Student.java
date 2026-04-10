@@ -1,5 +1,7 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDate;
 
 public final class Student extends Person {
@@ -9,8 +11,14 @@ public final class Student extends Person {
     private int admissionYear;
     private TuitionForm tuitionForm; // Використовуємо enum
     private StudentStatus status;// Використовуємо enum
+    @JsonIgnore
     private Department department;
+    @JsonIgnore
     private Faculty faculty;
+
+    public Student() {
+    }
+
     public Student(String id, String firstName, String lastName, String middleName,
                    LocalDate birthDate, String email, String phone,
                    String studentCardId, int course, int group,

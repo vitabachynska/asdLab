@@ -1,12 +1,8 @@
-import domain.Department;
-import domain.Faculty;
 import domain.Student;
 import domain.Teacher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import repository.InmemoryStudents;
-import repository.InmemoryTeachers;
-import service.Service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;

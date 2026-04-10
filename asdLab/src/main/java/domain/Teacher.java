@@ -1,7 +1,7 @@
 package domain;
 
 import java.time.LocalDate;
-public class Teacher extends Person{
+public final class Teacher extends Person{
     private TeachersPosition position; //enum
     private TeachersDegree degree; //enum
     private TeachersAcademicTitle academicTitle; //enum
@@ -140,8 +140,3 @@ public class Teacher extends Person{
                 getHireDate() + ", навантаження : " + getWorkload() + " годин на рік.\n------------------------";
     }
 }
-
-
-
-
-

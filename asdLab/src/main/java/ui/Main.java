@@ -1,16 +1,11 @@
 package ui;
 
 import domain.*;
-import service.Authorization;
-import service.Service;
+import service.RoleForm;
+import service.UniversityService;
 import service.Validation;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.List;
 import java.util.Scanner;
-
-import static service.RoleForm.MANAGER;
 
 public class Main {
     private static University university;
@@ -18,6 +13,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         //Service service = new Service();
         Validation validation = new Validation();
+        UniversityService universityService = new UniversityService();
         validation.initData();
         while (true) {
             validation.introduction();
@@ -49,7 +45,7 @@ public class Main {
 
                 switch (choice) {
                     case 1 -> {
-                        validation.workWithUni();
+                        universityService.workWithUniversity();
                     }
                     case 2 -> {
                         validation.workWithFaculty();
@@ -87,25 +83,25 @@ public class Main {
                     break;
                 }
             }
-            int choice;
-            while (true) {
-                System.out.println("- - - - - - - - - - - -\nБажаєте повернутися до меню? 1 - так, 0 - ні : ");
-                String input = scanner.nextLine();
-                try {
-                    choice = Integer.parseInt(input);
-                    if (choice == 1 || choice == 0)
-                        break;
-                    else
-                        System.out.println("Введіть коректне значення");
-
-                } catch (NumberFormatException e) {
-                    System.out.println("Введіть коректне значення");
-                }
-            }
-            if (choice == 0) {
-                System.out.println("--ВИХІД З ПРОГРАМИ--");
-                break;
-            }
+//            int choice;
+//            while (true) {
+//                System.out.println("- - - - - - - - - - - -\nБажаєте повернутися до меню? 1 - так, 0 - ні : ");
+//                String input = scanner.nextLine();
+//                try {
+//                    choice = Integer.parseInt(input);
+//                    if (choice == 1 || choice == 0)
+//                        break;
+//                    else
+//                        System.out.println("Введіть коректне значення");
+//
+//                } catch (NumberFormatException e) {
+//                    System.out.println("Введіть коректне значення");
+//                }
+//            }
+//            if (choice == 0) {
+//                System.out.println("--ВИХІД З ПРОГРАМИ--");
+//                break;
+//            }
         }
     }
     private static String textIsNotNull(){

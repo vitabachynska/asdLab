@@ -2,7 +2,7 @@ package domain;
 
 import java.time.LocalDate;
 
-public class Student extends Person {
+public final class Student extends Person {
     private String studentCardId;
     private int course;
     private int group;
@@ -121,7 +121,6 @@ public class Student extends Person {
                 getTuitionForm().getLabel() +" , ідентифікатор студента : " + getStudentCardId()
                 + ", статус студента : " + getStatus().getLabel() + ".\n------------------------";
     }
-
 
 
 }

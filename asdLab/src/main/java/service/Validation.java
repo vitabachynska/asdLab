@@ -9,8 +9,6 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
-import service.RoleForm;
-
 public class Validation {
     Service service = new Service();
     InmemoryStudents inmemoryStudents = new InmemoryStudents();
@@ -62,64 +60,60 @@ public class Validation {
 
     }
 
-    public void workWithUni(){//=========================================================================================================================================
-        System.out.println("======================РОБОТА З УНІВЕРСИТЕТОМ======================");
-        System.out.println("1. створити університет\n2. показати університети\n0. вийти\n");
-        int choice1;
-        while (true) {
-            System.out.print("==== ОБЕРІТЬ ПУНКТ ====");
-            String input = scanner.nextLine();
-            try {
-                choice1 = Integer.parseInt(input);
-                if (choice1 >= 0 && choice1 <= 2)
-                    break;
-                else
-                    System.out.println("ПОМИЛКА. Введіть число зі списку : ");
+//    public void workWithUni(){//=========================================================================================================================================
+//        System.out.println("======================РОБОТА З УНІВЕРСИТЕТОМ======================");
+//        System.out.println("1. створити університет\n2. показати університети\n0. вийти\n");
+//        int choice1;
+//        while (true) {
+//            System.out.print("==== ОБЕРІТЬ ПУНКТ ====");
+//            String input = scanner.nextLine();
+//            try {
+//                choice1 = Integer.parseInt(input);
+//                if (choice1 >= 0 && choice1 <= 2)
+//                    break;
+//                else
+//                    System.out.println("ПОМИЛКА. Введіть число зі списку : ");
+//
+//            } catch (NumberFormatException e) {
+//                System.out.println("Введіть коректне значення");
+//            }
+//        }
+//        if (choice1 == 0) {
+//            System.out.println("==ПОВЕРНЕННЯ ДО МЕНЮ==");
+//            introduction();}
+//
+//        switch (choice1){
+//            case 1 -> {
+//                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+//                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
+//                    break;
+//                }
+//                System.out.println("\n--------СТВОРЕННЯ УНІВЕРСИТЕТУ--------");
+//                System.out.println("Введіть назву університету : ");
+//                String fullName = textIsNotNull();
+//                System.out.println("Введіть скорочену назву університету : ");
+//                String shortName = textIsNotNull();
+//                System.out.println("Введіть місто знаходження університету : ");
+//                String city = textIsNotNull();
+//                System.out.println("Введіть адресу університету : ");
+//                String address = textIsNotNull();
+//                service.addUniversity(fullName, shortName, city, address);
+//                //university = new University(fullName, shortName, city, address);
+//                System.out.println("УНІВЕРСИТЕТ БУЛО ДОДАНО");
+//            }
+//            //   case 2 -> {
+//                //видалення університету
+//            //  }
+//            case 2 -> {
+//                System.out.println("\n--------УНІВЕРСИТЕТ--------");
+//                if (service.getUniversity() == null) {
+//                    System.out.println("Університет поки не зареєстровано :(");
+//                } else {
+//                    System.out.println(service.getUniversity().toString());
+//                }
+//            }
+//        }
 
-            } catch (NumberFormatException e) {
-                System.out.println("Введіть коректне значення");
-            }
-        }
-        if (choice1 == 0) {
-            System.out.println("==ПОВЕРНЕННЯ ДО МЕНЮ==");
-            introduction();}
-
-        switch (choice1){
-            case 1 -> {
-                if (!Authorization.can(RoleForm.MANAGER)) {
-                    System.out.println("Помилка: Потрібні права менеджена");
-                    break;
-                }
-                System.out.println("\n--------СТВОРЕННЯ УНІВЕРСИТЕТУ--------");
-                System.out.println("Введіть назву університету : ");
-                String fullName = textIsNotNull();
-                System.out.println("Введіть скорочену назву університету : ");
-                String shortName = textIsNotNull();
-                System.out.println("Введіть місто знаходження університету : ");
-                String city = textIsNotNull();
-                System.out.println("Введіть адресу університету : ");
-                String address = textIsNotNull();
-                service.addUniversity(fullName, shortName, city, address);
-                //university = new University(fullName, shortName, city, address);
-                System.out.println("УНІВЕРСИТЕТ БУЛО ДОДАНО");
-            }
-            //   case 2 -> {
-                //видалення університету
-            //  }
-            case 2 -> {
-                if (!Authorization.can(RoleForm.MANAGER)) {
-                    System.out.println("Помилка: Потрібні права менеджена");
-                    break;
-                }
-                System.out.println("\n--------УНІВЕРСИТЕТ--------");
-                if (service.getUniversity() == null) {
-                    System.out.println("Університет поки не зареєстровано :(");
-                } else {
-                    System.out.println(service.getUniversity().toString());
-                }
-            }
-        }
-    }
 
     public void workWithFaculty() {//=====================================================================================================================================
         System.out.println("======================РОБОТА З ФАКУЛЬТЕТОМ======================");
@@ -162,8 +156,8 @@ public class Validation {
                 System.out.println("\n--------ФАКУЛЬТЕТИ--------\n------------------------");
             }
             case 2 -> {/// ///???????щодо декану/////
-                if (!Authorization.can(RoleForm.MANAGER)) {
-                    System.out.println("Помилка: Потрібні права менеджена");
+                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
                     break;
                 }
                 University currentUni = service.getUniversity();
@@ -235,8 +229,8 @@ public class Validation {
 
             }
             case 3 -> {
-                if (!Authorization.can(RoleForm.MANAGER)) {
-                    System.out.println("Помилка: Потрібні права менеджена");
+                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
                     break;
                 }
                 University currentUni = service.getUniversity();
@@ -256,8 +250,8 @@ public class Validation {
 
             }
             case 4 -> {
-                if (!Authorization.can(RoleForm.MANAGER)) {
-                    System.out.println("Помилка: Потрібні права менеджена");
+                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
                     break;
                 }
                 University currentUni = service.getUniversity();
@@ -387,8 +381,8 @@ public class Validation {
                 }
             }
             case 2 -> {
-                if (!Authorization.can(RoleForm.MANAGER)) {
-                    System.out.println("Помилка: Потрібні права менеджена");
+                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
                     return;
                 }
                 University currentUni = service.getUniversity();
@@ -442,8 +436,8 @@ public class Validation {
                 // }
             }
             case 3 -> {
-                if (!Authorization.can(RoleForm.MANAGER)) {
-                    System.out.println("Помилка: Потрібні права менеджена");
+                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
                     return;
                 }
                 University currentUni = service.getUniversity();
@@ -472,8 +466,8 @@ public class Validation {
 
             }
             case 4 -> {
-                if (!Authorization.can(RoleForm.MANAGER)) {
-                    System.out.println("Помилка: Потрібні права менеджена");
+                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
                     return;
                 }
                 University currentUni = service.getUniversity();
@@ -530,8 +524,8 @@ public class Validation {
                 break;}
             }}}
             case 5 -> {
-                if (!Authorization.can(RoleForm.MANAGER)) {
-                    System.out.println("Помилка: Потрібні права менеджена");
+                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
                     return;
                 }
                 System.out.println("\n--------ДОДАЄМО ВИКЛАДАЧА--------");
@@ -696,8 +690,8 @@ public class Validation {
 
             }
             case 6 -> {
-                if (!Authorization.can(RoleForm.MANAGER)) {
-                    System.out.println("Помилка: Потрібні права менеджена");
+                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
                     return;
                 }
                 System.out.println("\n--------ДОДАЄМО СТУДЕНТА--------");
@@ -837,8 +831,8 @@ public class Validation {
 
             }
             case 7 -> {
-                if (!Authorization.can(RoleForm.MANAGER)) {
-                    System.out.println("Помилка: Потрібні права менеджена");
+                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
                     return;
                 }
                 University currentUni = service.getUniversity();
@@ -941,8 +935,8 @@ public class Validation {
             }
 
             case 2 -> {
-                if (!Authorization.can(RoleForm.MANAGER)) {
-                    System.out.println("Помилка: Потрібні права менеджена");
+                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
                     return;
                 }
 
@@ -1114,12 +1108,18 @@ public class Validation {
                     break;
                 }
                 System.out.println("\n--------ВИВІД СПИСКУ СТУДЕНТІВ--------");
-                List<Student> students = inmemoryStudents.getAllStudents();
-                if (students.isEmpty())
+                List<StudentDTO> dtos = inmemoryStudents.getCompactReport();
+                if (dtos.isEmpty()) {
                     System.out.println("Жодного студента поки не зареєстровано :(");
-                else {
+                } else {
                     System.out.println("\n--------СТУДЕНТИ--------\n------------------------");
-                    students.forEach(System.out::println);
+                    dtos.forEach(s -> {
+                        System.out.println(" ID: " + s.id());
+                        System.out.println(" ПІБ: " + s.lastName() + " " + s.firstName() + " " + s.middleName());
+                        System.out.println("️ Факультет: " + s.faculty());
+                        System.out.println(" Курс: " + s.course());
+                        System.out.println("------------------------------------");
+                    });
                 }
 
                 //if (service.getAllStudents().isEmpty()) {
@@ -1131,8 +1131,8 @@ public class Validation {
             }
 
             case 2 -> {
-                if (!Authorization.can(RoleForm.MANAGER)) {
-                    System.out.println("Помилка: Потрібні права менеджена");
+                 if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+                    System.out.println(" Помилка: Потрібні права менеджера або відкритий доступ до них");
                     return;
                 }
                 University currentUni = service.getUniversity();
@@ -1367,7 +1367,27 @@ public class Validation {
     }
 
 
+    public void adminControlPanel() {
+        if (!Authorization.can(RoleForm.ADMIN)) {
+            System.out.println("!!! Доступ заборонено. Потрібні права Адміністратора !!!");
+            return;
+        }
 
+        System.out.println("\n--- ПАНЕЛЬ КЕРУВАННЯ ДОСТУПОМ ---");
+        //System.out.println("1. Заблокування/розблокування (для Менеджерів)");
+        //System.out.println("2. Надати доступ (Розблокувати)");
+        System.out.println("1. Заблокувати всі операції редагування (для Менеджерів)");
+        System.out.println("2. Надати доступ (Розблокувати)");
+
+        String choice = scanner.nextLine();
+        if (choice.equals("1")) {
+            Validation.hasRights = false;
+            System.out.println("Доступ для менеджерів обмежено.");
+        } else {
+            Validation.hasRights = true;
+            System.out.println("Доступ відновлено.");
+        }
+    }
 
 
     private String textIsNotNull(){
@@ -1424,25 +1444,6 @@ public class Validation {
 
     }
 
-    public void adminControlPanel() {
-        if (!Authorization.can(RoleForm.ADMIN)) {
-            System.out.println("!!! Доступ заборонено. Потрібні права Адміністратора !!!");
-            return;
-        }
-
-        System.out.println("\n--- ПАНЕЛЬ КЕРУВАННЯ ДОСТУПОМ ---");
-        System.out.println("1. Заблокувати всі операції редагування (для Менеджерів)");
-        System.out.println("2. Надати доступ (Розблокувати)");
-
-        String choice = scanner.nextLine();
-        if (choice.equals("1")) {
-            Validation.hasRights = false;
-            System.out.println("Доступ для менеджерів обмежено.");
-        } else {
-            Validation.hasRights = true;
-            System.out.println("Доступ відновлено.");
-        }
-    }
     public void menu(){
         System.out.println("\n\n======================\nВАС ВІТАЄ СИСТЕМА 'DigiUni'!\n======================"+
             "\nнижче представлене МЕНЮ, в якому можна створити універсистет, додавати спеціальності, "+
@@ -1456,7 +1457,7 @@ public class Validation {
         System.out.println("3. робота з КАФЕДРОЮ ======================\n");
         System.out.println("4. робота з ВИКЛАДАЧАМИ ======================\n");
         System.out.println("5. робота зі СТУДЕНТАМИ ======================\n");
-        System.out.println("6. робота зі ДОСТУПОМ ======================\n");
+        System.out.println("6. робота з ДОСТУПОМ ======================\n");
         System.out.println("0. вийти з програми");
     }
 

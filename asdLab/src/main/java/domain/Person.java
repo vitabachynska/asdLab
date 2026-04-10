@@ -2,7 +2,7 @@ package domain;
 
 import java.time.LocalDate;
 
-public abstract class Person {
+public sealed abstract class Person permits Student, Teacher {
     private String id;
     private String firstName;
     private String middleName;

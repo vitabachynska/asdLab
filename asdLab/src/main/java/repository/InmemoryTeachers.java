@@ -1,6 +1,5 @@
 package repository;
 
-import domain.Student;
 import domain.Teacher;
 
 import java.util.ArrayList;

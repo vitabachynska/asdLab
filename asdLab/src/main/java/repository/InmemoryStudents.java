@@ -2,13 +2,13 @@ package repository;
 import domain.Department;
 import domain.Faculty;
 import domain.Student;
+import domain.StudentDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 
 public class InmemoryStudents {
@@ -22,13 +22,13 @@ public class InmemoryStudents {
                 &&s.getMiddleName().equalsIgnoreCase(middleName)).findFirst();
     }
 
-    //public List<Student> findByCourse(int course) {
-    //    return students.stream().filter(s -> s.getCourse() == course).toList();
-    //}
+    public List<Student> findByCourse(int course) {
+     return students.stream().filter(s -> s.getCourse() == course).toList();
+    }
 
-    //public List<Student> findByGroup(int group) {
-    //    return students.stream().filter(s -> s.getGroup() == group).toList();
-    //}
+    public List<Student> findByGroup(int group) {
+     return students.stream().filter(s -> s.getGroup() == group).toList();
+    }
 
     public List<Student> sortByCourse(List<Student> students) {
         return students.stream().sorted(Comparator.comparingInt(Student::getCourse)).toList();
@@ -126,5 +126,17 @@ public class InmemoryStudents {
         }
     }
 
+    public List<StudentDTO> getCompactReport() {
+        return students.stream()
+                .map(s -> new StudentDTO(
+                        s.getId(),
+                        s.getFirstName(),
+                        s.getLastName(),
+                        s.getMiddleName(),
+                        s.getFaculty().getName(),
+                        s.getCourse()
+                ))
+                .toList();
+    }
 
 }

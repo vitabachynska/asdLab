@@ -9,6 +9,8 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
+import service.RoleForm;
+
 public class Validation {
     Service service = new Service();
     InmemoryStudents inmemoryStudents = new InmemoryStudents();
@@ -84,7 +86,7 @@ public class Validation {
 
         switch (choice1){
             case 1 -> {
-                if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+                if (!Authorization.can(RoleForm.MANAGER)) {
                     System.out.println("Помилка: Потрібні права менеджена");
                     break;
                 }
@@ -105,6 +107,10 @@ public class Validation {
                 //видалення університету
             //  }
             case 2 -> {
+                if (!Authorization.can(RoleForm.MANAGER)) {
+                    System.out.println("Помилка: Потрібні права менеджена");
+                    break;
+                }
                 System.out.println("\n--------УНІВЕРСИТЕТ--------");
                 if (service.getUniversity() == null) {
                     System.out.println("Університет поки не зареєстровано :(");
@@ -156,7 +162,7 @@ public class Validation {
                 System.out.println("\n--------ФАКУЛЬТЕТИ--------\n------------------------");
             }
             case 2 -> {/// ///???????щодо декану/////
-                if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+                if (!Authorization.can(RoleForm.MANAGER)) {
                     System.out.println("Помилка: Потрібні права менеджена");
                     break;
                 }
@@ -229,7 +235,7 @@ public class Validation {
 
             }
             case 3 -> {
-                if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+                if (!Authorization.can(RoleForm.MANAGER)) {
                     System.out.println("Помилка: Потрібні права менеджена");
                     break;
                 }
@@ -250,7 +256,7 @@ public class Validation {
 
             }
             case 4 -> {
-                if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+                if (!Authorization.can(RoleForm.MANAGER)) {
                     System.out.println("Помилка: Потрібні права менеджена");
                     break;
                 }
@@ -381,7 +387,7 @@ public class Validation {
                 }
             }
             case 2 -> {
-                if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+                if (!Authorization.can(RoleForm.MANAGER)) {
                     System.out.println("Помилка: Потрібні права менеджена");
                     return;
                 }
@@ -436,7 +442,7 @@ public class Validation {
                 // }
             }
             case 3 -> {
-                if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+                if (!Authorization.can(RoleForm.MANAGER)) {
                     System.out.println("Помилка: Потрібні права менеджена");
                     return;
                 }
@@ -466,7 +472,7 @@ public class Validation {
 
             }
             case 4 -> {
-                if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+                if (!Authorization.can(RoleForm.MANAGER)) {
                     System.out.println("Помилка: Потрібні права менеджена");
                     return;
                 }
@@ -524,7 +530,7 @@ public class Validation {
                 break;}
             }}}
             case 5 -> {
-                if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+                if (!Authorization.can(RoleForm.MANAGER)) {
                     System.out.println("Помилка: Потрібні права менеджена");
                     return;
                 }
@@ -690,7 +696,7 @@ public class Validation {
 
             }
             case 6 -> {
-                if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+                if (!Authorization.can(RoleForm.MANAGER)) {
                     System.out.println("Помилка: Потрібні права менеджена");
                     return;
                 }
@@ -831,7 +837,7 @@ public class Validation {
 
             }
             case 7 -> {
-                if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+                if (!Authorization.can(RoleForm.MANAGER)) {
                     System.out.println("Помилка: Потрібні права менеджена");
                     return;
                 }
@@ -935,7 +941,7 @@ public class Validation {
             }
 
             case 2 -> {
-                if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+                if (!Authorization.can(RoleForm.MANAGER)) {
                     System.out.println("Помилка: Потрібні права менеджена");
                     return;
                 }
@@ -1125,7 +1131,7 @@ public class Validation {
             }
 
             case 2 -> {
-                if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+                if (!Authorization.can(RoleForm.MANAGER)) {
                     System.out.println("Помилка: Потрібні права менеджена");
                     return;
                 }
@@ -1383,23 +1389,31 @@ public class Validation {
         String input = "";
         System.out.println("\n\n======================СИСТЕМА 'DigiUni'!======================"+
                 "\nСистема обліку студентів і викладачів\n");
-        Authorization.RoleForm newRoleForm = null;
+        RoleForm newRoleForm = null;
         while ( newRoleForm == null) {
-            System.out.println("Введіть роль (Користувач/Менеджер) : ");
+            System.out.println("Введіть роль (Користувач/Менеджер/Адміністратор) : ");
             input = scanner.nextLine();
             try {
-                newRoleForm = Authorization.RoleForm.fromString(input);
+                newRoleForm = RoleForm.fromString(input);
             } catch (IllegalArgumentException e) {
                 System.out.println("Введіть форму з поданих");
             }
         }
-        Authorization.RoleForm selectedRole = Authorization.RoleForm.fromString(input);
-
-        if (selectedRole == Authorization.RoleForm.MANAGER) {
+        RoleForm selectedRole = RoleForm.fromString(input);
+        System.out.print("Введіть пароль: ");
+        String password = scanner.nextLine();
+        if (selectedRole == RoleForm.ADMINISTRATOR) {
             //System.out.print("Введіть логін: ");
             //String login = scanner.nextLine();
-            System.out.print("Введіть пароль: ");
-            String password = scanner.nextLine();
+            //System.out.print("Введіть пароль: ");
+            //String password = scanner.nextLine();
+
+            Authorization.loginAsAdmin(password);}
+        else if (selectedRole == RoleForm.MANAGER) {
+            //System.out.print("Введіть логін: ");
+            //String login = scanner.nextLine();
+            //System.out.print("Введіть пароль: ");
+            //String password = scanner.nextLine();
 
             Authorization.loginAsManager(password);
         } else {
@@ -1408,6 +1422,26 @@ public class Validation {
             Authorization.loginAsUser();
         }
 
+    }
+
+    public void adminControlPanel() {
+        if (!Authorization.can(RoleForm.ADMIN)) {
+            System.out.println("!!! Доступ заборонено. Потрібні права Адміністратора !!!");
+            return;
+        }
+
+        System.out.println("\n--- ПАНЕЛЬ КЕРУВАННЯ ДОСТУПОМ ---");
+        System.out.println("1. Заблокувати всі операції редагування (для Менеджерів)");
+        System.out.println("2. Надати доступ (Розблокувати)");
+
+        String choice = scanner.nextLine();
+        if (choice.equals("1")) {
+            Validation.hasRights = false;
+            System.out.println("Доступ для менеджерів обмежено.");
+        } else {
+            Validation.hasRights = true;
+            System.out.println("Доступ відновлено.");
+        }
     }
     public void menu(){
         System.out.println("\n\n======================\nВАС ВІТАЄ СИСТЕМА 'DigiUni'!\n======================"+
@@ -1422,6 +1456,7 @@ public class Validation {
         System.out.println("3. робота з КАФЕДРОЮ ======================\n");
         System.out.println("4. робота з ВИКЛАДАЧАМИ ======================\n");
         System.out.println("5. робота зі СТУДЕНТАМИ ======================\n");
+        System.out.println("6. робота зі ДОСТУПОМ ======================\n");
         System.out.println("0. вийти з програми");
     }
 

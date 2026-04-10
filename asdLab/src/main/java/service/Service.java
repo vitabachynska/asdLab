@@ -19,7 +19,7 @@ public class Service {
     //private boolean hasRights;
 
     public boolean addUniversity(String fullName, String shortName, String city, String address){
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)&& !Validation.hasRights) {
+        if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -39,7 +39,7 @@ public class Service {
    // }
 
     public boolean addFaculty(String code, String name, String shortName, Teacher dean, String contacts) {
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)&& !Validation.hasRights) {
+        if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -63,7 +63,7 @@ public class Service {
     }
 
     public boolean deleteFaculty(String name){
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+        if (!Authorization.can(RoleForm.MANAGER)) {
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -75,7 +75,7 @@ public class Service {
     }
 
     public boolean updateFaculty(String name,String newCode, String newName, String newShortName, Teacher newDean, String newContacts) {
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+        if (!Authorization.can(RoleForm.MANAGER)) {
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -94,7 +94,7 @@ public class Service {
     }
 
     public boolean updateDepartment(String fName, String oldDeptName, String newCode, String newName, Teacher newHead, String newLocation) {
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+        if (!Authorization.can(RoleForm.MANAGER)) {
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -126,7 +126,7 @@ public class Service {
 
     }
     public boolean addDepartment(String facultyName, String code, String name,  Teacher head, String location){
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER) && !Validation.hasRights) {
+        if (!Authorization.can(RoleForm.MANAGER) && !Validation.hasRights) {
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -141,7 +141,7 @@ public class Service {
     }
 
     public boolean deleteDepartment(String facultyName, String deptName) {
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+        if (!Authorization.can(RoleForm.MANAGER)) {
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -187,7 +187,7 @@ public class Service {
 */
 
     public boolean addTeacher(String faculty, String department, Teacher teacher) {
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)&& !Validation.hasRights) {
+        if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -207,8 +207,8 @@ public class Service {
     }
 
     public boolean addStudent(String faculty, String department, Student student) {
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)&& !Validation.hasRights) {
-            System.out.println(Authorization.hasRole(Authorization.RoleForm.MANAGER));
+        if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+            System.out.println(Authorization.can(RoleForm.MANAGER));
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -252,7 +252,7 @@ public class Service {
     }
 
     public boolean deleteStudent(String id) {
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+        if (!Authorization.can(RoleForm.MANAGER)) {
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }
@@ -279,7 +279,7 @@ public class Service {
     }
 
     public boolean deleteTeacher(String id) {
-        if (!Authorization.hasRole(Authorization.RoleForm.MANAGER)) {
+        if (!Authorization.can(RoleForm.MANAGER)) {
             System.out.println("Помилка: Потрібні права менеджена");
             return false;
         }

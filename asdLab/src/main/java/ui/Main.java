@@ -10,7 +10,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
-import static service.Authorization.RoleForm.MANAGER;
+import static service.RoleForm.MANAGER;
 
 public class Main {
     private static University university;
@@ -21,7 +21,8 @@ public class Main {
         validation.initData();
         while (true) {
             validation.introduction();
-            //password = 1234
+            //meneger password = 1234
+            //admin password =  4321
             while (true) {
                 validation.menu();
                 int choice;
@@ -32,7 +33,7 @@ public class Main {
                     String input = scanner.nextLine();
                     try {
                         choice = Integer.parseInt(input);
-                        if (choice >= 0 && choice <= 5)
+                        if (choice >= 0 && choice <= 6)
                             break;
                         else
                             System.out.println("ПОМИЛКА. Введіть число зі списку : ");
@@ -61,6 +62,9 @@ public class Main {
                     }
                     case 5 -> {
                         validation.workWithStudents();
+                    }
+                    case 6 -> {
+                        validation.adminControlPanel();
                     }
                 }
 

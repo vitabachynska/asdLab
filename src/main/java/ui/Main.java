@@ -2,7 +2,6 @@ package ui;
 
 import domain.*;
 import service.Service;
-import service.UniversityService;
 import service.Validation;
 
 import java.util.Scanner;
@@ -12,14 +11,19 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Service service = new Service();
-        Validation validation = new Validation();
-        UniversityService universityService = new UniversityService();
+        Validation validation = new Validation(service);
+        UniversityUI universityUI = new UniversityUI(service);
+        FacultyUI facultyUI = new FacultyUI(service);
+        DepartmentsUI departmentsUI = new DepartmentsUI(service);
+        TeacherUI teacherUI = new TeacherUI(service);
+        StudentUI studentUI = new StudentUI(service);
         validation.initData();
         service.startup();
 
-        while (true) {
-            validation.introduction();
-            //password = 1234
+      //  while (true) {
+            // validation.introduction();
+            //meneger password = 1234
+            //admin password =  4321
             while (true) {
                 validation.menu();
                 int choice;
@@ -30,7 +34,7 @@ public class Main {
                     String input = scanner.nextLine();
                     try {
                         choice = Integer.parseInt(input);
-                        if (choice >= 0 && choice <= 5)
+                        if (choice >= 0 && choice <= 6)
                             break;
                         else
                             System.out.println("ПОМИЛКА. Введіть число зі списку : ");
@@ -46,19 +50,22 @@ public class Main {
 
                 switch (choice) {
                     case 1 -> {
-                        universityService.workWithUniversity();
+                        universityUI.workWithUniversity();
                     }
                     case 2 -> {
-                        validation.workWithFaculty();
+                        facultyUI.workWithFaculty();
                     }
                     case 3 -> {
-                        validation.workWithDepartment();
+                        departmentsUI.workWithDepartment();
                     }
                     case 4 -> {
-                        validation.workWithTeachers();
+                        teacherUI.workWithTeachers();
                     }
                     case 5 -> {
-                        validation.workWithStudents();
+                        studentUI.workWithStudents();
+                    }
+                    case 6 -> {
+                        validation.adminControlPanel();
                     }
                 }
 
@@ -100,7 +107,7 @@ public class Main {
 //                System.out.println("--ВИХІД З ПРОГРАМИ--");
 //                break;
 //            }
-        }
+      //  }
     }
     private static String textIsNotNull(){
         String text;

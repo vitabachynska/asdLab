@@ -2,7 +2,7 @@ package repository;
 import domain.Department;
 import domain.Faculty;
 import domain.Student;
-import domain.StudentDTO;
+import DTO.StudentDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -47,8 +47,7 @@ public class InmemoryStudents {
 
     }
 
-    public static List<Student> getAllStudents() {
-
+    public List<Student> getAllStudents() {
         return students;
     }
 

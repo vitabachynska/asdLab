@@ -1,6 +1,7 @@
 package repository;
 
 import domain.Teacher;
+import DTO.TeacherDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,9 @@ public class InmemoryTeachers {
     public List<Teacher> getAllTeachers() {
         return teachers;
     }
+
+
+
     public boolean updateTeacher(String id, String newFirstName, String newLastName, String newMiddleName,
                                  String newEmail, String newPhone,
                                  Teacher.TeachersPosition position, Teacher.TeachersDegree degree,
@@ -69,4 +73,18 @@ public class InmemoryTeachers {
                 .filter(t -> t.getFirstName().equalsIgnoreCase(firstName)
                         && t.getLastName().equalsIgnoreCase(lastName)
                         && t.getMiddleName().equalsIgnoreCase(middleName)).findFirst().orElse(null);}
+
+    public List<TeacherDTO> getTeacherReports() {
+        return teachers.stream()
+                .map(t -> new TeacherDTO(
+                        t.getId(),
+                        t.getFirstName(),
+                        t.getLastName(),
+                        t.getMiddleName(),
+                        t.getFaculty() != null ? t.getFaculty().getName() : "Не вказано",
+                        t.getDepartment() != null ? t.getDepartment().getName() : "Не вказано"
+                ))
+                .toList();
+    }
+
 }

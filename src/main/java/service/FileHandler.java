@@ -10,7 +10,7 @@ public class FileHandler {
     private final ObjectMapper objectMapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-    private final Path filePath = Paths.get("university_data.json");
+    private final Path filePath = Paths.get("C:\\Users\\bobko\\Downloads\\projects2trim\\asd\\asdLab\\university_data.json");
 
     public void saveAllData(UniversityData data) {
         try {

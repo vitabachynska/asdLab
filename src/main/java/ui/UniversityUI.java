@@ -27,7 +27,7 @@ public class UniversityUI {
     }
 
     private void createUniversity() {
-        if (!Authorization.can(RoleForm.MANAGER) && !Validation.hasRights) {
+        if (!Authorization.can(RoleForm.MANAGER.getMask()) && !Validation.hasRights) {
             System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них");
             return;
         }

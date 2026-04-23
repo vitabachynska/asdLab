@@ -2,6 +2,8 @@ package ui;
 
 import domain.*;
 import repository.InmemoryTeachers;
+import service.Authorization;
+import service.RoleForm;
 import service.Service;
 import service.UtilityValidation;
 
@@ -25,7 +27,8 @@ public class TeacherUI {
 
             switch (choice) {
                 case 1 -> showTeachers();
-                case 2 -> updateTeacher();
+                case 2 -> {if (Authorization.can(RoleForm.EDIT.getMask())) updateTeacher();
+                            else System.out.println("У вас немає прав на оновлення викладачів");}
                 case 3 -> searchTeacherByPIB();
             }
         }

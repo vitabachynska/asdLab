@@ -17,11 +17,11 @@ public class Main {
         DepartmentsUI departmentsUI = new DepartmentsUI(service);
         TeacherUI teacherUI = new TeacherUI(service);
         StudentUI studentUI = new StudentUI(service);
-        //validation.initData();
+        validation.initData();
         service.startup();
 
-      //  while (true) {
-            // validation.introduction();
+        while (true) {
+            validation.introduction();
             //meneger password = 1234
             //admin password =  4321
             while (true) {
@@ -88,6 +88,7 @@ public class Main {
                     break;
                 }
             }
+        }
 //            int choice;
 //            while (true) {
 //                System.out.println("- - - - - - - - - - - -\nБажаєте повернутися до меню? 1 - так, 0 - ні : ");

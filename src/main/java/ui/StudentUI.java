@@ -26,7 +26,8 @@ public class StudentUI {
 
             switch (choice) {
                 case 1 -> showStudents();
-                case 2 -> updateStudent();
+                case 2 -> {if (Authorization.can(RoleForm.EDIT.getMask())) updateStudent();
+                            else System.out.println("У вас немає прав на оновлення студентів");}
                 case 3 -> searchStudentByPIB();
                 case 4 -> searchStudentByCourse();
                 case 5 -> searchStudentByGroup();

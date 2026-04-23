@@ -30,7 +30,7 @@ public class University {
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
 
-    public static void addFaculty(Faculty faculty){
+    public void addFaculty(Faculty faculty){
         if(faculty != null)
             faculties.add(faculty);
     }

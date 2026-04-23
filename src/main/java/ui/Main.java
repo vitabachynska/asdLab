@@ -17,7 +17,7 @@ public class Main {
         DepartmentsUI departmentsUI = new DepartmentsUI(service);
         TeacherUI teacherUI = new TeacherUI(service);
         StudentUI studentUI = new StudentUI(service);
-        validation.initData();
+        //validation.initData();
         service.startup();
 
       //  while (true) {

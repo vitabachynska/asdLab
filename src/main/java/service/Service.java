@@ -16,10 +16,9 @@ import java.util.function.Predicate;
 public class Service {
     public University university;
     //private final List<Teacher> teachers = new ArrayList<>();
-    public InmemoryStudents studentRepository = new InmemoryStudents();
-    public InmemoryTeachers teacherRepository = new InmemoryTeachers();
+    public static InmemoryStudents studentRepository = new InmemoryStudents();
+    public static InmemoryTeachers teacherRepository = new InmemoryTeachers();
     //private boolean hasRights;
-
 
 
     private final FileHandler fileHandler = new FileHandler();
@@ -32,6 +31,40 @@ public class Service {
 
     public void startup() {
         UniversityData loadedData = fileHandler.loadAllData();
+
+        if (loadedData != null && loadedData.faculties() != null) {
+            this.university = new University("Національний університет «Києво-Могилянська академія»", "НаУКМА", "Київ", "2");
+
+            for (Faculty f : loadedData.faculties()) {
+                this.university.addFaculty(f);
+
+                if (f.getDepartments() != null) {
+                    for (Department d : f.getDepartments()) {
+                        d.setFaculty(f);
+
+                        if (d.getStudents() != null) {
+                            for (Student s : d.getStudents()) {
+                                s.setFaculty(f);
+                                s.setDepartment(d);
+                            }
+                        }
+
+                        if (d.getTeachers() != null) {
+                            for (Teacher t : d.getTeachers()) {
+                                t.setFaculty(f);
+                                t.setDepartment(d);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+
+
+        /*UniversityData loadedData = fileHandler.loadAllData();
         if (loadedData != null && loadedData.faculties() != null) {
             for (Faculty f : loadedData.faculties()) {
                 this.university.addFaculty(f);
@@ -74,6 +107,26 @@ public class Service {
             }
 
             System.out.println("Дані НаУКМА успішно завантажені!");
+        }*/
+
+
+    public boolean loadUniversityFromStorage() {
+        UniversityData data = fileHandler.loadAllData();
+
+        if (data == null || data.faculties() == null || data.faculties().isEmpty()) {
+            return false;
+        }
+
+        try {
+            for (Faculty f : data.faculties()) {
+                University.addFaculty(f);
+                //Faculty.addDepartment()
+                // ... додавання кафедр і студентів
+            }
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+            //return false;
         }
     }
 

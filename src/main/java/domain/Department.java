@@ -92,9 +92,15 @@ public class Department {
     @Override
     public String toString (){
         String headName = (head != null)
-                ? head.getLastName() + " " + head.getFirstName() + " " + head.getMiddleName() + " "
+                ? head.getLastName() + " " + head.getFirstName() + " " + head.getMiddleName()
                 : "не призначено";
-        return "Код : " + getCode() +",\nПовна назва : " +getName()+"\nЛокація "+ getLocation()
-                + "\nФакультет : " +getFaculty().getName()+ "\nЗавідувач : "+ headName +"\n------------------------";
+
+        // БЕЗПЕЧНО отримуємо назву факультету (виправлення NPE)
+        String facultyName = (getFaculty() != null) ? getFaculty().getName() : "не вказано";
+
+        return String.format(
+                "Код: %s, Повна назва: %s%nЛокація: %s%nФакультет: %s%nЗавідувач: %s%n-----------------",
+                getCode(), getName(), getLocation(), facultyName, headName
+        );
     }
 }

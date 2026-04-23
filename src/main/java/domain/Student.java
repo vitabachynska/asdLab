@@ -122,12 +122,26 @@ public final class Student extends Person {
 
     @Override
     public String toString() {
-        return "ID студента : " + getId() +",\nПІБ : " + getFirstName()
-                + " " +getLastName()+ " "+ getMiddleName()+ ", Факультет : " + getFaculty().getName() + ", Кафедра : "+getDepartment().getName() +
-                ",\nДата народження : " + getBirthDate() + ",\nemail : " + getEmail() + ", тел. : " + getPhone()+",\nКурс " + getCourse() +", група " + getGroup()
-                + ", рік вступу " + getAdmissionYear() + ",\nФорма навчання : " +
-                getTuitionForm().getLabel() +" , ідентифікатор студента : " + getStudentCardId()
-                + ", статус студента : " + getStatus().getLabel() + ".\n------------------------";
+        String facultyName = (getFaculty() != null) ? getFaculty().getName() : "не вказано";
+        String departmentName = (getDepartment() != null) ? getDepartment().getName() : "не вказано";
+
+        return String.format(
+                "=== СТУДЕНТ [ID: %s] ===%n" +
+                        "ПІБ: %s %s %s%n" +
+                        "Навчання: %s, %d курс, група %d (вступ %d р.)%n" +
+                        "Підрозділ: %s (кафедра: %s)%n" +
+                        "Контакти: %s | %s%n" +
+                        "Документи: квиток №%s, статус: %s%n" +
+                        "Дата народження: %s%n" +
+                        "-----------------------------------------",
+                getId(),
+                getLastName(), getFirstName(), getMiddleName(),
+                getTuitionForm().getLabel(), getCourse(), getGroup(), getAdmissionYear(),
+                facultyName, departmentName,
+                getEmail(), getPhone(),
+                getStudentCardId(), getStatus().getLabel(),
+                getBirthDate()
+        );
     }
 
 

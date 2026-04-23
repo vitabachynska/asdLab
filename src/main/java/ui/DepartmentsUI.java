@@ -5,6 +5,7 @@ import repository.InmemoryStudents;
 import service.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static service.UtilityValidation.*;
 
@@ -38,11 +39,19 @@ public class DepartmentsUI {
 
     private void showDepartments() {
         System.out.println("\n--------ВИВІД СПИСКУ КАФЕДР--------");
-        if (service.getAllDepartments().isEmpty()) {
-            System.out.println("Жодної кафедри поки не зареєстровано :(");
+        List<Department> list = service.getAllDepartments();
+        if (list.isEmpty()) {
+            System.out.println("ЖодноЇ кафедри поки не зареєстровано :(");
         } else {
-            service.getAllDepartments().forEach(System.out::println);
+            list.forEach(System.out::println);
         }
+        //System.out.println("\n--------ВИВІД СПИСКУ КАФЕДР--------");
+        //if (service.getAllDepartments().isEmpty()) {
+        //    System.out.println("Жодної кафедри поки не зареєстровано :(");
+        //} else {
+        //    list.forEach(System.out::println);
+        //    service.getAllDepartments().forEach(System.out::println);
+        //}
     }
 
     private void createDepartment() {

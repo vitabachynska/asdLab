@@ -18,12 +18,21 @@ public class Validation {
     }
 
     public void initData() {
-        hasRights = true;
-        University university = new University("Національний університет «Києво-Могилянська академія»", "НаУКМА", "Київ", "1");
-        service.addUniversity(university.getFullName(), university.getShortName(), university.getCity(), university.getAddress());
-        hasRights = false;
+        boolean isLoaded = service.loadUniversityFromStorage();
+        System.out.println("Програма шукає файл тут: " + new java.io.File(".").getAbsolutePath());
 
-        System.out.println("Тестові дані успішно завантажено");
+        if (isLoaded) {
+
+            System.out.println("Дані успішно відновлено з файлу.");
+        } else {
+            hasRights = true;
+            University university = new University("Національний університет «Києво-Могилянська академія»", "НаУКМА", "Київ", "2");
+            service.addUniversity(university.getFullName(), university.getShortName(), university.getCity(), university.getAddress());
+            hasRights = false;
+
+            System.out.println("Файл даних не знайдено або він порожній. Завантажую дефолтні значення");
+
+        }
 
     }
 

@@ -20,8 +20,8 @@ public class Main {
         validation.initData();
         service.startup();
 
-      //  while (true) {
-            // validation.introduction();
+        while (true) {
+            validation.introduction();
             //meneger password = 1234
             //admin password =  4321
             while (true) {
@@ -88,6 +88,7 @@ public class Main {
                     break;
                 }
             }
+        }
 //            int choice;
 //            while (true) {
 //                System.out.println("- - - - - - - - - - - -\nБажаєте повернутися до меню? 1 - так, 0 - ні : ");

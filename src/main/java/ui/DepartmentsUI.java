@@ -25,13 +25,20 @@ public class DepartmentsUI {
 
             switch (choice) {
                 case 1 -> showDepartments();
-                case 2 -> createDepartment();
-                case 3 -> deleteDepartment();
-                case 4 -> updateDepartment();
-                case 5 -> addTeacherToDept();
-                case 6 -> addStudentToDept();
-                case 7 -> deleteTeacherFromDept();
-                case 8 -> deleteStudentFromDept();
+                case 2 -> {if (Authorization.can(RoleForm.EDIT.getMask())) createDepartment();
+                            else System.out.println("У вас немає прав на створення кафедр");}
+                case 3 -> {if (Authorization.can(RoleForm.EDIT.getMask())) deleteDepartment();
+                            else System.out.println("У вас немає прав на видалення кафедр");}
+                case 4 -> {if (Authorization.can(RoleForm.EDIT.getMask())) updateDepartment();
+                            else System.out.println("У вас немає прав на оновлення кафедр");}
+                case 5 -> {if (Authorization.can(RoleForm.EDIT.getMask())) addTeacherToDept();
+                            else System.out.println("У вас немає прав на додавання викладачів");}
+                case 6 -> {if (Authorization.can(RoleForm.EDIT.getMask())) addStudentToDept();
+                            else System.out.println("У вас немає прав на додавання студентів");}
+                case 7 -> {if (Authorization.can(RoleForm.EDIT.getMask())) deleteTeacherFromDept();
+                            else System.out.println("У вас немає прав на овидалення викладачів");}
+                case 8 -> {if (Authorization.can(RoleForm.EDIT.getMask())) deleteStudentFromDept();
+                            else System.out.println("У вас немає прав на видалення студентів");}
             }
         }
     }

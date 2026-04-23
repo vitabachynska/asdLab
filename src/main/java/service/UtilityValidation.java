@@ -94,7 +94,7 @@ public class UtilityValidation {
     }
 
     public static boolean checkRights() {
-        if (!Authorization.can(RoleForm.MANAGER) && !Validation.hasRights) {
+        if (!Authorization.can(RoleForm.MANAGER.getMask()) && !Validation.hasRights) {
             System.out.println("Помилка: Потрібні права менеджера");
             return false;
         }

@@ -23,7 +23,7 @@ public class TeacherUI {
         printMenu();
         try {
         while (true) {
-            int choice = UtilityValidation.readInt("==== ОБЕРІТЬ ПУНКТ ====", 0, 3);
+            int choice = UtilityValidation.readInt("==== ОБЕРІТЬ ПУНКТ ====", 0, 4);
             if (choice == 0) break;
             if (!UtilityValidation.isUniversityExist(service)) continue;
 
@@ -32,6 +32,7 @@ public class TeacherUI {
                 case 2 -> {if (Authorization.can(RoleForm.EDIT.getMask())) updateTeacher();
                             else System.out.println("У вас немає прав на оновлення викладачів");}
                 case 3 -> searchTeacherByPIB();
+                case 4 -> alfabetSortFaculty();
             }
         }}catch (UniversityException e){
                 System.out.println("Помилка: " + e.getMessage());
@@ -83,11 +84,20 @@ public class TeacherUI {
         teacherRepository.searchingTeacherByPIB(firstName, lastName, middleName);
     }
 
+    private void alfabetSortFaculty(){
+        service.listDTOforFaculties();
+        Faculty faculty = service.findFacultyInteractively();
+        if (faculty == null) return;
+        teacherRepository.printTeachersByFacultyAlphabetically(faculty);
+        System.out.println("Викладачів відсортовано.");
+    }
+
     private void printMenu() {
         System.out.println("\n====================== РОБОТА З ВИКЛАДАЧАМИ ======================");
         System.out.println("1. Показати викладачів");
         System.out.println("2. Змінити інформацію про викладача");
         System.out.println("3. Пошук викладача за ПІБ");
+        System.out.println("4. Сортування викладача за ПІБ");
         System.out.println("0. Вийти в головне меню");
     }
 }

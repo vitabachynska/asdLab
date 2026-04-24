@@ -3,6 +3,7 @@ package domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public final class Student extends Person {
     private String studentCardId;
@@ -15,6 +16,18 @@ public final class Student extends Person {
     private Department department;
     @JsonIgnore
     private Faculty faculty;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return course == student.course && group == student.group && admissionYear == student.admissionYear && Objects.equals(studentCardId, student.studentCardId) && tuitionForm == student.tuitionForm && status == student.status && Objects.equals(department, student.department) && Objects.equals(faculty, student.faculty);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(studentCardId, course, group, admissionYear, tuitionForm, status, department, faculty);
+    }
 
     public Student() {
     }

@@ -5,6 +5,7 @@
 
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
 
@@ -18,7 +19,6 @@
 
     <Loggers>
         <Root level="debug">
-            <AppenderRef ref="Console"/>
             <AppenderRef ref="FileAppender"/>
         </Root>
     </Loggers>

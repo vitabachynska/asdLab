@@ -3,6 +3,8 @@ package domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
+import java.util.Objects;
+
 public final class Teacher extends Person{
     private TeachersPosition position; //enum
     private TeachersDegree degree; //enum
@@ -134,7 +136,17 @@ public final class Teacher extends Person{
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Teacher teacher = (Teacher) o;
+        return Double.compare(workload, teacher.workload) == 0 && position == teacher.position && degree == teacher.degree && academicTitle == teacher.academicTitle && Objects.equals(hireDate, teacher.hireDate) && Objects.equals(department, teacher.department) && Objects.equals(faculty, teacher.faculty);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(position, degree, academicTitle, hireDate, workload, department, faculty);
+    }
 
     @Override
     public String toString (){

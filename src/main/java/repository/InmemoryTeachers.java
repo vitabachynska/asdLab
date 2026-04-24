@@ -1,10 +1,15 @@
 package repository;
 
+import domain.Faculty;
+import domain.Student;
 import domain.Teacher;
 import DTO.TeacherDTO;
 import lombok.extern.slf4j.Slf4j;
+
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Slf4j
@@ -98,6 +103,23 @@ public class InmemoryTeachers {
                         t.getDepartment() != null ? t.getDepartment().getName() : "Не вказано"
                 ))
                 .toList();
+    }
+    public void printTeachersByFacultyAlphabetically(Faculty facultyName) {
+        log.debug("Запит на виведення викладачів факультету '{}' за алфавітом", facultyName.getName());
+        Collator ukrainianCollator = Collator.getInstance(new Locale("uk", "UA"));
+
+        List<Teacher> facultyTeachers = facultyName.getDepartments().stream()
+                .flatMap(d -> d.getTeachers().stream())
+                .sorted((t1, t2) -> ukrainianCollator.compare(t1.getLastName().trim(), t2.getLastName().trim()))
+                .toList();
+
+        if (facultyTeachers.isEmpty()) {
+            System.out.println("На факультеті '" + facultyName + "' поки немає викладачів.");
+        } else {
+            log.info("Виведення списку викладачів факультету '{}' (всього: {})", facultyName, facultyTeachers.size()); //
+            System.out.println("\n--- Студенти факультету " + facultyName + " (А-Я) ---");
+            facultyTeachers.forEach(t -> System.out.println(t.getLastName() + " " + t.getFirstName() + " (Посада: " + t.getPosition() + ")"));
+        }
     }
 
 }

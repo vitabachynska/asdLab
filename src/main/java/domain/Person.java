@@ -1,6 +1,7 @@
 package domain;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public sealed abstract class Person permits Student, Teacher {
     private String id;
@@ -46,6 +47,17 @@ public sealed abstract class Person permits Student, Teacher {
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(middleName, person.middleName) && Objects.equals(lastName, person.lastName) && Objects.equals(birthDate, person.birthDate) && Objects.equals(email, person.email) && Objects.equals(phone, person.phone);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, middleName, lastName, birthDate, email, phone);
+    }
 
     public String toString() {
         return "ID : " + getId() + ", " + getFirstName() + getLastName() + getMiddleName() +

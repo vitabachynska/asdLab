@@ -90,18 +90,7 @@ public class Service {
         return university;
     }
 
-    //public Faculty getFaculty(){
-    //    return faculty;
-    //}
-    // Department getDepartment(){
-//return department;
-    // }
-
     public boolean addFaculty(String code, String name, String shortName, Teacher dean, String contacts) throws IllegalOperationException  {
-       // if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
-         //   System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-           // return false;
-     //   }
 
         if(university != null){
             Faculty newFaculty = new Faculty(code, name, shortName, dean, contacts);
@@ -123,28 +112,38 @@ public class Service {
     }
 
     public boolean deleteFaculty(String name)throws EntityNotFoundException, IllegalOperationException{
-        // if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
-        //   System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-        // return false;
-        // }
         if (university == null){
             throw new IllegalOperationException("Помилка: університет не створено.");
         }
-        boolean isDeleted = university.removeFacultyByName(name);
-        if (!isDeleted) {
-            log.error("Спроба видалити факультет '{}', але він не знайдено", name);
-            throw new EntityNotFoundException("Факультет з назвою '" + name + "' не знайдено для видалення");
+        Faculty facultyToDelete = university.findFacultyByName(name);
+        if (facultyToDelete == null) {
+            log.error("Спроба видалити факультет '{}', але він не знайдений", name);
+            throw new EntityNotFoundException("Факультет з назвою '" + name + "' не знайдено");
         }
-        log.info("Факультет '{}' видалено", name);
-        return true;
+        if (facultyToDelete.getDepartments() != null) {
+            for (Department d : facultyToDelete.getDepartments()) {
+                if (d.getTeachers() != null) {
+                    teacherRepository.teachers.removeAll(d.getTeachers());
+                    log.trace("Видалено викладачів кафедри '{}'", d.getName());
+                }
+                if (d.getStudents() != null) {
+                    studentRepository.students.removeAll(d.getStudents());
+                    log.trace("Видалено студентів кафедри '{}'", d.getName());
+                }
+            }
+            log.debug("Видалено {} кафедру факультету '{}'", facultyToDelete.getDepartments().size(), name);
+        }
+        boolean isDeleted = university.removeFacultyByName(name);
+        if (isDeleted) {
+            log.info("Факультет '{}' та всі його підрозділи видалені", name);
+            return true;
+        }
+        log.error("Спроба видалити факультет '{}', але сталася помилка", name);
+        throw new UniversityException("Помилка при видаленні факультету '" + name);
     }
 
     public boolean updateFaculty(String name,String newCode, String newName, String newShortName, Teacher newDean, String newContacts)
             throws EntityNotFoundException, IllegalOperationException{
-        //  if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
-        //    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-        //    return false;
-        // }
         if (university == null){
             throw new IllegalOperationException("Помилка: університет не створено.");
         }
@@ -164,10 +163,6 @@ public class Service {
 
     public boolean updateDepartment(String fName, String oldDeptName, String newCode, String newName, Teacher newHead, String newLocation)
             throws EntityNotFoundException, IllegalOperationException {
-        // if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
-        //   System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-        // return false;
-        // }
         if (university == null){
             throw new IllegalOperationException("Помилка: університет не створено.");
         }
@@ -189,23 +184,8 @@ public class Service {
         throw new EntityNotFoundException("Кафедру '" + oldDeptName + "' на факультеті '" + fName + "' не знайдено");
     }
 
-    public void addDepartment(String code, String name, Faculty faculty,  Teacher head, String location) {
-        //Faculty faculty = university.findFacultyByName(name);
-        if(faculty != null){
-            Department newDepartment = new Department(code, name, faculty, null, location);
-            faculty.addDepartment(newDepartment);
-        }
-        else{
-            System.out.println("Помилка. Спочатку створіть факультет");
-        }
-
-    }
     public boolean addDepartment(String facultyName, String code, String name,  Teacher head, String location)
             throws EntityNotFoundException, IllegalOperationException{
-        // if (!Authorization.can(RoleForm.MANAGER.getMask()) && !Validation.hasRights) {
-        //   System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-        // return false;
-        // }
         if (university == null){
             throw new IllegalOperationException("Помилка: університет не створено.");
         }
@@ -220,10 +200,6 @@ public class Service {
     }
 
     public boolean deleteDepartment(String facultyName, String deptName) throws EntityNotFoundException, IllegalOperationException {
-        //  if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
-        //    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-        //  return false;
-        //}
         if (university == null){
             throw new IllegalOperationException("Помилка: університет не створено.");
         }
@@ -232,12 +208,22 @@ public class Service {
             log.error("Спроба видалити кафедру '{}' на факультеті '{}', але факультет не знайдено", deptName, facultyName);
             throw new EntityNotFoundException("Факультет '" + facultyName + "' не знайдено");
         }
-        boolean isDeleted = f.getDepartments().removeIf(d -> d.getName().equalsIgnoreCase(deptName));
-        if (!isDeleted) {
-            log.error("Спроба видалити кафедру '{}' на факультеті '{}', але вона не знайдена", deptName, facultyName);
-            throw new EntityNotFoundException("Кафедру '" + deptName + "' не знайдено на факультеті " + facultyName);
+        Department deptToDelete = f.findDepartmentByName(deptName);
+        if (deptToDelete == null) {
+            log.error("Кафедру '{}' не знайдено на факультеті '{}'", deptName, facultyName);
+            throw new EntityNotFoundException("Кафедру '" + deptName + "' не знайдено");
         }
-        log.info("Кафедра '{}' на факультеті '{}' видалена", deptName, facultyName);
+        if (deptToDelete.getTeachers() != null) {
+            log.debug("Видалення {} викладачів кафедри {}", deptToDelete.getTeachers().size(), deptName);
+            teacherRepository.teachers.removeAll(deptToDelete.getTeachers());
+        }
+        if (deptToDelete.getStudents() != null) {
+            log.debug("Видалення {} студентів кафедри {}", deptToDelete.getStudents().size(), deptName);
+            studentRepository.students.removeAll(deptToDelete.getStudents());
+        }
+        f.getDepartments().remove(deptToDelete);
+
+        log.info("Кафедру '{}' видалено разом з усіма прив'язаними до неї", deptName);
         return true;
     }
     public List<Department> getAllDepartments() {
@@ -270,11 +256,6 @@ public class Service {
     }
 
     public boolean addStudent(String faculty, String department, Student student) throws EntityNotFoundException, IllegalOperationException {
-        //    if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
-        //      System.out.println(Authorization.can(RoleForm.MANAGER));
-        //    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-        //  return false;
-        // }
         if (university == null){
             throw new IllegalOperationException("Помилка: університет не створено.");
         }
@@ -285,19 +266,6 @@ public class Service {
         d.addStudent(student);
         studentRepository.students.add(student);
         return true;
-    }
-
-    public boolean deleteTeacher(String fName, String dName, String lastName) {
-        if (university == null) return false;
-
-        Faculty f = university.findFacultyByName(fName);
-        if (f != null) {
-            Department d = f.findDepartmentByName(dName);
-            if (d != null) {
-                return d.getTeachers().removeIf(s -> s.getLastName().equalsIgnoreCase(lastName));
-            }
-        }
-        return false;
     }
 
     private Optional<Student> findStudentById(String id) {
@@ -315,10 +283,6 @@ public class Service {
     }
 
     public boolean deleteStudent(String id) throws EntityNotFoundException {
-        //    if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
-        //      System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-        //    return false;
-        // }
         Student s = findStudentById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Студента з ID '" + id + "' не знайдено"));
         s.getDepartment().removeStudent(s);
@@ -342,10 +306,6 @@ public class Service {
     }
 
     public boolean deleteTeacher(String id) throws EntityNotFoundException {
-        //    if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
-        //      System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-        //    return false;
-        // }
         Teacher t = findTeacherById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Викладача з ID '" + id + "' не знайдено"));
         t.getDepartment().removeTeacher(t);

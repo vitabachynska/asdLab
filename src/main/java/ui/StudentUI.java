@@ -22,7 +22,7 @@ public class StudentUI {
         while (true) {
             try {
             printMenu();
-            int choice = readInt("==== ОБЕРІТЬ ПУНКТ ====", 0, 6);
+            int choice = readInt("==== ОБЕРІТЬ ПУНКТ ====", 0, 7);
             if (choice == 0) break;
             if (!UtilityValidation.isUniversityExist(service)) continue;
 
@@ -34,6 +34,7 @@ public class StudentUI {
                 case 4 -> searchStudentByCourse();
                 case 5 -> searchStudentByGroup();
                 case 6 -> sortStudentsByCourse();
+                case 7 -> alfabetSortFaculty();
             }
         } catch (UniversityException e) {
             System.out.println("\nПОМИЛКА " + e.getMessage());
@@ -119,6 +120,15 @@ public class StudentUI {
         System.out.println("Студентів відсортовано.");
     }
 
+    private void alfabetSortFaculty(){
+        service.listDTOforFaculties();
+        Faculty faculty = service.findFacultyInteractively();
+        if (faculty == null) return;
+        studentRepository.printStudentsByFacultyAlphabetically(faculty);
+        System.out.println("Студентів відсортовано.");
+    }
+
+
     private void printMenu() {
         System.out.println("\n====================== РОБОТА ЗІ СТУДЕНТАМИ ======================");
         System.out.println("1. Показати всіх студентів");
@@ -127,6 +137,7 @@ public class StudentUI {
         System.out.println("4. Пошук студента за курсом");
         System.out.println("5. Пошук студента за групою");
         System.out.println("6. Відсортувати студентів за курсом");
+        System.out.println("7. Відсортувати студентів факультету за алфавітом");
         System.out.println("0. Вийти в головне меню");
     }
 }

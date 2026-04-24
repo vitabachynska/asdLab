@@ -6,11 +6,9 @@ import DTO.StudentDTO;
 import exceptions.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.text.Collator;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 public class InmemoryStudents {
@@ -103,28 +101,6 @@ public class InmemoryStudents {
         System.out.println(s);
     }
 
-    /*public void searchingByCourse(int course){
-        List<Student> optionalStudent = findByCourse(course);
-        if (optionalStudent.isEmpty()) {
-            System.out.println("Студенти не знайдені =(");
-        } else {
-            for (Student s : optionalStudent) {
-                System.out.println(s);
-            }
-        }
-    }
-
-    public void searchingByGroup(int group){
-        List<Student> optionalStudent = findByGroup(group);
-        if (optionalStudent.isEmpty()) {
-            System.out.println("Студенти не знайдені =(");
-        } else {
-            for (Student s : optionalStudent) {
-                System.out.println(s);
-            }
-        }
-    }*/
-
     public void sortingStudentsCourse(){
         log.debug("Запуск сортування студентів за курсом");
         List<Student> optionalStudent = sortByCourse(students);
@@ -151,5 +127,25 @@ public class InmemoryStudents {
                 ))
                 .toList();
     }
+
+    public void printStudentsByFacultyAlphabetically(Faculty facultyName) {
+        log.debug("Запит на виведення студентів факультету '{}' за алфавітом", facultyName.getName());
+        Collator ukrainianCollator = Collator.getInstance(new Locale("uk", "UA"));
+
+        List<Student> facultyStudents = facultyName.getDepartments().stream()
+                .flatMap(d -> d.getStudents().stream())
+                .sorted((s1, s2) -> ukrainianCollator.compare(s1.getLastName().trim(), s2.getLastName().trim()))
+                .toList();
+
+        if (facultyStudents.isEmpty()) {
+            System.out.println("На факультеті '" + facultyName + "' поки немає студентів.");
+        } else {
+            log.info("Виведення списку студентів факультету '{}' (всього: {})", facultyName, facultyStudents.size()); //
+            System.out.println("\n--- Студенти факультету " + facultyName + " (А-Я) ---");
+            facultyStudents.forEach(s -> System.out.println(s.getLastName() + " " + s.getFirstName() + " (Курс: " + s.getCourse() + ")"));
+        }
+    }
+
+
 
 }

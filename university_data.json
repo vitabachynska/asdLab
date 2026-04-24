@@ -619,12 +619,5 @@
     "dean" : null,
     "contacts" : "fprn_nat@ukma.edu.ua",
     "departments" : [ ]
-  }, {
-    "code" : "333",
-    "name" : "2",
-    "shortName" : "2",
-    "dean" : null,
-    "contacts" : "1",
-    "departments" : [ ]
   } ]
 }

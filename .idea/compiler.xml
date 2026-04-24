@@ -18,8 +18,5 @@
         <module name="asdLab" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="asdLab (1)" target="25" />
-    </bytecodeTargetLevel>
   </component>
 </project>

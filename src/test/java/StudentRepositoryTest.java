@@ -10,8 +10,6 @@ import java.util.Optional;
 
 public class StudentRepositoryTest {
     private InmemoryStudents repository1;
-
-
         @BeforeEach
         void setUp() {
             repository1 = new InmemoryStudents();
@@ -22,7 +20,6 @@ public class StudentRepositoryTest {
             );
 
         }
-
     @Test
     void testFindByPIB() {
         repository1.addStudent("1", "Дар'я", "Бобко", "Ігорівна",
@@ -33,8 +30,6 @@ public class StudentRepositoryTest {
 
         assertTrue(found.isPresent(), "Має знайти студента");
     }
-
-
     @Test
     void testFindById() {
 
@@ -47,8 +42,6 @@ public class StudentRepositoryTest {
         assertEquals("Іван", found.get().getFirstName());
         assertEquals("73wdhja", found.get().getStudentCardId());
     }
-
-
 
         @Test
         void testDeleteStudent() {
@@ -78,5 +71,3 @@ public class StudentRepositoryTest {
             assertFalse(updated, "Студента нема, значить false");
         }
     }
-
-

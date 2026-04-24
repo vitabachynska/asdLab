@@ -3,6 +3,8 @@ package ui;
 import domain.*;
 import exceptions.*;
 import repository.InmemoryTeachers;
+import service.Authorization;
+import service.RoleForm;
 import service.Service;
 import service.UtilityValidation;
 
@@ -27,7 +29,8 @@ public class TeacherUI {
 
             switch (choice) {
                 case 1 -> showTeachers();
-                case 2 -> updateTeacher();
+                case 2 -> {if (Authorization.can(RoleForm.EDIT.getMask())) updateTeacher();
+                            else System.out.println("У вас немає прав на оновлення викладачів");}
                 case 3 -> searchTeacherByPIB();
             }
         }}catch (UniversityException e){
@@ -46,9 +49,6 @@ public class TeacherUI {
     }
 
     private void updateTeacher() {
-        //        if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-//            throw new AuthorizationException("Помилка: Потрібні права менеджера або відкритий доступ до них");
-//        }
         System.out.println("\n--------ЗМІНЮЄМО ДАНІ ВИКЛАДАЧА--------");
         try {
         Teacher oldTeacher = service.findTeacherInteractively();

@@ -25,9 +25,18 @@ public class FacultyUI {
 
                 switch (choice) {
                     case 1 -> showFaculties();
-                    case 2 -> createFaculty();
-                    case 3 -> deleteFaculty();
-                    case 4 -> updateFaculty();
+                    case 2 -> {
+                        if (Authorization.can(RoleForm.EDIT.getMask())) createFaculty();
+                        else System.out.println("У вас немає прав на створення факультетів");
+                    }
+                    case 3 -> {
+                        if (Authorization.can(RoleForm.EDIT.getMask())) deleteFaculty();
+                        else System.out.println("У вас немає прав на видалення факультетів");
+                    }
+                    case 4 -> {
+                        if (Authorization.can(RoleForm.EDIT.getMask())) updateFaculty();
+                        else System.out.println("У вас немає прав на оновлення факультетів");
+                    }
                 }
             }
         } catch (UniversityException e) {
@@ -45,7 +54,7 @@ public class FacultyUI {
         }
     }
 
-    private void createFaculty(){
+    private void createFaculty() {
         //        if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
 //            throw new AuthorizationException("Помилка: Потрібні права менеджера або відкритий доступ до них");
 //        }
@@ -126,7 +135,7 @@ public class FacultyUI {
     }
 
     private boolean checkRights() {
-        if (!Authorization.can(RoleForm.MANAGER) && !Validation.hasRights) {
+        if (!Authorization.can(RoleForm.MANAGER.getMask()) && !Validation.hasRights) {
             System.out.println("Помилка: Потрібні права менеджера");
             return false;
         }

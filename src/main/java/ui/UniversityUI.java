@@ -31,9 +31,10 @@ public class UniversityUI {
     }
 
     private void createUniversity() {
-        //        if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-//            throw new AuthorizationException("Помилка: Потрібні права менеджера або відкритий доступ до них");
-//        }
+        if (!Authorization.can(RoleForm.MANAGER.getMask()) && !Validation.hasRights) {
+            System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них");
+            return;
+        }
         System.out.println("\n--------ОНОВЛЕННЯ УНІВЕРСИТЕТУ--------");
         try {
             String fullName = UtilityValidation.askInput("Введіть назву університету: ");

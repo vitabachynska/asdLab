@@ -25,19 +25,26 @@ public class DepartmentsUI {
                 if (choice == 0) break;
                 if (!UtilityValidation.isUniversityExist(service)) continue;
 
-                switch (choice) {
-                    case 1 -> showDepartments();
-                    case 2 -> createDepartment();
-                    case 3 -> deleteDepartment();
-                    case 4 -> updateDepartment();
-                    case 5 -> addTeacherToDept();
-                    case 6 -> addStudentToDept();
-                    case 7 -> deleteTeacherFromDept();
-                    case 8 -> deleteStudentFromDept();
-                }
+            switch (choice) {
+                case 1 -> showDepartments();
+                case 2 -> {if (Authorization.can(RoleForm.EDIT.getMask())) createDepartment();
+                            else System.out.println("У вас немає прав на створення кафедр");}
+                case 3 -> {if (Authorization.can(RoleForm.EDIT.getMask())) deleteDepartment();
+                            else System.out.println("У вас немає прав на видалення кафедр");}
+                case 4 -> {if (Authorization.can(RoleForm.EDIT.getMask())) updateDepartment();
+                            else System.out.println("У вас немає прав на оновлення кафедр");}
+                case 5 -> {if (Authorization.can(RoleForm.EDIT.getMask())) addTeacherToDept();
+                            else System.out.println("У вас немає прав на додавання викладачів");}
+                case 6 -> {if (Authorization.can(RoleForm.EDIT.getMask())) addStudentToDept();
+                            else System.out.println("У вас немає прав на додавання студентів");}
+                case 7 -> {if (Authorization.can(RoleForm.EDIT.getMask())) deleteTeacherFromDept();
+                            else System.out.println("У вас немає прав на видалення викладачів");}
+                case 8 -> {if (Authorization.can(RoleForm.EDIT.getMask())) deleteStudentFromDept();
+                            else System.out.println("У вас немає прав на видалення студентів");}
+            }
             }} catch (UniversityException e) {
-                System.out.println("Помилка: " + e.getMessage());}
-    }
+            System.out.println("Помилка: " + e.getMessage());}
+        }
 
     private void showDepartments() {
         System.out.println("\n--------ВИВІД СПИСКУ КАФЕДР--------");

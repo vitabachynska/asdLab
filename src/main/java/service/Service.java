@@ -77,6 +77,10 @@ public class Service {
 
 
     public boolean addUniversity(String fullName, String shortName, String city, String address){
+        if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
+            System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
+            return false;
+        }
         this.university = new University(fullName, shortName, city, address);
         log.info("Університет '{}' успішно оновлено", fullName);
         return true;
@@ -93,7 +97,12 @@ public class Service {
 //return department;
     // }
 
-    public boolean addFaculty(String code, String name, String shortName, Teacher dean, String contacts) throws IllegalOperationException {
+    public boolean addFaculty(String code, String name, String shortName, Teacher dean, String contacts) throws IllegalOperationException  {
+       // if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
+         //   System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
+           // return false;
+     //   }
+
         if(university != null){
             Faculty newFaculty = new Faculty(code, name, shortName, dean, contacts);
             university.addFaculty(newFaculty);
@@ -113,7 +122,11 @@ public class Service {
         return university.getFaculties();
     }
 
-    public boolean deleteFaculty(String name) throws EntityNotFoundException, IllegalOperationException {
+    public boolean deleteFaculty(String name)throws EntityNotFoundException, IllegalOperationException{
+        // if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
+        //   System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
+        // return false;
+        // }
         if (university == null){
             throw new IllegalOperationException("Помилка: університет не створено.");
         }
@@ -126,8 +139,12 @@ public class Service {
         return true;
     }
 
-    public boolean updateFaculty(String name, String newCode, String newName, String newShortName, Teacher newDean, String newContacts)
+    public boolean updateFaculty(String name,String newCode, String newName, String newShortName, Teacher newDean, String newContacts)
             throws EntityNotFoundException, IllegalOperationException{
+        //  if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
+        //    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
+        //    return false;
+        // }
         if (university == null){
             throw new IllegalOperationException("Помилка: університет не створено.");
         }
@@ -147,6 +164,10 @@ public class Service {
 
     public boolean updateDepartment(String fName, String oldDeptName, String newCode, String newName, Teacher newHead, String newLocation)
             throws EntityNotFoundException, IllegalOperationException {
+        // if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
+        //   System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
+        // return false;
+        // }
         if (university == null){
             throw new IllegalOperationException("Помилка: університет не створено.");
         }
@@ -179,7 +200,12 @@ public class Service {
         }
 
     }
-    public boolean addDepartment(String facultyName, String code, String name,  Teacher head, String location) throws EntityNotFoundException, IllegalOperationException{
+    public boolean addDepartment(String facultyName, String code, String name,  Teacher head, String location)
+            throws EntityNotFoundException, IllegalOperationException{
+        // if (!Authorization.can(RoleForm.MANAGER.getMask()) && !Validation.hasRights) {
+        //   System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
+        // return false;
+        // }
         if (university == null){
             throw new IllegalOperationException("Помилка: університет не створено.");
         }
@@ -194,6 +220,10 @@ public class Service {
     }
 
     public boolean deleteDepartment(String facultyName, String deptName) throws EntityNotFoundException, IllegalOperationException {
+        //  if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
+        //    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
+        //  return false;
+        //}
         if (university == null){
             throw new IllegalOperationException("Помилка: університет не створено.");
         }
@@ -210,7 +240,6 @@ public class Service {
         log.info("Кафедра '{}' на факультеті '{}' видалена", deptName, facultyName);
         return true;
     }
-
     public List<Department> getAllDepartments() {
         List<Department> allDepts = new ArrayList<>();
         if (university == null) return allDepts;
@@ -223,6 +252,10 @@ public class Service {
     }
 
     public boolean addTeacher(String faculty, String department, Teacher teacher) throws EntityNotFoundException, IllegalOperationException {
+        //  if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
+        //    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
+        //  return false;
+        // }
         if (university == null){
             throw new IllegalOperationException("Помилка: університет не створено.");
         }
@@ -237,6 +270,11 @@ public class Service {
     }
 
     public boolean addStudent(String faculty, String department, Student student) throws EntityNotFoundException, IllegalOperationException {
+        //    if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
+        //      System.out.println(Authorization.can(RoleForm.MANAGER));
+        //    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
+        //  return false;
+        // }
         if (university == null){
             throw new IllegalOperationException("Помилка: університет не створено.");
         }
@@ -277,6 +315,10 @@ public class Service {
     }
 
     public boolean deleteStudent(String id) throws EntityNotFoundException {
+        //    if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
+        //      System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
+        //    return false;
+        // }
         Student s = findStudentById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Студента з ID '" + id + "' не знайдено"));
         s.getDepartment().removeStudent(s);
@@ -300,6 +342,10 @@ public class Service {
     }
 
     public boolean deleteTeacher(String id) throws EntityNotFoundException {
+        //    if (!Authorization.can(RoleForm.MANAGER.getMask())&& !Validation.hasRights) {
+        //      System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
+        //    return false;
+        // }
         Teacher t = findTeacherById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Викладача з ID '" + id + "' не знайдено"));
         t.getDepartment().removeTeacher(t);

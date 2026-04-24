@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class Main {
     private static University university;
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Service service = new Service();
@@ -28,53 +29,53 @@ public class Main {
             System.out.println("Помилка: " + e.getMessage());
         }
 
-        //  while (true) {
-        // validation.introduction();
-        //meneger password = 1234
-        //admin password =  4321
         while (true) {
-            validation.menu();
-            int choice;
-
+            validation.introduction();
+            //meneger password = 1234
+            //admin password =  4321
             while (true) {
-                System.out.print("==== ОБЕРІТЬ ПУНКТ ====");
-                System.out.println("====* натисність відповідну клавішу *====");
-                String input = scanner.nextLine();
-                try {
-                    choice = Integer.parseInt(input);
-                    if (choice >= 0 && choice <= 6)
-                        break;
-                    else
-                        System.out.println("ПОМИЛКА. Введіть число зі списку : ");
+                validation.menu();
+                int choice;
 
-                } catch (NumberFormatException e) {
-                    System.out.println("Введіть коректне значення");
-                }
-            }
-            if (choice == 0) {
-                System.out.println("==ВИХІД З ПРОГРАМИ==");
-                break;
-            }
+                while (true) {
+                    System.out.print("==== ОБЕРІТЬ ПУНКТ ====");
+                    System.out.println("====* натисність відповідну клавішу *====");
+                    String input = scanner.nextLine();
+                    try {
+                        choice = Integer.parseInt(input);
+                        if (choice >= 0 && choice <= 6)
+                            break;
+                        else
+                            System.out.println("ПОМИЛКА. Введіть число зі списку : ");
 
-            switch (choice) {
-                case 1 -> {
-                    universityUI.workWithUniversity();
+                    } catch (NumberFormatException e) {
+                        System.out.println("Введіть коректне значення");
+                    }
                 }
-                case 2 -> {
-                    facultyUI.workWithFaculty();
+                if (choice == 0) {
+                    System.out.println("==ВИХІД З ПРОГРАМИ==");
+                    break;
                 }
-                case 3 -> {
-                    departmentsUI.workWithDepartment();
-                }
-                case 4 -> {
-                    teacherUI.workWithTeachers();
-                }
-                case 5 -> {
-                    studentUI.workWithStudents();
-                }
-                case 6 -> {
-                    validation.adminControlPanel();
-                }
+
+                switch (choice) {
+                    case 1 -> {
+                        universityUI.workWithUniversity();
+                    }
+                    case 2 -> {
+                        facultyUI.workWithFaculty();
+                    }
+                    case 3 -> {
+                        departmentsUI.workWithDepartment();
+                    }
+                    case 4 -> {
+                        teacherUI.workWithTeachers();
+                    }
+                    case 5 -> {
+                        studentUI.workWithStudents();
+                    }
+                    case 6 -> {
+                        validation.adminControlPanel();
+                    }
 //                case 7 -> {
 //                    try {
 //                        service.syncWithFile();
@@ -83,27 +84,27 @@ public class Main {
 //                        System.out.println("Помилка: " + e.getMessage());
 //                    }
 //                }
-            }
+                }
 
-            while (true) {
-                System.out.println("- - - - - - - - - - - -\nБажаєте повернутися до меню? 1 - так, 0 - ні : ");
-                String input = scanner.nextLine();
-                try {
-                    choice = Integer.parseInt(input);
-                    if (choice == 1 || choice == 0)
-                        break;
-                    else
+                while (true) {
+                    System.out.println("- - - - - - - - - - - -\nБажаєте повернутися до меню? 1 - так, 0 - ні : ");
+                    String input = scanner.nextLine();
+                    try {
+                        choice = Integer.parseInt(input);
+                        if (choice == 1 || choice == 0)
+                            break;
+                        else
+                            System.out.println("Введіть коректне значення");
+
+                    } catch (NumberFormatException e) {
                         System.out.println("Введіть коректне значення");
-
-                } catch (NumberFormatException e) {
-                    System.out.println("Введіть коректне значення");
+                    }
+                }
+                if (choice == 0) {
+                    System.out.println("--ВИХІД З ПРОГРАМИ--");
+                    break;
                 }
             }
-            if (choice == 0) {
-                System.out.println("--ВИХІД З ПРОГРАМИ--");
-                break;
-            }
-        }
 //            int choice;
 //            while (true) {
 //                System.out.println("- - - - - - - - - - - -\nБажаєте повернутися до меню? 1 - так, 0 - ні : ");
@@ -123,12 +124,9 @@ public class Main {
 //                System.out.println("--ВИХІД З ПРОГРАМИ--");
 //                break;
 //            }
-        //  }
+            //  }
+        }
+
+
     }
-
-
-
-
-
 }
-

@@ -22,24 +22,24 @@ public class Validation {
     }
 
     public void adminControlPanel() {
-        if (!Authorization.can(RoleForm.ADMIN)) {
-            System.out.println("!!! Доступ заборонено. Потрібні права Адміністратора !!!");
+
+        if (!Authorization.can(RoleForm.ADMIN.getMask())) {
+            System.out.println("Доступ заборонено. Потрібні права Адміністратора");
             return;
         }
 
         System.out.println("\n--- ПАНЕЛЬ КЕРУВАННЯ ДОСТУПОМ ---");
-        //System.out.println("1. Заблокування/розблокування (для Менеджерів)");
+        //System.out.println("1. Заблокувати всі операції редагування (для Менеджерів)");
         //System.out.println("2. Надати доступ (Розблокувати)");
-        System.out.println("1. Заблокувати всі операції редагування (для Менеджерів)");
-        System.out.println("2. Надати доступ (Розблокувати)");
-
+        System.out.println("1. Змінити пароль (менеджери)");
+        System.out.println("2. Змінити пароль (адміністратори)");
         String choice = scanner.nextLine();
         if (choice.equals("1")) {
-            Validation.hasRights = false;
-            System.out.println("Доступ для менеджерів обмежено.");
+            System.out.print("Введіть новий пароль для Менеджера: ");
+            Authorization.setManagerPassword(scanner.nextLine());
         } else {
-            Validation.hasRights = true;
-            System.out.println("Доступ відновлено.");
+            System.out.print("Введіть новий пароль для Адміністратора: ");
+            Authorization.setAdminPassword(scanner.nextLine());
         }
     }
 
@@ -64,38 +64,44 @@ public class Validation {
         String input = "";
         System.out.println("\n\n======================СИСТЕМА 'DigiUni'!======================"+
                 "\nСистема обліку студентів і викладачів\n");
-        RoleForm newRoleForm = null;
-        while ( newRoleForm == null) {
-            System.out.println("Введіть роль (Користувач/Менеджер/Адміністратор) : ");
-            input = scanner.nextLine();
-            try {
-                newRoleForm = RoleForm.fromString(input);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Введіть форму з поданих");
+        boolean authenticated = false;
+
+        System.out.println("=== ВІТАЄМО В СИСТЕМІ УНІВЕРСИТЕТУ ===");
+
+        while (!authenticated) {
+            System.out.println("\nОберіть вашу роль для входу:");
+            System.out.println("1. Гість (Тільки перегляд)");
+            System.out.println("2. Менеджер (Потрібен пароль)");
+            System.out.println("3. Адміністратор (Потрібен пароль)");
+            System.out.print("Ваш вибір: ");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1" -> {
+                    Authorization.loginAsUser();
+                    authenticated = true;
+                }
+                case "2" -> {
+                    System.out.print("Введіть пароль менеджера: ");
+                    String pass = scanner.nextLine();
+                    if (Authorization.loginAsManager(pass)) {
+                        authenticated = true;
+                    } else {
+                        System.out.println("Спробуйте ще раз");
+                    }
+                }
+                case "3" -> {
+                    System.out.print("Введіть пароль адміністратора: ");
+                    String pass = scanner.nextLine();
+                    if (Authorization.loginAsAdmin(pass)) {
+                        authenticated = true;
+                    } else {
+                        System.out.println("Спробуйте ще раз");
+                    }
+                }
+                default -> System.out.println("Некоректний вибір.");
             }
-        }
-        RoleForm selectedRole = RoleForm.fromString(input);
-
-        System.out.print("Введіть пароль: ");
-        String password = scanner.nextLine();
-        if (selectedRole == RoleForm.ADMINISTRATOR) {
-            //System.out.print("Введіть логін: ");
-            //String login = scanner.nextLine();
-            //System.out.print("Введіть пароль: ");
-            //String password = scanner.nextLine();
-
-            Authorization.loginAsAdmin(password);}
-        else if (selectedRole == RoleForm.MANAGER) {
-            //System.out.print("Введіть логін: ");
-            //String login = scanner.nextLine();
-            //System.out.print("Введіть пароль: ");
-            //String password = scanner.nextLine();
-
-            Authorization.loginAsManager(password);
-        } else {
-            //System.out.print("Введіть логін: ");
-            //String login = scanner.nextLine();
-            Authorization.loginAsUser();
         }
 
     }
@@ -112,8 +118,8 @@ public class Validation {
         System.out.println("3. робота з КАФЕДРОЮ ======================\n");
         System.out.println("4. робота з ВИКЛАДАЧАМИ ======================\n");
         System.out.println("5. робота зі СТУДЕНТАМИ ======================\n");
-        System.out.println("6. завантажити дані ======================\n");
-        System.out.println("7. робота з ДОСТУПОМ ======================\n");
+        //System.out.println("6. завантажити дані ======================\n");
+        System.out.println("6. робота з ДОСТУПОМ ======================\n");
         System.out.println("0. вийти з програми");
     }
 

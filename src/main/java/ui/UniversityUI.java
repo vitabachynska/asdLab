@@ -64,7 +64,7 @@ public class UniversityUI {
 
     private void printUniMenu() {
         System.out.println("\n======================РОБОТА З УНІВЕРСИТЕТОМ======================");
-        System.out.println("1. створити університет\n2. показати університети\n0. вийти\n");
+        System.out.println("1. оновити університет\n2. показати університет\n0. вийти\n");
     }
 
 

@@ -20,9 +20,9 @@ public class TeacherUI {
     }
 
     public void workWithTeachers(){
-        printMenu();
         try {
         while (true) {
+            printMenu();
             int choice = UtilityValidation.readInt("==== ОБЕРІТЬ ПУНКТ ====", 0, 4);
             if (choice == 0) break;
             if (!UtilityValidation.isUniversityExist(service)) continue;

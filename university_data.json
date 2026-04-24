@@ -328,17 +328,17 @@
         "workload" : 450.0
       }, {
         "id" : "T7",
-        "firstName" : "Сергій",
-        "middleName" : "Олександрович",
-        "lastName" : "Костючков",
+        "firstName" : "JJJ",
+        "middleName" : "OOO",
+        "lastName" : "JJJ",
         "birthDate" : "1978-08-12",
-        "email" : "kost@ukma.edu.ua",
-        "phone" : "0506667788",
-        "position" : "ASSOCIATE_PROFESSOR",
-        "degree" : "PHD",
+        "email" : "jnjdnvjks",
+        "phone" : "678954",
+        "position" : "PROFESSOR",
+        "degree" : "NONE",
         "academicTitle" : "ASSOCIATE_PROFESSOR",
         "hireDate" : "2005-09-01",
-        "workload" : 650.0
+        "workload" : 2435.0
       } ],
       "students" : [ {
         "id" : "S16",
@@ -460,6 +460,13 @@
     "shortName" : "ФПрН",
     "dean" : null,
     "contacts" : "fprn_nat@ukma.edu.ua",
-    "departments" : [ ]
+    "departments" : [ {
+      "code" : "3546",
+      "name" : "шірші",
+      "head" : null,
+      "location" : "шшджж",
+      "teachers" : [ ],
+      "students" : [ ]
+    } ]
   } ]
 }

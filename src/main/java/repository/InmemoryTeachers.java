@@ -118,7 +118,7 @@ public class InmemoryTeachers {
         } else {
             log.info("Виведення списку викладачів факультету '{}' (всього: {})", facultyName, facultyTeachers.size()); //
             System.out.println("\n--- Студенти факультету " + facultyName + " (А-Я) ---");
-            facultyTeachers.forEach(t -> System.out.println(t.getLastName() + " " + t.getFirstName() + " (Посада: " + t.getPosition() + ")"));
+            facultyTeachers.forEach(t -> System.out.println(t.getLastName() + " " + t.getFirstName()));
         }
     }
 

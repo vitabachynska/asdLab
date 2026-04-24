@@ -39,7 +39,7 @@ public class Main {
 
                 while (true) {
                     System.out.print("==== ОБЕРІТЬ ПУНКТ ====");
-                    System.out.println("====* натисність відповідну клавішу *====");
+                    System.out.println("\n====* натисність відповідну клавішу *====");
                     String input = scanner.nextLine();
                     try {
                         choice = Integer.parseInt(input);

@@ -11,6 +11,7 @@ import repository.InmemoryTeachers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 import java.util.function.Predicate;
 
 public class Service {
@@ -23,6 +24,7 @@ public class Service {
 
 
     private final FileHandler fileHandler = new FileHandler();
+    public Scanner studentService;
 
     public void syncWithFile() {
         System.out.println("Синхронізація з файлом ...");

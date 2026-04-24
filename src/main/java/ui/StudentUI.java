@@ -4,6 +4,8 @@ import domain.*;
 import repository.InmemoryStudents;
 import service.*;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.util.List;
 
 import static service.UtilityValidation.*;
@@ -15,6 +17,9 @@ public class StudentUI {
     public StudentUI(Service service) {
         this.service = service;
         this.studentRepository = service.studentRepository;
+    }
+
+    public StudentUI(DataInputStream in, DataOutputStream out) {
     }
 
     public void workWithStudents() {

@@ -1,87 +1,80 @@
 package ui;
 
-import domain.*;
-import repository.InmemoryTeachers;
-import service.Authorization;
-import service.RoleForm;
-import service.Service;
-import service.UtilityValidation;
-
+import service.NetworkCodec;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-
-import static service.UtilityValidation.*;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class TeacherUI {
-    private Service service;
-    private InmemoryTeachers teacherRepository;
+    private final DataInputStream in;
+    private final DataOutputStream out;
+    private final Scanner scanner;
 
-    public TeacherUI(Service service) {
-        this.service = service;
-        this.teacherRepository = service.teacherRepository;
-    }
-
+    // Залишаємо тільки мережевий конструктор
     public TeacherUI(DataInputStream in, DataOutputStream out) {
+        this.in = in;
+        this.out = out;
+        this.scanner = new Scanner(System.in);
     }
 
-    public void workWithTeachers() {
+    public void workWithTeachers() throws IOException {
         while (true) {
             printMenu();
-            int choice = UtilityValidation.readInt("==== ОБЕРІТЬ ПУНКТ ====", 0, 3);
+            System.out.print("==== ОБЕРІТЬ ПУНКТ ==== ");
+            String input = scanner.nextLine();
+            int choice;
+
+            try {
+                choice = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Введіть число!");
+                continue;
+            }
+
             if (choice == 0) break;
-            if (!UtilityValidation.isUniversityExist(service)) continue;
 
             switch (choice) {
                 case 1 -> showTeachers();
-                case 2 -> {if (Authorization.can(RoleForm.EDIT.getMask())) updateTeacher();
-                            else System.out.println("У вас немає прав на оновлення викладачів");}
+                case 2 -> updateTeacher();
                 case 3 -> searchTeacherByPIB();
+                default -> System.out.println("Некоректний вибір.");
             }
         }
     }
 
-    private void showTeachers() {
+    private void showTeachers() throws IOException {
         System.out.println("\n--------ВИВІД СПИСКУ ВИКЛАДАЧІВ--------");
-        if (service.teacherRepository.getAllTeachers().isEmpty()) {
-            System.out.println("Жодного викладача поки не зареєстровано :(");
-        } else {
-            service.teacherRepository.getAllTeachers().forEach(System.out::println);
-        }
+        NetworkCodec.write(out, "GET_ALL_TEACHERS");
+
+        String response = NetworkCodec.read(in);
+        System.out.println(response);
     }
 
-    private void updateTeacher() {
+    private void updateTeacher() throws IOException {
         System.out.println("\n--------ЗМІНЮЄМО ДАНІ ВИКЛАДАЧА--------");
-        // if (!checkRights()) return;
-        Teacher oldTeacher = service.findTeacherInteractively();
-        if (oldTeacher == null) return;
-        String newFirstName = UtilityValidation.askInput("Нове ім'я: ");
-        String newLastName = UtilityValidation.askInput("Нове прізвище: ");
-        String newMiddleName = UtilityValidation.askInput("Нове по батькові: ");
-        String newEmail = UtilityValidation.askInput("Новий email: ");
-        String newPhone = UtilityValidation.askInput("Новий телефон: ");
-        Teacher.TeachersPosition position = UtilityValidation.readEnum(Teacher.TeachersPosition.class,
-                "Нова посада (Професор/Доцент/Старший викладач/Викладач/Асистент/Викладач-стажист): ");
-        Teacher.TeachersDegree degree = UtilityValidation.readEnum(Teacher.TeachersDegree.class,
-                "Новий ступінь (Доктор філософії/Доктор наук/не має): ");
-        Teacher.TeachersAcademicTitle title = UtilityValidation.readEnum(Teacher.TeachersAcademicTitle.class,
-                "Нове звання (Доцент/Професор/Старший дослідник/не має):");
-        double workload = UtilityValidation.readDouble("Нове навантаження (год/рік): ");
-        if (teacherRepository.updateTeacher(oldTeacher.getId(), newFirstName, newLastName, newMiddleName,
-                newEmail, newPhone, position, degree, title, workload)) {
-            service.syncWithFile();
-            System.out.println("Дані викладача було оновлено");
-        } else {
-            System.out.println("Помилка: Не вдалося оновити дані викладача.");
-        }
+        System.out.print("Введіть ID викладача для оновлення: ");
+        String id = scanner.nextLine();
+
+        System.out.print("Нове ім'я: ");
+        String name = scanner.nextLine();
+
+        String command = "UPDATE_TEACHER:" + id + ":" + name;
+        NetworkCodec.write(out, command);
+
+        String response = NetworkCodec.read(in);
+        System.out.println(response);
     }
 
-    private void searchTeacherByPIB() {
+    private void searchTeacherByPIB() throws IOException {
         System.out.println("\n--------ПОШУК ВИКЛАДАЧА ЗА ПІБ--------");
-        String firstName = askInput("Введіть ім'я: ");
-        String lastName = askInput("Введіть прізвище: ");
-        String middleName = askInput("Введіть по батькові: ");
+        System.out.print("Введіть Прізвище: ");
+        String lastName = scanner.nextLine();
 
-        teacherRepository.searchingTeacherByPIB(firstName, lastName, middleName);
+        NetworkCodec.write(out, "SEARCH_TEACHER:" + lastName);
+
+        String response = NetworkCodec.read(in);
+        System.out.println(response);
     }
 
     private void printMenu() {

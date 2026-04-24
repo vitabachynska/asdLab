@@ -1,4 +1,4 @@
-package ui;
+/*package ui;
 
 import domain.*;
 import service.Service;
@@ -101,4 +101,4 @@ public class Main {
         }
         return text;
     }
-}
+}*/

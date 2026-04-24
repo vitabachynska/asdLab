@@ -35,7 +35,6 @@ public class Authorization {
         System.out.println("Пароль менеджера успішно змінено");
     }
 
-    // Метод для зміни пароля адміністратора
     public static void setAdminPassword(String newPassword) {
         adminPasswordHash = HashUtil.getHash(newPassword);
         System.out.println("Пароль адміністратора успішно змінено");

@@ -21,10 +21,8 @@ public class UniversityServer {
             System.out.println("Сервер НаУКМА запущено на порту " + port);
 
             while (true) {
-                // Чекаємо на нове підключення
                 Socket clientSocket = serverSocket.accept();
 
-                // Для кожного клієнта створюємо окремий потік
                 new Thread(() -> handleClient(clientSocket)).start();
             }
         } catch (IOException e) {
@@ -37,13 +35,8 @@ public class UniversityServer {
              DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
 
             while (true) {
-                // 1. Читаємо команду від клієнта через ваш NetworkCodec
                 String request = NetworkCodec.read(in);
-
-                // 2. Обробляємо запит
                 String response = processRequest(request);
-
-                // 3. Відправляємо результат назад клієнту
                 NetworkCodec.write(out, response);
             }
         } catch (IOException e) {
@@ -52,10 +45,10 @@ public class UniversityServer {
     }
 
     private String processRequest(String request) {
-        // Тут ви перевіряєте, що хоче клієнт. Наприклад:
         if (request.equals("GET_ALL_STUDENTS")) {
-            // Викликаєте ваш сервіс і повертаєте результат (можна в JSON)
-            return service.getStudentService().findAll().toString();
+
+            return service.studentService.findAll("").toString();
         }
         return "Невідома команда";
     }
+}

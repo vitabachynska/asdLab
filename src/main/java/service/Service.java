@@ -8,12 +8,13 @@ import domain.*;
 import repository.InmemoryStudents;
 import repository.InmemoryTeachers;
 import exceptions.*;
-
+import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+@Slf4j
 public class Service {
     public University university;
     //private final List<Teacher> teachers = new ArrayList<>();
@@ -29,6 +30,8 @@ public class Service {
         System.out.println("Синхронізація з файлом ...");
         UniversityData dataToSave = new UniversityData(University.faculties);
         fileHandler.saveAllData(dataToSave);
+        log.info("Дані програми успішно збережені у файл. Кількість факультетів: {}, викладачів: {}, студентів: {}",
+                University.faculties.size(), teacherRepository.teachers.size(), studentRepository.students.size());
     }
 
     public void startup() throws DataPersistenceException {
@@ -36,23 +39,22 @@ public class Service {
         if (loadedData != null && loadedData.faculties() != null) {
             for (Faculty f : loadedData.faculties()) {
                 this.university.addFaculty(f);
+        if (f.getDepartments() != null) {
+        for (Department d : f.getDepartments()) {
+        d.setFaculty(f);
 
-                if (f.getDepartments() != null) {
-                    for (Department d : f.getDepartments()) {
-                        d.setFaculty(f);
+        if (d.getTeachers() != null) {
+        for (Teacher t : d.getTeachers()) {
+        t.setFaculty(f);
+        t.setDepartment(d);
+        }
+           }
 
-                        if (d.getTeachers() != null) {
-                            for (Teacher t : d.getTeachers()) {
-                                t.setFaculty(f);
-                                t.setDepartment(d);
-                            }
-                        }
-
-                        if (d.getStudents() != null) {
-                            for (Student s : d.getStudents()) {
-                                s.setFaculty(f);
-                                s.setDepartment(d);}
-                        }}}
+           if (d.getStudents() != null) {
+           for (Student s : d.getStudents()) {
+           s.setFaculty(f);
+           s.setDepartment(d);}
+        }}}
             }
             University.faculties = new ArrayList<>(this.university.getFaculties());
             for (Faculty f : this.university.getFaculties()) {
@@ -65,7 +67,8 @@ public class Service {
                     }
                 }
             }
-
+            log.info("Дані програми успішно завантажені з файлу. Кількість факультетів: {}, викладачів: {}, студентів: {}",
+                    University.faculties.size(), teacherRepository.teachers.size(), studentRepository.students.size());
             System.out.println("Дані програми успішно завантажені!");
         }
     }
@@ -75,6 +78,7 @@ public class Service {
 
     public boolean addUniversity(String fullName, String shortName, String city, String address){
         this.university = new University(fullName, shortName, city, address);
+        log.info("Університет '{}' успішно оновлено", fullName);
         return true;
 
     }
@@ -93,9 +97,11 @@ public class Service {
         if(university != null){
             Faculty newFaculty = new Faculty(code, name, shortName, dean, contacts);
             university.addFaculty(newFaculty);
+            log.info("Додано факультет '{}'", name);
             return true;
         }
         else{
+            log.error("Спроба додати факультет '{}', але університет не створено", name);
             throw new IllegalOperationException("Не можна створити кафедру без університету.");
         }
 
@@ -113,8 +119,10 @@ public class Service {
         }
         boolean isDeleted = university.removeFacultyByName(name);
         if (!isDeleted) {
+            log.error("Спроба видалити факультет '{}', але він не знайдено", name);
             throw new EntityNotFoundException("Факультет з назвою '" + name + "' не знайдено для видалення");
         }
+        log.info("Факультет '{}' видалено", name);
         return true;
     }
 
@@ -130,8 +138,10 @@ public class Service {
             f.setShortName(newShortName);
             f.setDean(newDean);
             f.setContacts(newContacts);
+            log.info("Факультет '{}' успішно оновлений", name);
             return true;
         }
+        log.error("Спроба оновити факультет '{}', але він не знайдено", name);
         throw new EntityNotFoundException("Факультет '" + name + "' не знайдено для оновлення");
     }
 
@@ -142,6 +152,7 @@ public class Service {
         }
         Faculty f = university.findFacultyByName(fName);
         if (f == null) {
+            log.error("Спроба оновити кафедру '{}' на факультеті '{}', але факультет не знайдено", oldDeptName, fName);
             throw new EntityNotFoundException("Факультет '" + fName + "' не знайдено");
         }
         Department d = f.findDepartmentByName(oldDeptName);
@@ -150,8 +161,10 @@ public class Service {
             d.setName(newName);
             d.setHead(newHead);
             d.setLocation(newLocation);
+            log.info("Кафедра '{}' на факультеті '{}' успішно оновлена", oldDeptName, fName);
             return true;
         }
+        log.error("Спроба оновити кафедру '{}' на факультеті '{}', але кафедра не знайдено", oldDeptName, fName);
         throw new EntityNotFoundException("Кафедру '" + oldDeptName + "' на факультеті '" + fName + "' не знайдено");
     }
 
@@ -173,8 +186,10 @@ public class Service {
         Faculty f = getUniversity().findFacultyByName(facultyName);
         if (f!=null){
             f.addDepartment(code, name, f, head, location);
+            log.info("Додано кафедру '{}' на факультеті '{}'", name, facultyName);
             return true;
         }
+        log.error("Спроба додати кафедру '{}' на факультеті '{}', але факультет не знайдено", name, facultyName);
         throw new EntityNotFoundException("Факультет '" + facultyName + "' не знайдено");
     }
 
@@ -184,12 +199,15 @@ public class Service {
         }
         Faculty f = university.findFacultyByName(facultyName);
         if (f == null) {
+            log.error("Спроба видалити кафедру '{}' на факультеті '{}', але факультет не знайдено", deptName, facultyName);
             throw new EntityNotFoundException("Факультет '" + facultyName + "' не знайдено");
         }
         boolean isDeleted = f.getDepartments().removeIf(d -> d.getName().equalsIgnoreCase(deptName));
         if (!isDeleted) {
+            log.error("Спроба видалити кафедру '{}' на факультеті '{}', але вона не знайдена", deptName, facultyName);
             throw new EntityNotFoundException("Кафедру '" + deptName + "' не знайдено на факультеті " + facultyName);
         }
+        log.info("Кафедра '{}' на факультеті '{}' видалена", deptName, facultyName);
         return true;
     }
 
@@ -200,6 +218,7 @@ public class Service {
         for (Faculty f : university.getFaculties()) {
             allDepts.addAll(f.getDepartments());
         }
+        log.trace("Отримано повний список кафедр. Загальна кількість: {}", allDepts.size());
         return allDepts;
     }
 
@@ -225,7 +244,6 @@ public class Service {
         if (f == null) throw new EntityNotFoundException("Факультет '" + faculty + "' не знайдено");
         Department d = f.findDepartmentByName(department);
         if (d == null) throw new EntityNotFoundException("Кафедру '" + department + "' не знайдено");
-
         d.addStudent(student);
         studentRepository.students.add(student);
         return true;
@@ -251,8 +269,10 @@ public class Service {
                 Optional<Student> student = d.getStudents().stream()
                         .filter(s -> s.getId().equals(id)).findFirst();
                 if (student.isPresent()) return student;
+                log.info("Знайдено студента за ID: {} на кафедрі '{}' факультету '{}' ", id, d.getName(), f.getName());
             }
         }
+        log.warn("Пошук студента за ID: {} не дав результатів", id);
         return Optional.empty();
     }
 
@@ -261,6 +281,7 @@ public class Service {
                 .orElseThrow(() -> new EntityNotFoundException("Студента з ID '" + id + "' не знайдено"));
         s.getDepartment().removeStudent(s);
         studentRepository.students.remove(s);
+        log.info("Видалено студента {} {} (ID: {})", s.getLastName(), s.getFirstName(), id);
         return true;
     }
 
@@ -271,8 +292,10 @@ public class Service {
                 Optional<Teacher> teacher = d.getTeachers().stream()
                         .filter(t -> t.getId().equals(id)).findFirst();
                 if (teacher.isPresent()) return teacher;
+                log.info("Знайдено викладача за ID: {} на кафедрі '{}' факультету '{}' ", id, d.getName(), f.getName());
             }
         }
+        log.warn("Пошук викладача за ID: {} не дав результатів", id);
         return Optional.empty();
     }
 
@@ -280,6 +303,7 @@ public class Service {
         Teacher t = findTeacherById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Викладача з ID '" + id + "' не знайдено"));
         t.getDepartment().removeTeacher(t);
+        log.info("Видалено викладача {} {} (ID: {})", t.getLastName(), t.getFirstName(), id);
         teacherRepository.teachers.remove(t);
         return true;
     }
@@ -290,12 +314,14 @@ public class Service {
     }
 
     public List<FacultyDTO> getFacultyReports() {
+        log.info("Генерація звіту за всіма факультетами");
         return University.faculties.stream()
                 .map(f -> new FacultyDTO(f.getName()))
                 .toList();
     }
 
     public List<DepartmentDTO> getDepartmentReports() {
+        log.info("Генерація звіту за всіма кафедрами");
         return University.faculties.stream()
                 .flatMap(f -> f.getDepartments().stream())
                 .map(d -> new DepartmentDTO(

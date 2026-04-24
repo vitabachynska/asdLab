@@ -1,6 +1,7 @@
 package ui;
 
 import domain.*;
+import exceptions.*;
 import service.*;
 
 import java.util.List;
@@ -14,19 +15,23 @@ public class FacultyUI {
     }
 
     public void workWithFaculty() {
-        while (true) {
-            printMenu();
-            int choice = UtilityValidation.readInt("==== ОБЕРІТЬ ПУНКТ ====", 0, 4);
-            if (choice == 0) break;
+        try {
+            while (true) {
+                printMenu();
+                int choice = UtilityValidation.readInt("==== ОБЕРІТЬ ПУНКТ ====", 0, 4);
+                if (choice == 0) break;
 
-            if (!UtilityValidation.isUniversityExist(service)) continue;
+                if (!UtilityValidation.isUniversityExist(service)) continue;
 
-            switch (choice) {
-                case 1 -> showFaculties();
-                case 2 -> createFaculty();
-                case 3 -> deleteFaculty();
-                case 4 -> updateFaculty();
+                switch (choice) {
+                    case 1 -> showFaculties();
+                    case 2 -> createFaculty();
+                    case 3 -> deleteFaculty();
+                    case 4 -> updateFaculty();
+                }
             }
+        } catch (UniversityException e) {
+            System.out.println("\nПОМИЛКА " + e.getMessage());
         }
     }
 
@@ -40,50 +45,83 @@ public class FacultyUI {
         }
     }
 
-    private void createFaculty() {
-   //     if (!checkRights()) return;
+    private void createFaculty(){
+        //        if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+//            throw new AuthorizationException("Помилка: Потрібні права менеджера або відкритий доступ до них");
+//        }
         System.out.println("\n--------СТВОРЮЄМО ФАКУЛЬТЕТ--------");
         String code = UtilityValidation.askInput("Введіть код факультету: ");
         String name = UtilityValidation.askInput("Введіть повну назву факультету: ");
         String shortName = UtilityValidation.askInput("Введіть скорочену назву: ");
         String contacts = UtilityValidation.askInput("Введіть контакти: ");
-
-        service.addFaculty(code, name, shortName, null, contacts);
-        service.syncWithFile();
-        System.out.println("Факультет було додано");
-    }
-
-    private void deleteFaculty() {
-        System.out.println("\n--------ВИДАЛЯЄМО ФАКУЛЬТЕТ--------");
-    //    if (!checkRights()) return;
-        service.listDTOforFaculties();
-        Faculty faculty = service.findFacultyInteractively();
-        if (faculty == null) return;
-        if (service.deleteFaculty(faculty.getName())) {
+        try {
+            service.addFaculty(code, name, shortName, null, contacts);
             service.syncWithFile();
-            System.out.println("Факультет видалено");
-        } else {
-            System.out.println("Факультет не знайдено");
+            System.out.println("Факультет було додано");
+        } catch (IllegalOperationException e) {
+            System.out.println("Не вдалося додати факультет: " + e.getMessage());
+        } catch (DataPersistenceException e) {
+            System.out.println("Помилка збереження: " + e.getMessage());
+        } catch (AuthorizationException e) {
+            System.out.println(e.getMessage());
         }
     }
 
+
+    private void deleteFaculty() {
+        //        if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+//            throw new AuthorizationException("Помилка: Потрібні права менеджера або відкритий доступ до них");
+//        }
+        System.out.println("\n--------ВИДАЛЯЄМО ФАКУЛЬТЕТ--------");
+        try {
+            service.listDTOforFaculties();
+            Faculty faculty = service.findFacultyInteractively();
+            if (faculty == null) return;
+            service.deleteFaculty(faculty.getName());
+            service.syncWithFile();
+            System.out.println("Факультет видалено");
+
+        } catch (AuthorizationException e) {
+            System.out.println("Помилка доступу: " + e.getMessage());
+        } catch (EntityNotFoundException e) {
+            System.out.println("Помилка даних: " + e.getMessage());
+        } catch (DataPersistenceException e) {
+            System.out.println("Помилка збереження у файл: " + e.getMessage());
+        } catch (IllegalOperationException e) {
+            System.out.println("Не вдалося видалити факультет: " + e.getMessage());
+        }
+
+    }
+
     private void updateFaculty() {
+        //        if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+//            throw new AuthorizationException("Помилка: Потрібні права менеджера або відкритий доступ до них");
+//        }
         System.out.println("\n--------ОНОВЛЮЄМО ФАКУЛЬТЕТ--------");
-        // if (!checkRights()) return;
-        service.listDTOforFaculties();
-        Faculty oldFaculty = service.findFacultyInteractively();
-        if (oldFaculty == null) return;
-        String newCode = UtilityValidation.askInput("Новий код: ");
-        String newName = UtilityValidation.askInput("Нова повна назва: ");
-        String newShortName = UtilityValidation.askInput("Нова коротка назва: ");
-        String newContacts = UtilityValidation.askInput("Нові контакти: ");
-        Teacher newDean = service.findDeanInteractively();
-        if (newDean == null) return;
-        if (service.updateFaculty(oldFaculty.getName(), newCode, newName, newShortName, newDean, newContacts)) {
+        try {
+            service.listDTOforFaculties();
+            Faculty oldFaculty = service.findFacultyInteractively();
+            if (oldFaculty == null) return;
+
+            String newCode = UtilityValidation.askInput("Новий код: ");
+            String newName = UtilityValidation.askInput("Нова повна назва: ");
+            String newShortName = UtilityValidation.askInput("Нова коротка назва: ");
+            String newContacts = UtilityValidation.askInput("Нові контакти: ");
+
+            Teacher newDean = service.findDeanInteractively();
+            if (newDean == null) return;
+            service.updateFaculty(oldFaculty.getName(), newCode, newName, newShortName, newDean, newContacts);
             service.syncWithFile();
             System.out.println("ФАКУЛЬТЕТ УСПІШНО ОНОВЛЕНО");
-        } else {
-            System.out.println("Помилка: Не вдалося оновити факультет у базі.");
+
+        } catch (AuthorizationException e) {
+            System.out.println("Відмовлено в доступі: " + e.getMessage());
+        } catch (EntityNotFoundException e) {
+            System.out.println("Помилка оновлення: " + e.getMessage());
+        } catch (DataPersistenceException e) {
+            System.out.println("Не вдалося зберегти зміни у файл: " + e.getMessage());
+        } catch (IllegalOperationException e ){
+            System.out.println("Помилка при оновленні: " + e.getMessage());
         }
     }
 

@@ -1,15 +1,11 @@
 package service;
 
 import domain.*;
-import repository.InmemoryStudents;
-import repository.InmemoryTeachers;
 
 import java.util.Scanner;
 
 public class Validation {
     Service service;
-    InmemoryStudents inmemoryStudents = new InmemoryStudents();
-    InmemoryTeachers inmemoryTeachers = new InmemoryTeachers();
     Scanner scanner = new Scanner(System.in);
     public static boolean hasRights;
 
@@ -22,8 +18,6 @@ public class Validation {
         University university = new University("Національний університет «Києво-Могилянська академія»", "НаУКМА", "Київ", "1");
         service.addUniversity(university.getFullName(), university.getShortName(), university.getCity(), university.getAddress());
         hasRights = false;
-
-        System.out.println("Тестові дані успішно завантажено");
 
     }
 

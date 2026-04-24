@@ -12,6 +12,14 @@
             </PendingDiffInfo>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/exceptions/InvalidCredentialsException.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/main/java/exceptions/InvalidCredentialsException.java" />
+              <option name="updatedContent" value="package exceptions;&#10;&#10;/**&#10; * Exception thrown when provided credentials (username/password) are invalid.&#10; * This is raised during authentication failures.&#10; */&#10;public class InvalidCredentialsException extends UniversityException {&#10;    &#10;    public InvalidCredentialsException(String message) {&#10;        super(message);&#10;    }&#10;    &#10;    public InvalidCredentialsException(String message, Throwable cause) {&#10;        super(message, cause);&#10;    }&#10;}&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

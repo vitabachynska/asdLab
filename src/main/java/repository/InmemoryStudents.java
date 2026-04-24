@@ -3,6 +3,8 @@ import domain.Department;
 import domain.Faculty;
 import domain.Student;
 import DTO.StudentDTO;
+import exceptions.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -82,14 +84,12 @@ public class InmemoryStudents {
         return false;
     }
 
-    public void searchingByPIB(String firstName, String lastName, String middleName){
-        Optional<Student> optionalStudent = studentFindByPIB(firstName, lastName, middleName);
-        if(optionalStudent.isPresent()){
-            Student s = optionalStudent.get();
-            System.out.println(s);
-        }else{
-            System.out.println("Студент не знайдений =(");
-        }
+    public void searchingStudentByPIB(String firstName, String lastName, String middleName){
+        Student s = studentFindByPIB(firstName, lastName, middleName)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Студента з ПІБ " + lastName + " " + firstName + " " + middleName + " не знайдено =("
+                ));
+        System.out.println(s);
     }
 
     /*public void searchingByCourse(int course){
@@ -114,7 +114,7 @@ public class InmemoryStudents {
         }
     }*/
 
-    public void sortingCourse (){
+    public void sortingStudentsCourse(){
         List<Student> optionalStudent = sortByCourse(students);
         if (optionalStudent.isEmpty()) {
             System.out.println("Студентів поки немає =(");
@@ -125,7 +125,7 @@ public class InmemoryStudents {
         }
     }
 
-    public List<StudentDTO> getCompactReport() {
+    public List<StudentDTO> getCompactStudentReport() {
         return students.stream()
                 .map(s -> new StudentDTO(
                         s.getId(),

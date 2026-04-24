@@ -7,6 +7,7 @@ import DTO.TeacherDTO;
 import domain.*;
 import repository.InmemoryStudents;
 import repository.InmemoryTeachers;
+import exceptions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +25,13 @@ public class Service {
 
     private final FileHandler fileHandler = new FileHandler();
 
-    public void syncWithFile() {
+    public void syncWithFile() throws DataPersistenceException {
         System.out.println("Синхронізація з файлом ...");
         UniversityData dataToSave = new UniversityData(University.faculties);
         fileHandler.saveAllData(dataToSave);
     }
 
-    public void startup() {
+    public void startup() throws DataPersistenceException {
         UniversityData loadedData = fileHandler.loadAllData();
         if (loadedData != null && loadedData.faculties() != null) {
             for (Faculty f : loadedData.faculties()) {
@@ -40,7 +41,6 @@ public class Service {
                     for (Department d : f.getDepartments()) {
                         d.setFaculty(f);
 
-                        // Restore teacher relationships
                         if (d.getTeachers() != null) {
                             for (Teacher t : d.getTeachers()) {
                                 t.setFaculty(f);
@@ -48,20 +48,13 @@ public class Service {
                             }
                         }
 
-                        // Restore student relationships
                         if (d.getStudents() != null) {
                             for (Student s : d.getStudents()) {
                                 s.setFaculty(f);
-                                s.setDepartment(d);
-                            }
-                        }
-                    }
-                }
+                                s.setDepartment(d);}
+                        }}}
             }
-
             University.faculties = new ArrayList<>(this.university.getFaculties());
-
-            // Load all teachers from departments into the repository
             for (Faculty f : this.university.getFaculties()) {
                 for (Department d : f.getDepartments()) {
                     if (d.getTeachers() != null) {
@@ -73,7 +66,7 @@ public class Service {
                 }
             }
 
-            System.out.println("Дані НаУКМА успішно завантажені!");
+            System.out.println("Дані програми успішно завантажені!");
         }
     }
 
@@ -81,10 +74,6 @@ public class Service {
 
 
     public boolean addUniversity(String fullName, String shortName, String city, String address){
-        if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-            System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-            return false;
-        }
         this.university = new University(fullName, shortName, city, address);
         return true;
 
@@ -98,23 +87,17 @@ public class Service {
     //}
     // Department getDepartment(){
 //return department;
-   // }
+    // }
 
-    public boolean addFaculty(String code, String name, String shortName, Teacher dean, String contacts) {
-       // if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-         //   System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-           // return false;
-     //   }
-
+    public boolean addFaculty(String code, String name, String shortName, Teacher dean, String contacts) throws IllegalOperationException {
         if(university != null){
             Faculty newFaculty = new Faculty(code, name, shortName, dean, contacts);
             university.addFaculty(newFaculty);
             return true;
         }
         else{
-            System.out.println("Помилка. Спочатку створіть універстиет");
+            throw new IllegalOperationException("Не можна створити кафедру без університету.");
         }
-        return false;
 
     }
 
@@ -124,25 +107,22 @@ public class Service {
         return university.getFaculties();
     }
 
-    public boolean deleteFaculty(String name){
-       // if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-         //   System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-           // return false;
-       // }
-        if(university == null)
-            return false;
+    public boolean deleteFaculty(String name) throws EntityNotFoundException, IllegalOperationException {
+        if (university == null){
+            throw new IllegalOperationException("Помилка: університет не створено.");
+        }
         boolean isDeleted = university.removeFacultyByName(name);
-        return  isDeleted;
-        //return university.removeFacultyByName(name);
+        if (!isDeleted) {
+            throw new EntityNotFoundException("Факультет з назвою '" + name + "' не знайдено для видалення");
+        }
+        return true;
     }
 
-    public boolean updateFaculty(String name,String newCode, String newName, String newShortName, Teacher newDean, String newContacts) {
-      //  if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-        //    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-        //    return false;
-       // }
-        if (university == null) return false;
-
+    public boolean updateFaculty(String name, String newCode, String newName, String newShortName, Teacher newDean, String newContacts)
+            throws EntityNotFoundException, IllegalOperationException{
+        if (university == null){
+            throw new IllegalOperationException("Помилка: університет не створено.");
+        }
         Faculty f = university.findFacultyByName(name);
         if (f != null) {
             f.setCode(newCode);
@@ -152,28 +132,27 @@ public class Service {
             f.setContacts(newContacts);
             return true;
         }
-        return false;
+        throw new EntityNotFoundException("Факультет '" + name + "' не знайдено для оновлення");
     }
 
-    public boolean updateDepartment(String fName, String oldDeptName, String newCode, String newName, Teacher newHead, String newLocation) {
-       // if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-         //   System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-           // return false;
-       // }
-        if (university == null) return false;
-
-        Faculty f = university.findFacultyByName(fName);
-        if (f != null) {
-            Department d = f.findDepartmentByName(oldDeptName);
-            if (d != null) {
-                d.setCode(newCode);
-                d.setName(newName);
-                d.setHead(newHead);
-                d.setLocation(newLocation);
-                return true;
-            }
+    public boolean updateDepartment(String fName, String oldDeptName, String newCode, String newName, Teacher newHead, String newLocation)
+            throws EntityNotFoundException, IllegalOperationException {
+        if (university == null){
+            throw new IllegalOperationException("Помилка: університет не створено.");
         }
-        return false;
+        Faculty f = university.findFacultyByName(fName);
+        if (f == null) {
+            throw new EntityNotFoundException("Факультет '" + fName + "' не знайдено");
+        }
+        Department d = f.findDepartmentByName(oldDeptName);
+        if (d != null) {
+            d.setCode(newCode);
+            d.setName(newName);
+            d.setHead(newHead);
+            d.setLocation(newLocation);
+            return true;
+        }
+        throw new EntityNotFoundException("Кафедру '" + oldDeptName + "' на факультеті '" + fName + "' не знайдено");
     }
 
     public void addDepartment(String code, String name, Faculty faculty,  Teacher head, String location) {
@@ -187,33 +166,31 @@ public class Service {
         }
 
     }
-    public boolean addDepartment(String facultyName, String code, String name,  Teacher head, String location){
-       // if (!Authorization.can(RoleForm.MANAGER) && !Validation.hasRights) {
-         //   System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-           // return false;
-       // }
-        if(university==null)
-            return false;
+    public boolean addDepartment(String facultyName, String code, String name,  Teacher head, String location) throws EntityNotFoundException, IllegalOperationException{
+        if (university == null){
+            throw new IllegalOperationException("Помилка: університет не створено.");
+        }
         Faculty f = getUniversity().findFacultyByName(facultyName);
         if (f!=null){
             f.addDepartment(code, name, f, head, location);
             return true;
         }
-        return false;
+        throw new EntityNotFoundException("Факультет '" + facultyName + "' не знайдено");
     }
 
-    public boolean deleteDepartment(String facultyName, Department deptName) {
-      //  if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-        //    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-          //  return false;
-        //}
-        if (university == null) return false;
-
-        Faculty f = university.findFacultyByName(String.valueOf(facultyName));
-        if (f != null) {
-            return f.getDepartments().removeIf(d -> d.getName().equalsIgnoreCase(String.valueOf(deptName)));
+    public boolean deleteDepartment(String facultyName, String deptName) throws EntityNotFoundException, IllegalOperationException {
+        if (university == null){
+            throw new IllegalOperationException("Помилка: університет не створено.");
         }
-        return false;
+        Faculty f = university.findFacultyByName(facultyName);
+        if (f == null) {
+            throw new EntityNotFoundException("Факультет '" + facultyName + "' не знайдено");
+        }
+        boolean isDeleted = f.getDepartments().removeIf(d -> d.getName().equalsIgnoreCase(deptName));
+        if (!isDeleted) {
+            throw new EntityNotFoundException("Кафедру '" + deptName + "' не знайдено на факультеті " + facultyName);
+        }
+        return true;
     }
 
     public List<Department> getAllDepartments() {
@@ -226,66 +203,32 @@ public class Service {
         return allDepts;
     }
 
-    /*public Optional<Teacher> teacherFindById(String id) {
-        return teachers.stream().filter(t -> t.getId().equals(id)).findFirst();
-    }
-    public Optional<Teacher> teacherFindByPIB(String firstName, String lastName, String middleName) {
-        return teachers.stream().filter(t -> t.getFirstName().equalsIgnoreCase(firstName)&&t.getLastName().equalsIgnoreCase(lastName)
-                &&t.getMiddleName().equalsIgnoreCase(middleName)).findFirst();
-    }
-
-    public Teacher deanFindByPIB(String firstName, String lastName, String middleName) {
-        return teachers.stream()
-                .filter(t -> t.getFirstName().equalsIgnoreCase(firstName)
-                        && t.getLastName().equalsIgnoreCase(lastName)
-                        && t.getMiddleName().equalsIgnoreCase(middleName)).findFirst().orElse(null);
-    }
-
-    public Teacher headFindByPIB(String firstName, String lastName, String middleName) {
-        return teachers.stream()
-                .filter(t -> t.getFirstName().equalsIgnoreCase(firstName)
-                        && t.getLastName().equalsIgnoreCase(lastName)
-                        && t.getMiddleName().equalsIgnoreCase(middleName)).findFirst().orElse(null);}
-*/
-
-    public boolean addTeacher(String faculty, String department, Teacher teacher) {
-      //  if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-        //    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-          //  return false;
-       // }
-        if (university == null) return false;
+    public boolean addTeacher(String faculty, String department, Teacher teacher) throws EntityNotFoundException, IllegalOperationException {
+        if (university == null){
+            throw new IllegalOperationException("Помилка: університет не створено.");
+        }
 
         Faculty f = university.findFacultyByName(faculty);
-        if (f != null) {
-            Department d = f.findDepartmentByName(department);
-            if (d != null) {
-                d.addTeacher(teacher);
-                teacherRepository.teachers.add(teacher);
-                //System.out.println(teachers.size());
-                return true;
-            }
-        }
-        return false;
+        if (f == null) throw new EntityNotFoundException("Факультет '" + faculty + "' не знайдено");
+        Department d = f.findDepartmentByName(department);
+        if (d == null) throw new EntityNotFoundException("Кафедру '" + department + "' не знайдено");
+        d.addTeacher(teacher);
+        teacherRepository.teachers.add(teacher);
+        return true;
     }
 
-    public boolean addStudent(String faculty, String department, Student student) {
-    //    if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-      //      System.out.println(Authorization.can(RoleForm.MANAGER));
-        //    System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-          //  return false;
-       // }
-        if (university == null) return false;
-
-        Faculty f = university.findFacultyByName(faculty);
-        if (f != null) {
-            Department d = f.findDepartmentByName(department);
-            if (d != null) {
-                d.addStudent(student);
-                studentRepository.students.add(student);
-                return true;
-            }
+    public boolean addStudent(String faculty, String department, Student student) throws EntityNotFoundException, IllegalOperationException {
+        if (university == null){
+            throw new IllegalOperationException("Помилка: університет не створено.");
         }
-        return false;
+        Faculty f = university.findFacultyByName(faculty);
+        if (f == null) throw new EntityNotFoundException("Факультет '" + faculty + "' не знайдено");
+        Department d = f.findDepartmentByName(department);
+        if (d == null) throw new EntityNotFoundException("Кафедру '" + department + "' не знайдено");
+
+        d.addStudent(student);
+        studentRepository.students.add(student);
+        return true;
     }
 
     public boolean deleteTeacher(String fName, String dName, String lastName) {
@@ -313,19 +256,12 @@ public class Service {
         return Optional.empty();
     }
 
-    public boolean deleteStudent(String id) {
-    //    if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-      //      System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-        //    return false;
-       // }
-        Optional<Student> studentOpt = findStudentById(id);
-        if (studentOpt.isPresent()) {
-            Student s = studentOpt.get();
-            s.getDepartment().removeStudent(s);
-            studentRepository.students.remove(s);
-            return true;
-        }
-        return false;
+    public boolean deleteStudent(String id) throws EntityNotFoundException {
+        Student s = findStudentById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Студента з ID '" + id + "' не знайдено"));
+        s.getDepartment().removeStudent(s);
+        studentRepository.students.remove(s);
+        return true;
     }
 
     public Optional<Teacher> findTeacherById(String id) {
@@ -340,19 +276,12 @@ public class Service {
         return Optional.empty();
     }
 
-    public boolean deleteTeacher(String id) {
-    //    if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
-      //      System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них або відкритий доступ до них");
-        //    return false;
-       // }
-        Optional<Teacher> teacherOpt = findTeacherById(id);
-        if (teacherOpt.isPresent()) {
-            Teacher t = teacherOpt.get();
-            t.getDepartment().removeTeacher(t);
-            teacherRepository.teachers.remove(t);
-            return true;
-        }
-        return false;
+    public boolean deleteTeacher(String id) throws EntityNotFoundException {
+        Teacher t = findTeacherById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Викладача з ID '" + id + "' не знайдено"));
+        t.getDepartment().removeTeacher(t);
+        teacherRepository.teachers.remove(t);
+        return true;
     }
     public <T> List<T> findAny(List<T> list, Predicate<T> condition) {
         return list.stream()
@@ -421,21 +350,21 @@ public class Service {
             });
         }
     }
-public void listDTOforStudents(){
-    List<StudentDTO> dtos = studentRepository.getCompactReport();
-                if (dtos.isEmpty()) {
-        System.out.println("Жодного студента поки не зареєстровано :(");
-    } else {
-        System.out.println("\n--------СТУДЕНТИ--------\n------------------------");
-        dtos.forEach(s -> {
-            System.out.println(" ID: " + s.id());
-            System.out.println(" ПІБ: " + s.lastName() + " " + s.firstName() + " " + s.middleName());
-            System.out.println("️ Факультет: " + s.faculty());
-            System.out.println(" Курс: " + s.course());
-            System.out.println("------------------------------------");
-        });
+    public void listDTOforStudents(){
+        List<StudentDTO> dtos = studentRepository.getCompactStudentReport();
+        if (dtos.isEmpty()) {
+            System.out.println("Жодного студента поки не зареєстровано :(");
+        } else {
+            System.out.println("\n--------СТУДЕНТИ--------\n------------------------");
+            dtos.forEach(s -> {
+                System.out.println(" ID: " + s.id());
+                System.out.println(" ПІБ: " + s.lastName() + " " + s.firstName() + " " + s.middleName());
+                System.out.println("️ Факультет: " + s.faculty());
+                System.out.println(" Курс: " + s.course());
+                System.out.println("------------------------------------");
+            });
+        }
     }
-}
     public Faculty findFacultyInteractively() {
         while (true) {
             String name = UtilityValidation.askInput("Назва факультету (або '0' для скасування): ");
@@ -510,4 +439,3 @@ public void listDTOforStudents(){
         }
     }
 }
-

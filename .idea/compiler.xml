@@ -8,9 +8,13 @@
         <outputRelativeToContentRoot value="true" />
       </profile>
       <profile name="Annotation profile for asdLab" enabled="true">
-        <sourceOutputDir name="asdLab/target/generated-sources/annotations" />
-        <sourceTestOutputDir name="asdLab/target/generated-test-sources/test-annotations" />
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
+        </processorPath>
         <module name="asdLab" />
       </profile>
     </annotationProcessing>

@@ -135,7 +135,8 @@
         "tuitionForm" : "CONTRACT",
         "status" : "STUDYING"
       }, {
-        "id" : "S7","firstName" : "Владислав",
+        "id" : "S7",
+        "firstName" : "Владислав",
         "middleName" : "Сергійович",
         "lastName" : "Шевченко",
         "birthDate" : "2005-05-05",
@@ -273,7 +274,8 @@
         "status" : "STUDYING"
       }, {
         "id" : "S14",
-        "firstName" : "Вікторія","middleName" : "Тарасівна",
+        "firstName" : "Вікторія",
+        "middleName" : "Тарасівна",
         "lastName" : "Поліщук",
         "birthDate" : "2005-12-05",
         "email" : "v.pol@ukma.edu.ua",
@@ -410,7 +412,8 @@
         "status" : "STUDYING"
       }, {
         "id" : "S21",
-        "firstName" : "Ярослав","middleName" : "Васильович",
+        "firstName" : "Ярослав",
+        "middleName" : "Васильович",
         "lastName" : "Кузьменко",
         "birthDate" : "2006-09-10",
         "email" : "y.kuzm@ukma.edu.ua",
@@ -545,7 +548,8 @@
         "tuitionForm" : "BUDGET",
         "status" : "STUDYING"
       }, {
-        "id" : "S27","firstName" : "Андрій",
+        "id" : "S27",
+        "firstName" : "Андрій",
         "middleName" : "Ігорович",
         "lastName" : "Бойко",
         "birthDate" : "2004-10-10",
@@ -615,5 +619,19 @@
     "dean" : null,
     "contacts" : "fprn_nat@ukma.edu.ua",
     "departments" : [ ]
+  }, {
+    "code" : "333",
+    "name" : "hhhhh",
+    "shortName" : "77",
+    "dean" : null,
+    "contacts" : "hhh777",
+    "departments" : [ {
+      "code" : "777",
+      "name" : "hhhh",
+      "head" : null,
+      "location" : "jjj",
+      "teachers" : [ ],
+      "students" : [ ]
+    } ]
   } ]
 }

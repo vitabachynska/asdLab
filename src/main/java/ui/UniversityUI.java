@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.*;
 import service.*;
 
 public class UniversityUI {
@@ -10,7 +11,8 @@ public class UniversityUI {
     }
 
     public void workWithUniversity() {
-        printUniMenu();
+        try {
+            printUniMenu();
         while (true) {
             int choice = UtilityValidation.readInt("==== ОБЕРІТЬ ПУНКТ ====", 0, 2);
             switch (choice) {
@@ -23,23 +25,30 @@ public class UniversityUI {
                 }
             }
             printUniMenu();
+        }}catch (UniversityException e){
+            System.out.println("Помилка: " + e.getMessage());
         }
     }
 
     private void createUniversity() {
-        if (!Authorization.can(RoleForm.MANAGER) && !Validation.hasRights) {
-            System.out.println("Помилка: Потрібні права менеджера або відкритий доступ до них");
-            return;
-        }
-        System.out.println("\n--------СТВОРЕННЯ УНІВЕРСИТЕТУ--------");
-        String fullName = UtilityValidation.askInput("Введіть назву університету: ");
-        String shortName = UtilityValidation.askInput("Введіть скорочену назву університету: ");
-        String city = UtilityValidation.askInput("Введіть місто: ");
-        String address = UtilityValidation.askInput("Введіть адресу: ");
+        //        if (!Authorization.can(RoleForm.MANAGER)&& !Validation.hasRights) {
+//            throw new AuthorizationException("Помилка: Потрібні права менеджера або відкритий доступ до них");
+//        }
+        System.out.println("\n--------ОНОВЛЕННЯ УНІВЕРСИТЕТУ--------");
+        try {
+            String fullName = UtilityValidation.askInput("Введіть назву університету: ");
+            String shortName = UtilityValidation.askInput("Введіть скорочену назву університету: ");
+            String city = UtilityValidation.askInput("Введіть місто: ");
+            String address = UtilityValidation.askInput("Введіть адресу: ");
+            service.addUniversity(fullName, shortName, city, address);
+            service.syncWithFile();
+            System.out.println("УНІВЕРСИТЕТ УСПІШНО ОНОВЛЕНО");
 
-        this.service.addUniversity(fullName, shortName, city, address);
-        service.syncWithFile();
-        System.out.println("УНІВЕРСИТЕТ БУЛО ДОДАНО");
+        } catch (AuthorizationException e) {
+            System.out.println("Відмовлено в доступі: " + e.getMessage());
+        } catch (DataPersistenceException e) {
+            System.out.println("Помилка запису у файл: " + e.getMessage());
+        }
     }
 
     private void showUniversity() {

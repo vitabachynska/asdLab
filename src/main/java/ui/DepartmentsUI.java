@@ -4,6 +4,8 @@ import domain.*;
 import repository.InmemoryStudents;
 import service.*;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.time.LocalDate;
 
 import static service.UtilityValidation.*;
@@ -12,8 +14,11 @@ public class DepartmentsUI {
     private Service service;
     InmemoryStudents inmemoryStudents = new InmemoryStudents();
 
-    public DepartmentsUI(Service service) {
-        this.service = service;
+    //public DepartmentsUI(Service service) {
+    //    this.service = service;
+    //}
+
+    public DepartmentsUI(DataInputStream in, DataOutputStream out) {
     }
 
     public void workWithDepartment() {

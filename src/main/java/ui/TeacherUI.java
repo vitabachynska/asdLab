@@ -7,6 +7,9 @@ import service.RoleForm;
 import service.Service;
 import service.UtilityValidation;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
 import static service.UtilityValidation.*;
 
 public class TeacherUI {
@@ -16,6 +19,9 @@ public class TeacherUI {
     public TeacherUI(Service service) {
         this.service = service;
         this.teacherRepository = service.teacherRepository;
+    }
+
+    public TeacherUI(DataInputStream in, DataOutputStream out) {
     }
 
     public void workWithTeachers() {

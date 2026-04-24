@@ -4,6 +4,8 @@ import domain.*;
 import repository.InmemoryStudents;
 import repository.InmemoryTeachers;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.util.Scanner;
 
 public class Validation {
@@ -13,8 +15,11 @@ public class Validation {
     Scanner scanner = new Scanner(System.in);
     public static boolean hasRights;
 
-    public Validation(Service service) {
-        this.service = service;
+    //public Validation(Service service) {
+        //this.service = service;
+    //}
+
+    public Validation(DataInputStream in, DataOutputStream out) {
     }
 
     public void initData() {

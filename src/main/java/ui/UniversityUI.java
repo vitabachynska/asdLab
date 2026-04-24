@@ -2,11 +2,17 @@ package ui;
 
 import service.*;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
 public class UniversityUI {
     private Service service;
 
-    public UniversityUI(Service service) {
-        this.service = service;
+    //public UniversityUI(Service service) {
+    //    this.service = service;
+    //}
+
+    public UniversityUI(DataInputStream in, DataOutputStream out) {
     }
 
     public void workWithUniversity() {

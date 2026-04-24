@@ -3,14 +3,19 @@ package ui;
 import domain.*;
 import service.*;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.util.List;
 
 public class FacultyUI {
     //InmemoryTeachers teacherRepo = new InmemoryTeachers();
     private Service service;
 
-    public FacultyUI(Service service) {
-        this.service = service;
+    //public FacultyUI(Service service) {
+        //this.service = service;
+    //}
+
+    public FacultyUI(DataInputStream in, DataOutputStream out) {
     }
 
     public void workWithFaculty() {

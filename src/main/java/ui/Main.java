@@ -89,26 +89,6 @@ public class Main {
                 }
             }
         }
-//            int choice;
-//            while (true) {
-//                System.out.println("- - - - - - - - - - - -\nБажаєте повернутися до меню? 1 - так, 0 - ні : ");
-//                String input = scanner.nextLine();
-//                try {
-//                    choice = Integer.parseInt(input);
-//                    if (choice == 1 || choice == 0)
-//                        break;
-//                    else
-//                        System.out.println("Введіть коректне значення");
-//
-//                } catch (NumberFormatException e) {
-//                    System.out.println("Введіть коректне значення");
-//                }
-//            }
-//            if (choice == 0) {
-//                System.out.println("--ВИХІД З ПРОГРАМИ--");
-//                break;
-//            }
-      //  }
     }
     private static String textIsNotNull(){
         String text;
@@ -121,10 +101,4 @@ public class Main {
         }
         return text;
     }
-
-
-
-
-
-    }
-
+}

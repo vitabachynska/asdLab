@@ -36,7 +36,7 @@ public class DepartmentsUI {
                 case 6 -> {if (Authorization.can(RoleForm.EDIT.getMask())) addStudentToDept();
                             else System.out.println("У вас немає прав на додавання студентів");}
                 case 7 -> {if (Authorization.can(RoleForm.EDIT.getMask())) deleteTeacherFromDept();
-                            else System.out.println("У вас немає прав на овидалення викладачів");}
+                            else System.out.println("У вас немає прав на видалення викладачів");}
                 case 8 -> {if (Authorization.can(RoleForm.EDIT.getMask())) deleteStudentFromDept();
                             else System.out.println("У вас немає прав на видалення студентів");}
             }

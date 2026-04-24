@@ -1,11 +1,11 @@
 package domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 public class Department {
     private String code;
     private String name;
@@ -72,12 +72,14 @@ public class Department {
    public void addTeacher(Teacher teacher){
         if(teacher != null){
             teachers.add(teacher);
+            log.info("Додано нового викладача {}", teacher);
         }
    }
 
     public void addStudent(Student student){
         if(students != null){
             students.add(student);
+            log.info("Додано нового студента {}", student);
         }
     }
 

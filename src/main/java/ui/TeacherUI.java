@@ -1,6 +1,7 @@
 package ui;
 
 import domain.*;
+import exceptions.*;
 import repository.InmemoryTeachers;
 import service.Authorization;
 import service.RoleForm;
@@ -18,9 +19,10 @@ public class TeacherUI {
         this.teacherRepository = service.teacherRepository;
     }
 
-    public void workWithTeachers() {
+    public void workWithTeachers(){
+        printMenu();
+        try {
         while (true) {
-            printMenu();
             int choice = UtilityValidation.readInt("==== ОБЕРІТЬ ПУНКТ ====", 0, 3);
             if (choice == 0) break;
             if (!UtilityValidation.isUniversityExist(service)) continue;
@@ -31,8 +33,11 @@ public class TeacherUI {
                             else System.out.println("У вас немає прав на оновлення викладачів");}
                 case 3 -> searchTeacherByPIB();
             }
+        }}catch (UniversityException e){
+                System.out.println("Помилка: " + e.getMessage());
+            }
         }
-    }
+
 
     private void showTeachers() {
         System.out.println("\n--------ВИВІД СПИСКУ ВИКЛАДАЧІВ--------");
@@ -45,7 +50,7 @@ public class TeacherUI {
 
     private void updateTeacher() {
         System.out.println("\n--------ЗМІНЮЄМО ДАНІ ВИКЛАДАЧА--------");
-        // if (!checkRights()) return;
+        try {
         Teacher oldTeacher = service.findTeacherInteractively();
         if (oldTeacher == null) return;
         String newFirstName = UtilityValidation.askInput("Нове ім'я: ");
@@ -64,8 +69,8 @@ public class TeacherUI {
                 newEmail, newPhone, position, degree, title, workload)) {
             service.syncWithFile();
             System.out.println("Дані викладача було оновлено");
-        } else {
-            System.out.println("Помилка: Не вдалося оновити дані викладача.");
+        } } catch (UniversityException e) {
+            System.out.println("Помилка оновлення: " + e.getMessage());
         }
     }
 

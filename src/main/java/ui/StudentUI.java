@@ -1,6 +1,7 @@
 package ui;
 
 import domain.*;
+import exceptions.*;
 import repository.InmemoryStudents;
 import service.*;
 
@@ -19,6 +20,7 @@ public class StudentUI {
 
     public void workWithStudents() {
         while (true) {
+            try {
             printMenu();
             int choice = readInt("==== ОБЕРІТЬ ПУНКТ ====", 0, 6);
             if (choice == 0) break;
@@ -33,6 +35,9 @@ public class StudentUI {
                 case 5 -> searchStudentByGroup();
                 case 6 -> sortStudentsByCourse();
             }
+        } catch (UniversityException e) {
+            System.out.println("\nПОМИЛКА " + e.getMessage());
+        }
         }
     }
     private void showStudents() {
@@ -46,8 +51,8 @@ public class StudentUI {
 
 
     private void updateStudent() {
+        try {
         System.out.println("\n--------ОНОВЛЮЄМО ДАНІ СТУДЕНТА--------");
-        // if (!checkRights()) return;
         Student oldStudent = service.findStudentInteractively();
         if (oldStudent == null) return;
         String newName = UtilityValidation.askInput("Нове ім'я: ");
@@ -65,18 +70,23 @@ public class StudentUI {
                 newEmail, newPhone, newCourse, newGroup, newForm, newStatus)) {
             service.syncWithFile();
             System.out.println("ДАНІ СТУДЕНТА УСПІШНО ОНОВЛЕНО");
-        } else {
-            System.out.println("Помилка: Не вдалося оновити дані студента.");
+        } } catch (UniversityException e) {
+            System.out.println("Помилка оновлення: " + e.getMessage());
         }
     }
 
     private void searchStudentByPIB() {
         System.out.println("\n--------ПОШУК СТУДЕНТА ЗА ПІБ--------");
-        String name = askInput("Ім'я: ");
-        String lName = askInput("Прізвище: ");
-        String mName = askInput("По батькові: ");
+        try {
+            String name = askInput("Ім'я: ");
+            String lName = askInput("Прізвище: ");
+            String mName = askInput("По батькові: ");
 
-        studentRepository.searchingByPIB(name, lName, mName);
+            studentRepository.searchingStudentByPIB(name, lName, mName);
+        }catch (EntityNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     private void searchStudentByCourse() {
@@ -105,7 +115,7 @@ public class StudentUI {
 
     private void sortStudentsByCourse() {
         System.out.println("\n--------СОРТУВАННЯ СТУДЕНТІВ ЗА КУРСОМ--------");
-        studentRepository.sortingCourse();
+        studentRepository.sortingStudentsCourse();
         System.out.println("Студентів відсортовано.");
     }
 

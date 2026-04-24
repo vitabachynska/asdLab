@@ -1,6 +1,7 @@
 package ui;
 
 import domain.*;
+import exceptions.*;
 import service.Service;
 import service.Validation;
 
@@ -8,6 +9,7 @@ import java.util.Scanner;
 
 public class Main {
     private static University university;
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Service service = new Service();
@@ -18,7 +20,14 @@ public class Main {
         TeacherUI teacherUI = new TeacherUI(service);
         StudentUI studentUI = new StudentUI(service);
         validation.initData();
-        service.startup();
+
+        try {
+            service.startup();
+        } catch (DataPersistenceException e) {
+            System.out.println("Помилка: не можна завантажити дані: " + e.getMessage());
+        } catch (UniversityException e) {
+            System.out.println("Помилка: " + e.getMessage());
+        }
 
         while (true) {
             validation.introduction();
@@ -67,6 +76,14 @@ public class Main {
                     case 6 -> {
                         validation.adminControlPanel();
                     }
+//                case 7 -> {
+//                    try {
+//                        service.syncWithFile();
+//                        System.out.println("Дані збережені у файл!");
+//                    } catch (DataPersistenceException e) {
+//                        System.out.println("Помилка: " + e.getMessage());
+//                    }
+//                }
                 }
 
                 while (true) {
@@ -88,7 +105,6 @@ public class Main {
                     break;
                 }
             }
-        }
 //            int choice;
 //            while (true) {
 //                System.out.println("- - - - - - - - - - - -\nБажаєте повернутися до меню? 1 - так, 0 - ні : ");
@@ -108,23 +124,9 @@ public class Main {
 //                System.out.println("--ВИХІД З ПРОГРАМИ--");
 //                break;
 //            }
-      //  }
-    }
-    private static String textIsNotNull(){
-        String text;
-        Scanner scanner = new Scanner(System.in);
-        while (true){
-            text = scanner.nextLine();
-            if(text == null || text.isEmpty())
-                System.out.println("Введіть значення : ");
-            else break;
+            //  }
         }
-        return text;
-    }
-
-
-
 
 
     }
-
+}

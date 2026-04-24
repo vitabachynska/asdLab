@@ -1,8 +1,11 @@
 package domain;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class University {
     private String fullName;
     private String shortName;
@@ -35,6 +38,7 @@ public class University {
             faculties.add(faculty);
     }
     public  List<Faculty> getFaculties(){
+        log.info("Отримання списку факультетів. Кількість: {}", faculties.size());
         return faculties;
     }
 
